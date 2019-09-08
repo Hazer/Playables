@@ -126,12 +126,6 @@ object Libs {
     const val androidx_test_runner: String = "androidx.test:runner:" + Versions.androidx_test
 
     /**
-     * https://github.com/floschu/Reaktor
-     */
-    const val reaktor_android_koin: String = "at.florianschuster.reaktor:reaktor-android-koin:" +
-            Versions.reaktor_android_koin
-
-    /**
      * https://github.com/akaita/easylauncher-gradle-plugin
      */
     const val easylauncher: String = "com.akaita.android:easylauncher:" + Versions.easylauncher
@@ -151,18 +145,6 @@ object Libs {
      * https://developer.android.com/studio
      */
     const val lint_gradle: String = "com.android.tools.lint:lint-gradle:" + Versions.lint_gradle
-
-    /**
-     * https://github.com/bumptech/glide
-     */
-    const val com_github_bumptech_glide_compiler: String = "com.github.bumptech.glide:compiler:" +
-            Versions.com_github_bumptech_glide
-
-    /**
-     * https://github.com/bumptech/glide
-     */
-    const val glide: String = "com.github.bumptech.glide:glide:" +
-            Versions.com_github_bumptech_glide
 
     /**
      * https://github.com/shyiko/ktlint
@@ -189,59 +171,6 @@ object Libs {
      */
     const val com_google_truth_truth: String = "com.google.truth:truth:" +
             Versions.com_google_truth_truth
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding_appcompat: String = "com.jakewharton.rxbinding3:rxbinding-appcompat:" +
-            Versions.com_jakewharton_rxbinding3
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding_core: String = "com.jakewharton.rxbinding3:rxbinding-core:" +
-            Versions.com_jakewharton_rxbinding3
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding_drawerlayout: String =
-            "com.jakewharton.rxbinding3:rxbinding-drawerlayout:" +
-            Versions.com_jakewharton_rxbinding3
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding_material: String = "com.jakewharton.rxbinding3:rxbinding-material:" +
-            Versions.com_jakewharton_rxbinding3
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding_recyclerview: String =
-            "com.jakewharton.rxbinding3:rxbinding-recyclerview:" +
-            Versions.com_jakewharton_rxbinding3
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding_swiperefreshlayout: String =
-            "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:" +
-            Versions.com_jakewharton_rxbinding3
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding_viewpager: String = "com.jakewharton.rxbinding3:rxbinding-viewpager:" +
-            Versions.com_jakewharton_rxbinding3
-
-    /**
-     * https://github.com/JakeWharton/RxBinding/
-     */
-    const val rxbinding: String = "com.jakewharton.rxbinding3:rxbinding:" +
-            Versions.com_jakewharton_rxbinding3
-
-    const val rxrelay: String = "com.jakewharton.rxrelay2:rxrelay:" + Versions.rxrelay
 
     /**
      * https://github.com/JakeWharton/ThreeTenABP/
@@ -282,12 +211,6 @@ object Libs {
      * https://github.com/square/okhttp
      */
     const val okhttp: String = "com.squareup.okhttp3:okhttp:" + Versions.com_squareup_okhttp3
-
-    /**
-     * https://github.com/square/retrofit/
-     */
-    const val adapter_rxjava2: String = "com.squareup.retrofit2:adapter-rxjava2:" +
-            Versions.com_squareup_retrofit2
 
     /**
      * https://github.com/square/retrofit/
@@ -352,24 +275,14 @@ object Libs {
     const val graphviz_java: String = "guru.nidi:graphviz-java:" + Versions.graphviz_java
 
     /**
+     * https://github.com/coil-kt/coil
+     */
+    const val coil: String = "io.coil-kt:coil:" + Versions.coil
+
+    /**
      * http://mockk.io
      */
     const val mockk: String = "io.mockk:mockk:" + Versions.mockk
-
-    /**
-     * https://github.com/ReactiveX/RxAndroid
-     */
-    const val rxandroid: String = "io.reactivex.rxjava2:rxandroid:" + Versions.rxandroid
-
-    /**
-     * https://github.com/ReactiveX/RxJava
-     */
-    const val rxjava: String = "io.reactivex.rxjava2:rxjava:" + Versions.rxjava
-
-    /**
-     * https://github.com/ReactiveX/RxKotlin
-     */
-    const val rxkotlin: String = "io.reactivex.rxjava2:rxkotlin:" + Versions.rxkotlin
 
     /**
      * http://junit.org
@@ -422,6 +335,18 @@ object Libs {
      */
     const val kotlin_stdlib_jdk7: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:" +
             Versions.org_jetbrains_kotlin
+
+    /**
+     * https://github.com/Kotlin/kotlinx.coroutines
+     */
+    const val kotlinx_coroutines_android: String =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-android:" + Versions.org_jetbrains_kotlinx
+
+    /**
+     * https://github.com/Kotlin/kotlinx.coroutines
+     */
+    const val kotlinx_coroutines_core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
+            Versions.org_jetbrains_kotlinx
 
     const val koin_android: String = "org.koin:koin-android:" + Versions.org_koin
 

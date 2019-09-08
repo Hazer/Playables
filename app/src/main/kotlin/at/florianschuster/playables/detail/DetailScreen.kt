@@ -16,41 +16,18 @@
 
 package at.florianschuster.playables.detail
 
-import android.os.Bundle
-import android.view.View
-import at.florianschuster.reaktor.ReactorView
-import at.florianschuster.reaktor.android.koin.reactor
 import at.florianschuster.playables.R
 import at.florianschuster.playables.core.DataRepo
-import at.florianschuster.playables.core.model.Model
 import at.florianschuster.playables.base.ui.BaseFragment
-import at.florianschuster.playables.base.ui.BaseReactor
+import at.florianschuster.playables.base.ui.BaseViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailFragment : BaseFragment(R.layout.fragment_detail), ReactorView<DetailReactor> {
-    override val reactor: DetailReactor by reactor()
+class DetailFragment : BaseFragment(R.layout.fragment_detail) {
+    val viewModel: DetailViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        bind(reactor)
-    }
-
-    override fun bind(reactor: DetailReactor) {
-        // bind view
-
-        // bind state
-
-        // bind actions
-    }
 }
 
-class DetailReactor(
+class DetailViewModel(
     private val dataRepo: DataRepo
-) : BaseReactor<DetailReactor.Action, DetailReactor.Mutation, DetailReactor.State>(State()) {
-    object Action
-
-    object Mutation
-
-    data class State(
-        val model: Model = Model()
-    )
+) : BaseViewModel() {
 }

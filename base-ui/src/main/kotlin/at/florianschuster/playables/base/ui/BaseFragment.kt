@@ -28,7 +28,6 @@ import androidx.navigation.fragment.findNavController
 import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.androidutil.viewstate.VS
 import com.tailoredapps.androidutil.viewstate.ViewState
-import io.reactivex.disposables.CompositeDisposable
 import org.koin.android.ext.android.inject
 
 abstract class BaseFragment(
@@ -36,8 +35,6 @@ abstract class BaseFragment(
 ) : Fragment(), ViewState by VS() {
     protected val navController: NavController get() = findNavController()
     private val refWatcher: RefWatcher by inject()
-
-    open val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,12 +54,6 @@ abstract class BaseFragment(
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         restoreStateFrom(savedInstanceState)
-    }
-
-    @CallSuper
-    override fun onDestroyView() {
-        super.onDestroyView()
-        disposables.clear()
     }
 
     override fun onDestroy() {

@@ -23,15 +23,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.androidutil.viewstate.VS
 import com.tailoredapps.androidutil.viewstate.ViewState
-import io.reactivex.disposables.CompositeDisposable
 import org.koin.android.ext.android.inject
 
 abstract class BaseActivity(
     @LayoutRes protected val layout: Int
 ) : AppCompatActivity(), ViewState by VS() {
     private val refWatcher: RefWatcher by inject()
-
-    open val disposables = CompositeDisposable()
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +46,6 @@ abstract class BaseActivity(
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        disposables.clear()
         refWatcher.watch(this)
     }
 }
