@@ -16,4 +16,19 @@
 
 package at.florianschuster.playables.core.model
 
-data class Model(val any: Any = Unit)
+data class AppInfo(
+    val appName: String,
+    val debug: Boolean,
+    val version: Version,
+    val buildType: String,
+    val flavor: String,
+    val baseUrl: String,
+    val userAgent: String
+) {
+    data class Version(
+        val code: Int,
+        val name: String
+    ) {
+        override fun toString(): String = "$name-b$code"
+    }
+}

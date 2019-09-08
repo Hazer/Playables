@@ -24,7 +24,15 @@ object Versions {
 
     const val fragment: String = "1.1.0"
 
-    const val androidx_lifecycle: String = "2.1.0"
+    const val lifecycle_compiler: String = "2.1.0"
+
+    const val lifecycle_extensions: String = "2.1.0"
+
+    const val lifecycle_livedata_ktx: String = "2.2.0-alpha04"
+
+    const val lifecycle_runtime_ktx: String = "2.2.0-alpha04"
+
+    const val lifecycle_viewmodel_ktx: String = "2.2.0-alpha04"
 
     const val androidx_navigation: String = "2.1.0"
 
@@ -88,13 +96,15 @@ object Versions {
 
     const val kotlinx_coroutines_core: String = "1.3.1"
 
-    const val kotlinx_serialization_runtime: String =  "0.12.0"
+    const val kotlinx_serialization_runtime: String = "0.12.0"
 
     const val org_koin: String = "2.0.1"
 
     const val org_mockito: String = "3.0.0"
 
     const val org_powermock: String = "2.0.2"
+
+    const val ru_ldralighieri_corbind: String = "1.1.0"
 
     /**
      *

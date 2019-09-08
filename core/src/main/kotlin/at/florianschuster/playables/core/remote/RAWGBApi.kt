@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.detail
+package at.florianschuster.playables.core.remote
 
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-internal val detailModule = module {
-    viewModel { (id: Long) -> DetailViewModel(gameId = id, dataRepo = get()) }
+interface RAWGBApi {
+
+    @GET("games")
+    suspend fun search(
+        @Query("search") query: String,
+        @Query("page") page: Int = 1,
+        @Query("page_size") pageSize: Int = 20
+    ): RemoteSearch
+
+    @GET("games/{id}")
+    suspend fun game(@Path("id") id: Long): RemoteGame
+
 }

@@ -29,10 +29,7 @@ android {
 
         resValue "string", "app_name", "Playables"
 
-        buildConfigField "String", "BASE_URL", "\"https://api-v3.igdb.com/\""
-        if (keystorePropertiesFile.exists()) {
-            buildConfigField "String", "IGDB_KEY", keystoreProperties['igdbKey']
-        }
+        buildConfigField "String", "BASE_URL", "\"https://api.rawg.io/api/\""
     }
 
     signingConfigs {
@@ -107,11 +104,6 @@ apply from: rootProject.file("test-dependencies-android.gradle")
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':base-ui')
-
-    implementation Libs.lifecycle_extensions
-    kapt Libs.lifecycle_compiler
-
-    implementation Libs.coil
 }
 
 

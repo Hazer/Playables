@@ -16,9 +16,10 @@
 
 package at.florianschuster.playables.core.remote
 
-import at.florianschuster.playables.core.model.AppBuildInfo
+import at.florianschuster.playables.core.model.AppInfo
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,23 +28,38 @@ import retrofit2.Retrofit
 
 internal val remoteModule = module {
     factory { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY } }
-    single { provideOkHttpClient(loggingInterceptor = get(), appBuildInfo = get()) }
-    single { provideApi<MyApi>(okHttpClient = get(), json = get(), appBuildInfo = get()) }
+    factory { provideUserAgentInterceptor(appInfo = get()) }
+    single {
+        provideOkHttpClient(
+            loggingInterceptor = get(),
+            userAgentInterceptor = get(),
+            appInfo = get()
+        )
+    }
+    single { provideApi<RAWGBApi>(okHttpClient = get(), json = get(), appInfo = get()) }
 }
+
+private fun provideUserAgentInterceptor(appInfo: AppInfo) = UserAgentInterceptor(
+    appName = appInfo.appName,
+    version = "${appInfo.version.code}",
+    agent = appInfo.userAgent
+)
 
 private fun provideOkHttpClient(
     loggingInterceptor: HttpLoggingInterceptor,
-    appBuildInfo: AppBuildInfo
+    userAgentInterceptor: UserAgentInterceptor,
+    appInfo: AppInfo
 ) = OkHttpClient().newBuilder().apply {
-    if (appBuildInfo.debug) addInterceptor(loggingInterceptor)
+    if (appInfo.debug) addInterceptor(loggingInterceptor)
+    addInterceptor(userAgentInterceptor)
 }.build()
 
 private inline fun <reified T> provideApi(
     okHttpClient: OkHttpClient,
     json: Json,
-    appBuildInfo: AppBuildInfo
+    appInfo: AppInfo
 ): T = Retrofit.Builder().apply {
-    baseUrl(appBuildInfo.baseUrl)
+    baseUrl(appInfo.baseUrl)
     client(okHttpClient)
     addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
 }.build().create(T::class.java)

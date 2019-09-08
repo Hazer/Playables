@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Florian Schuster.
+ * Copyright 2019 Florian Schuster (https://florianschuster.at/).
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.core.model
+package at.florianschuster.playables.search
 
-data class AppBuildInfo(
-    val debug: Boolean,
-    val buildType: String,
-    val flavor: String,
-    val versionCode: Int,
-    val versionName: String,
-    val baseUrl: String
-)
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
+
+val searchModule = module {
+    viewModel { SearchViewModel(dataRepo = get()) }
+    factory { SearchAdapter() }
+}

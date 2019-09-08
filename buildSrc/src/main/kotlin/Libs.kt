@@ -48,13 +48,28 @@ object Libs {
      * https://developer.android.com/topic/libraries/architecture/index.html
      */
     const val lifecycle_compiler: String = "androidx.lifecycle:lifecycle-compiler:" +
-            Versions.androidx_lifecycle
+            Versions.lifecycle_compiler
 
     /**
      * https://developer.android.com/topic/libraries/architecture/index.html
      */
     const val lifecycle_extensions: String = "androidx.lifecycle:lifecycle-extensions:" +
-            Versions.androidx_lifecycle
+            Versions.lifecycle_extensions
+
+    /**
+     * http://developer.android.com/tools/extras/support-library.html
+     */
+    const val lifecycle_livedata_ktx: String = "androidx.lifecycle:lifecycle-livedata-ktx:" +
+            Versions.lifecycle_livedata_ktx
+
+    const val lifecycle_runtime_ktx: String = "androidx.lifecycle:lifecycle-runtime-ktx:" +
+            Versions.lifecycle_runtime_ktx
+
+    /**
+     * http://developer.android.com/tools/extras/support-library.html
+     */
+    const val lifecycle_viewmodel_ktx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:" +
+            Versions.lifecycle_viewmodel_ktx
 
     /**
      * https://developer.android.com/topic/libraries/architecture/index.html
@@ -401,4 +416,34 @@ object Libs {
      */
     const val powermock_module_junit4: String = "org.powermock:powermock-module-junit4:" +
             Versions.org_powermock
+
+    /**
+     * https://github.com/LDRAlighieri/Corbind/
+     */
+    const val corbind_appcompat: String = "ru.ldralighieri.corbind:corbind-appcompat:" +
+            Versions.ru_ldralighieri_corbind
+
+    /**
+     * https://github.com/LDRAlighieri/Corbind/
+     */
+    const val corbind_core: String = "ru.ldralighieri.corbind:corbind-core:" +
+            Versions.ru_ldralighieri_corbind
+
+    /**
+     * https://github.com/LDRAlighieri/Corbind/
+     */
+    const val corbind_material: String = "ru.ldralighieri.corbind:corbind-material:" +
+            Versions.ru_ldralighieri_corbind
+
+    /**
+     * https://github.com/LDRAlighieri/Corbind/
+     */
+    const val corbind_recyclerview: String = "ru.ldralighieri.corbind:corbind-recyclerview:" +
+            Versions.ru_ldralighieri_corbind
+
+    /**
+     * https://github.com/LDRAlighieri/Corbind/
+     */
+    const val corbind: String = "ru.ldralighieri.corbind:corbind:" +
+            Versions.ru_ldralighieri_corbind
 }

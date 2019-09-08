@@ -18,8 +18,11 @@ package at.florianschuster.playables
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import at.florianschuster.playables.core.model.AppBuildInfo
+import android.os.Build
+import android.webkit.WebSettings
+import at.florianschuster.playables.core.model.AppInfo
 import at.florianschuster.playables.detail.detailModule
+import at.florianschuster.playables.search.searchModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -27,13 +30,17 @@ internal val appModule = module {
     single { provideAppBuildInfo(context = androidContext()) }
 }
 
-private fun provideAppBuildInfo(context: Context): AppBuildInfo = AppBuildInfo(
+private fun provideAppBuildInfo(context: Context): AppInfo = AppInfo(
+    appName = context.resources.getString(R.string.app_name),
     debug = (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0,
     buildType = BuildConfig.BUILD_TYPE,
     flavor = BuildConfig.FLAVOR,
-    versionCode = BuildConfig.VERSION_CODE,
-    versionName = BuildConfig.VERSION_NAME,
-    baseUrl = BuildConfig.BASE_URL
+    version = AppInfo.Version(
+        code = BuildConfig.VERSION_CODE,
+        name = BuildConfig.VERSION_NAME
+    ),
+    baseUrl = BuildConfig.BASE_URL,
+    userAgent = WebSettings.getDefaultUserAgent(context)
 )
 
-internal val appModules = listOf(appModule, detailModule)
+internal val appModules = listOf(appModule, detailModule, searchModule)

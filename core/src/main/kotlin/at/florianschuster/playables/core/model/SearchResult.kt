@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Florian Schuster.
+ * Copyright 2019 Florian Schuster (https://florianschuster.at/).
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.core.remote
+package at.florianschuster.playables.core.model
 
-interface MyApi
+data class SearchResult(
+    val id: Long,
+    val name: String,
+    val image: String
+)
+
+data class Game(
+    val id: Long,
+    val name: String
+)
