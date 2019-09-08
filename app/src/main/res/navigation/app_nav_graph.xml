@@ -8,6 +8,6 @@
 
     <fragment
             android:id="@+id/detail"
-            android:name="com.tailoredapps.androidapptemplate.detail.DetailFragment"
+            android:name="at.florianschuster.playables.detail.DetailFragment"
             tools:layout="@layout/fragment_detail"/>
 </navigation>

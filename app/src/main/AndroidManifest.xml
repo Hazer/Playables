@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.tailoredapps.androidapptemplate">
+          package="at.florianschuster.playables">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -10,7 +10,7 @@
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:name=".MyApp"
+            android:name=".PlayablesApp"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
