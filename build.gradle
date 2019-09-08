@@ -1,0 +1,48 @@
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.vanniktech.dependency.graph.generator'
+
+buildscript {
+    ext.buildConfig = [
+            targetSdkVersion : 29,
+            minSdkVersion    : 21,
+            compileSdkVersion: 29
+    ]
+
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    dependencies {
+        classpath Libs.com_android_tools_build_gradle
+        classpath Libs.kotlin_gradle_plugin
+
+        classpath Libs.navigation_safe_args_gradle_plugin
+
+        classpath Libs.easylauncher
+
+        classpath Libs.buildsrcversions
+        classpath Libs.gradle_dependency_graph_generator_plugin
+        classpath Libs.graphviz_java
+    }
+}
+
+apply plugin: "de.fayard.buildSrcVersions"
+
+allprojects {
+    apply from: rootProject.file("ktlint.gradle")
+
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+buildSrcVersions {
+    indent = "    "
+}
