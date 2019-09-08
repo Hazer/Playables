@@ -7,6 +7,12 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+def keystorePropertiesFile = rootProject.file("secret.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     compileSdkVersion rootProject.ext.buildConfig.compileSdkVersion
 
@@ -20,14 +26,23 @@ android {
         targetSdkVersion rootProject.ext.buildConfig.targetSdkVersion
         minSdkVersion rootProject.ext.buildConfig.minSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue "string", "app_name", "Playables"
+
+        buildConfigField "String", "BASE_URL", "\"https://api-v3.igdb.com/\""
+        if (keystorePropertiesFile.exists()) {
+            buildConfigField "String", "IGDB_KEY", keystoreProperties['igdbKey']
+        }
     }
 
     signingConfigs {
-        release {
-            keyAlias 'mykeyalias'
-            keyPassword 'mykeypassword'
-            storeFile file('../keystore.jks')
-            storePassword 'mykeystorepassword'
+        if (keystorePropertiesFile.exists()) {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
@@ -37,26 +52,12 @@ android {
             minifyEnabled false
         }
         release {
-            signingConfig signingConfigs.release
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    flavorDimensions "backend"
-    productFlavors {
-        dev {
-            applicationIdSuffix ".dev"
-            resValue "string", "app_name", "Playables Dev"
-            resValue "string", "leak_canary_display_activity_label", "Playables Leaks"
-            buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/rest/v2/\""
-            dimension "backend"
-        }
-        prod {
-            resValue "string", "app_name", "Playables"
-            buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/rest/v2/\""
-            dimension "backend"
         }
     }
 

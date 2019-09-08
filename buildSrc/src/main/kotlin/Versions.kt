@@ -46,7 +46,7 @@ object Versions {
 
     const val ktlint: String = "0.34.2"
 
-    const val material: String = "1.0.0"
+    const val material: String = "1.1.0-alpha10"
 
     const val jsr305: String = "3.0.2"
 

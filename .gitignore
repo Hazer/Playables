@@ -73,3 +73,9 @@ lint/tmp/
 
 # macOS
 .DS_Store
+
+
+## keys
+secret.properties
+keystore.jks
+app/google-services.json
