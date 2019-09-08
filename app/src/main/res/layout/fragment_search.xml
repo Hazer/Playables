@@ -6,8 +6,10 @@
 
     <EditText
         android:id="@+id/searchEditText"
+        style="@style/Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:hint="Search for games..."
         app:layout_constraintEnd_toStartOf="@id/progressBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

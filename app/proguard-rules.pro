@@ -54,11 +54,11 @@
 }
 
 # kotlinx.serialization
--keep,includedescriptorclasses class com.tailoredapps.countriesexample.**$$serializer { *; }
--keepclassmembers class com.tailoredapps.countriesexample.** {
+-keep,includedescriptorclasses class at.florianschuster.playables.**$$serializer { *; }
+-keepclassmembers class at.florianschuster.playables.** {
     *** Companion;
 }
--keepclasseswithmembers class com.tailoredapps.countriesexample.** {
+-keepclasseswithmembers class at.florianschuster.playables.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 -keepattributes *Annotation*, InnerClasses

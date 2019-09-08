@@ -28,6 +28,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     private val navController: NavController by lazy { findNavController(R.id.navHost) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         toolbar.setupWithNavController(navController)
     }

@@ -17,6 +17,7 @@
 package at.florianschuster.playables.detail
 
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
@@ -32,6 +33,7 @@ import com.tailoredapps.androidutil.async.Async
 import kotlinx.android.synthetic.main.fragment_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import timber.log.Timber
 
 class DetailFragment : BaseFragment(R.layout.fragment_detail) {
     private val args: DetailFragmentArgs by navArgs()
@@ -44,6 +46,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
             when (game) {
                 is Async.Success -> {
                     nameTextView.text = game.element.name
+                    descriptionTextView.text = Html.fromHtml(game.element.description)
                 }
                 is Async.Error -> {
                     nameTextView.text = "Error: ${game.error}"
@@ -62,6 +65,7 @@ class DetailViewModel(
         try {
             emit(Async.success(dataRepo.game(gameId)))
         } catch (exception: Exception) {
+            Timber.e(exception)
             emit(Async.error(exception))
         }
     }

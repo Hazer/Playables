@@ -28,14 +28,13 @@ import at.florianschuster.playables.core.model.SearchResult
 import com.tailoredapps.androidutil.async.Async
 import com.tailoredapps.androidutil.ui.extensions.toast
 import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.ldralighieri.corbind.widget.textChanges
+import timber.log.Timber
 import java.lang.Exception
 
 class SearchFragment : BaseFragment(R.layout.fragment_search) {
@@ -52,8 +51,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
         }
 
         searchEditText.textChanges()
+            .distinctUntilChanged()
             .debounce(300)
             .map { it.toString() }
+            .filter { it.isNotEmpty() }
             .onEach { viewModel.search(it) }
             .launchIn(lifecycle.coroutineScope)
 
@@ -76,13 +77,16 @@ class SearchViewModel(
     private val _searchItems: MutableLiveData<Async<List<SearchResult>>> =
         MutableLiveData(Async.Uninitialized)
 
+    private var searchJob: Job? = null
     fun search(query: String) {
-        viewModelScope.launch {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
             _searchItems.postValue(Async.Loading)
             try {
                 val data = dataRepo.search(query, 1)
                 _searchItems.value = Async.success(data)
             } catch (exception: Exception) {
+                Timber.e(exception)
                 _searchItems.value = Async.error(exception)
             }
         }

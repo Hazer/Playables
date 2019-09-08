@@ -19,7 +19,7 @@ package at.florianschuster.playables.core
 import at.florianschuster.playables.core.local.Database
 import at.florianschuster.playables.core.model.Game
 import at.florianschuster.playables.core.model.SearchResult
-import at.florianschuster.playables.core.remote.RAWGBApi
+import at.florianschuster.playables.core.remote.RAWGApi
 import at.florianschuster.playables.core.remote.RemoteGame
 import at.florianschuster.playables.core.remote.RemoteSearch
 import kotlinx.coroutines.Dispatchers
@@ -31,14 +31,16 @@ interface DataRepo {
 }
 
 class CoreDataRepo(
-    private val api: RAWGBApi,
+    private val api: RAWGApi,
     private val database: Database
 ) : DataRepo {
 
-    override suspend fun search(query: String, page: Int): List<SearchResult> =
-        withContext(Dispatchers.IO) {
-            api.search(query, page).results.map { it.asSearchResult() }
-        }
+    override suspend fun search(
+        query: String,
+        page: Int
+    ): List<SearchResult> = withContext(Dispatchers.IO) {
+        api.search(query, page).results.map { it.asSearchResult() }
+    }
 
     override suspend fun game(id: Long): Game = withContext(Dispatchers.IO) {
         api.game(id).asGame()
@@ -49,6 +51,6 @@ class CoreDataRepo(
     }
 
     private fun RemoteGame.asGame(): Game {
-        return Game(id, name)
+        return Game(id, name, descriptionHtml)
     }
 }

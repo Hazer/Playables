@@ -19,7 +19,6 @@ package at.florianschuster.playables.core.remote
 import at.florianschuster.playables.core.model.AppInfo
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -36,7 +35,7 @@ internal val remoteModule = module {
             appInfo = get()
         )
     }
-    single { provideApi<RAWGBApi>(okHttpClient = get(), json = get(), appInfo = get()) }
+    single { provideApi<RAWGApi>(okHttpClient = get(), json = get(), appInfo = get()) }
 }
 
 private fun provideUserAgentInterceptor(appInfo: AppInfo) = UserAgentInterceptor(
