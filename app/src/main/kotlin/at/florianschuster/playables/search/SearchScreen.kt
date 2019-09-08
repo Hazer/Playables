@@ -78,7 +78,7 @@ class SearchViewModel(
 
     fun search(query: String) {
         viewModelScope.launch {
-            _searchItems.value = Async.Loading
+            _searchItems.postValue(Async.Loading)
             try {
                 val data = dataRepo.search(query, 1)
                 _searchItems.value = Async.success(data)
