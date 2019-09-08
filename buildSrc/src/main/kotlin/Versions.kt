@@ -50,9 +50,9 @@ object Versions {
 
     const val jsr305: String = "3.0.2"
 
-    const val gson: String = "2.8.5"
-
     const val com_google_truth_truth: String = "1.0"
+
+    const val retrofit2_kotlinx_serialization_converter: String = "0.4.0"
 
     const val threetenabp: String = "1.2.1"
 
@@ -64,7 +64,7 @@ object Versions {
 
     const val com_squareup_okhttp3: String = "4.1.1"
 
-    const val com_squareup_retrofit2: String = "2.6.1"
+    const val retrofit: String = "2.6.1"
 
     const val com_tailoredapps_androidutil: String = "16"
 
@@ -84,7 +84,11 @@ object Versions {
 
     const val org_jetbrains_kotlin: String = "1.3.50"
 
-    const val org_jetbrains_kotlinx: String = "1.3.1"
+    const val kotlinx_coroutines_android: String = "1.3.1"
+
+    const val kotlinx_coroutines_core: String = "1.3.1"
+
+    const val kotlinx_serialization_runtime: String =  "0.12.0"
 
     const val org_koin: String = "2.0.1"
 

@@ -17,24 +17,6 @@
 -keep class com.squareup.leakcanary.** { *; }
 -dontwarn android.app.Notification
 
-# Glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
--dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
-
-# Gson
--keepattributes Signature
--keepattributes *Annotation*
--dontwarn sun.misc.**
--keep class com.google.gson.examples.android.model.** { *; }
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
-
 # Retrofit
 -keepattributes Signature, InnerClasses, EnclosingMethod
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
@@ -69,4 +51,24 @@
     private void readObject(java.io.ObjectInputStream);
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
+}
+
+# kotlinx.serialization
+-keep,includedescriptorclasses class com.tailoredapps.countriesexample.**$$serializer { *; }
+-keepclassmembers class com.tailoredapps.countriesexample.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.tailoredapps.countriesexample.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.SerializationKt
+
+# coroutines
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
+-keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
 }

@@ -1,8 +1,12 @@
 apply from: rootProject.file("library-module.gradle")
 
+apply plugin: 'kotlinx-serialization'
+
 dependencies {
     api Libs.kotlin_stdlib_jdk7
     api Libs.kotlinx_coroutines_core
+
+    implementation Libs.kotlinx_serialization_runtime
 
     implementation Libs.util_network
     api Libs.util_async
@@ -11,11 +15,10 @@ dependencies {
     api Libs.koin_core
 
     implementation Libs.retrofit
-    implementation Libs.converter_gson
+    implementation Libs.retrofit2_kotlinx_serialization_converter
     implementation Libs.okhttp
     implementation Libs.logging_interceptor
 
-    api Libs.gson
     api Libs.timber
     api Libs.threetenabp
 }

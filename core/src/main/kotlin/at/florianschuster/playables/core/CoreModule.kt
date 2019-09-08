@@ -16,13 +16,13 @@
 
 package at.florianschuster.playables.core
 
-import com.google.gson.GsonBuilder
 import at.florianschuster.playables.core.local.localModule
 import at.florianschuster.playables.core.remote.remoteModule
+import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 internal val coreModule = module {
-    single { GsonBuilder().create() }
+    single { Json.nonstrict }
     single<DataRepo> { CoreDataRepo(api = get(), database = get()) }
 }
 

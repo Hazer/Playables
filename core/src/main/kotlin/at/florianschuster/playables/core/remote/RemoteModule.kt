@@ -16,18 +16,19 @@
 
 package at.florianschuster.playables.core.remote
 
-import com.google.gson.Gson
 import at.florianschuster.playables.core.model.AppBuildInfo
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 internal val remoteModule = module {
     factory { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY } }
     single { provideOkHttpClient(loggingInterceptor = get(), appBuildInfo = get()) }
-    single { provideApi<MyApi>(okHttpClient = get(), gson = get(), appBuildInfo = get()) }
+    single { provideApi<MyApi>(okHttpClient = get(), json = get(), appBuildInfo = get()) }
 }
 
 private fun provideOkHttpClient(
@@ -39,10 +40,10 @@ private fun provideOkHttpClient(
 
 private inline fun <reified T> provideApi(
     okHttpClient: OkHttpClient,
-    gson: Gson,
+    json: Json,
     appBuildInfo: AppBuildInfo
 ): T = Retrofit.Builder().apply {
     baseUrl(appBuildInfo.baseUrl)
     client(okHttpClient)
-    addConverterFactory(GsonConverterFactory.create(gson))
+    addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
 }.build().create(T::class.java)

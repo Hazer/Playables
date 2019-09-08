@@ -162,15 +162,17 @@ object Libs {
     const val jsr305: String = "com.google.code.findbugs:jsr305:" + Versions.jsr305
 
     /**
-     * https://github.com/google/gson
-     */
-    const val gson: String = "com.google.code.gson:gson:" + Versions.gson
-
-    /**
      * http://github.com/google/truth
      */
     const val com_google_truth_truth: String = "com.google.truth:truth:" +
             Versions.com_google_truth_truth
+
+    /**
+     * https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/
+     */
+    const val retrofit2_kotlinx_serialization_converter: String =
+            "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:" +
+            Versions.retrofit2_kotlinx_serialization_converter
 
     /**
      * https://github.com/JakeWharton/ThreeTenABP/
@@ -215,14 +217,7 @@ object Libs {
     /**
      * https://github.com/square/retrofit/
      */
-    const val converter_gson: String = "com.squareup.retrofit2:converter-gson:" +
-            Versions.com_squareup_retrofit2
-
-    /**
-     * https://github.com/square/retrofit/
-     */
-    const val retrofit: String = "com.squareup.retrofit2:retrofit:" +
-            Versions.com_squareup_retrofit2
+    const val retrofit: String = "com.squareup.retrofit2:retrofit:" + Versions.retrofit
 
     /**
      * https://github.com/tailoredmedia/AndroidAppUtil
@@ -333,6 +328,18 @@ object Libs {
     /**
      * https://kotlinlang.org/
      */
+    const val kotlin_serialization_unshaded: String =
+            "org.jetbrains.kotlin:kotlin-serialization-unshaded:" + Versions.org_jetbrains_kotlin
+
+    /**
+     * https://kotlinlang.org/
+     */
+    const val kotlin_serialization: String = "org.jetbrains.kotlin:kotlin-serialization:" +
+            Versions.org_jetbrains_kotlin
+
+    /**
+     * https://kotlinlang.org/
+     */
     const val kotlin_stdlib_jdk7: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:" +
             Versions.org_jetbrains_kotlin
 
@@ -340,13 +347,21 @@ object Libs {
      * https://github.com/Kotlin/kotlinx.coroutines
      */
     const val kotlinx_coroutines_android: String =
-            "org.jetbrains.kotlinx:kotlinx-coroutines-android:" + Versions.org_jetbrains_kotlinx
+            "org.jetbrains.kotlinx:kotlinx-coroutines-android:" +
+            Versions.kotlinx_coroutines_android
 
     /**
      * https://github.com/Kotlin/kotlinx.coroutines
      */
     const val kotlinx_coroutines_core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
-            Versions.org_jetbrains_kotlinx
+            Versions.kotlinx_coroutines_core
+
+    /**
+     * https://github.com/Kotlin/kotlinx.serialization
+     */
+    const val kotlinx_serialization_runtime: String =
+            "org.jetbrains.kotlinx:kotlinx-serialization-runtime:" +
+            Versions.kotlinx_serialization_runtime
 
     const val koin_android: String = "org.koin:koin-android:" + Versions.org_koin
 

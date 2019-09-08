@@ -30,4 +30,5 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 class DetailViewModel(
     private val dataRepo: DataRepo
 ) : BaseViewModel() {
+
 }
