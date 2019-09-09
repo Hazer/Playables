@@ -38,9 +38,7 @@ data class RemoteSearch(
         val tba: Boolean,
         @SerialName("background_image") val backgroundImage: String? = null,
         @SerialName("suggestions_count") val suggestionsCount: Long,
-        @SerialName("metacritic_url") val metaCriticURL: String? = null,
-        @SerialName("saturated_color") val saturatedColor: String? = null,
-        @SerialName("dominant_color") val dominantColor: String? = null
+        @SerialName("metacritic_url") val metaCriticURL: String? = null
 //        @SerialName("short_screenshots") val screenshots: List<RemoteScreenShot>,
 //        val genres: List<RemoteGenre>
     )

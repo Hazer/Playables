@@ -23,8 +23,6 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.androidutil.viewstate.VS
 import com.tailoredapps.androidutil.viewstate.ViewState
@@ -33,7 +31,6 @@ import org.koin.android.ext.android.inject
 abstract class BaseFragment(
     @LayoutRes protected val layout: Int? = null
 ) : Fragment(), ViewState by VS() {
-    protected val navController: NavController get() = findNavController()
     private val refWatcher: RefWatcher by inject()
 
     override fun onCreateView(

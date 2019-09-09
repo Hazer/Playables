@@ -1,3 +1,8 @@
+package at.florianschuster.playables.main
+
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
+
 /*
  * Copyright 2019 Florian Schuster (https://florianschuster.at/).
  *
@@ -14,12 +19,7 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.search
-
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
-
-val searchModule = module {
-    viewModel { SearchViewModel(dataRepo = get()) }
-    factory { SearchAdapter() }
+val mainModule = module {
+    viewModel { MainViewModel(dataRepo = get()) }
+    factory { MainAdapter() }
 }

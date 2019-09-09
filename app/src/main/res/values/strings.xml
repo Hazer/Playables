@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="title_playables">My Games</string>
+    <string name="title_search">Search</string>
+    <string name="main_search_hint">Search for games…</string>
 </resources>

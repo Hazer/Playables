@@ -4,7 +4,7 @@ apply plugin: 'com.vanniktech.dependency.graph.generator'
 buildscript {
     ext.buildConfig = [
             targetSdkVersion : 29,
-            minSdkVersion    : 21,
+            minSdkVersion    : 23,
             compileSdkVersion: 29
     ]
 

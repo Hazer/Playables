@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.search
+package at.florianschuster.playables.main
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.florianschuster.playables.R
 import at.florianschuster.playables.core.model.SearchResult
+import coil.api.load
 import com.tailoredapps.androidutil.ui.extensions.inflate
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_search.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import ru.ldralighieri.corbind.view.clicks
 
-class SearchAdapter : ListAdapter<SearchResult, SearchViewHolder>(diff) {
-    var interaction: ((Long) -> Unit)? = null
+class MainAdapter : ListAdapter<SearchResult, SearchViewHolder>(diff) {
+    var interaction: ((SearchResult) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder =
         SearchViewHolder(parent.inflate(R.layout.item_search))
@@ -54,8 +53,9 @@ class SearchAdapter : ListAdapter<SearchResult, SearchViewHolder>(diff) {
 class SearchViewHolder(
     override val containerView: View
 ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-    fun bind(searchResult: SearchResult, onClick: (Long) -> Unit) {
+    fun bind(searchResult: SearchResult, onClick: (SearchResult) -> Unit) {
+        cardView.setOnClickListener { onClick(searchResult) }
         nameTextView.text = searchResult.name
-        containerView.setOnClickListener { onClick(searchResult.id) }
+        backgroundImageView.load(searchResult.image) { crossfade(true) }
     }
 }

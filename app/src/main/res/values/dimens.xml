@@ -1,6 +1,10 @@
 <resources>
-    <dimen name="all_margin">16dp</dimen>
-    <dimen name="all_margin_half">8dp</dimen>
-    <dimen name="all_padding">12dp</dimen>
-    <dimen name="all_padding_half">6dp</dimen>
+    <dimen name="margin">16dp</dimen>
+    <dimen name="margin_half">8dp</dimen>
+    <dimen name="padding">12dp</dimen>
+    <dimen name="padding_half">6dp</dimen>
+    <dimen name="margin_card">4dp</dimen>
+
+    <dimen name="size_corners_outer">12dp</dimen>
+    <dimen name="size_corners_inner">8dp</dimen>
 </resources>
