@@ -19,9 +19,6 @@ dependencies {
     api Libs.lifecycle_runtime_ktx
     kapt Libs.lifecycle_compiler
 
-    api Libs.navigation_ui_ktx
-    api Libs.navigation_fragment_ktx
-
     api Libs.corbind
     api Libs.corbind_core
     api Libs.corbind_appcompat

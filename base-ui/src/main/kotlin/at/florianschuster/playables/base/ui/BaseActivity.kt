@@ -25,16 +25,13 @@ import com.tailoredapps.androidutil.viewstate.VS
 import com.tailoredapps.androidutil.viewstate.ViewState
 import org.koin.android.ext.android.inject
 
-abstract class BaseActivity(
-    @LayoutRes protected val layout: Int
-) : AppCompatActivity(), ViewState by VS() {
+abstract class BaseActivity(@LayoutRes layout: Int) : AppCompatActivity(layout), ViewState by VS() {
     private val refWatcher: RefWatcher by inject()
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         restoreStateFrom(savedInstanceState)
-        setContentView(layout)
     }
 
     @CallSuper

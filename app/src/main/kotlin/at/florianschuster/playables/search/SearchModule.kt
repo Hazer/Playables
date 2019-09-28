@@ -1,3 +1,8 @@
+package at.florianschuster.playables.search
+
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
+
 /*
  * Copyright 2019 Florian Schuster (https://florianschuster.at/).
  *
@@ -14,11 +19,7 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.base.ui
-
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-
-fun <T> Flow<T>.launchWith(lifecycle: Lifecycle) = launchIn(lifecycle.coroutineScope)
+internal val searchModule = module {
+    viewModel { SearchControllerViewModel(dataRepo = get()) }
+    factory { SearchAdapter() }
+}

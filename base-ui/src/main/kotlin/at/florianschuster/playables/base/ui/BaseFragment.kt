@@ -17,9 +17,6 @@
 package at.florianschuster.playables.base.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
@@ -28,18 +25,8 @@ import com.tailoredapps.androidutil.viewstate.VS
 import com.tailoredapps.androidutil.viewstate.ViewState
 import org.koin.android.ext.android.inject
 
-abstract class BaseFragment(
-    @LayoutRes protected val layout: Int? = null
-) : Fragment(), ViewState by VS() {
+abstract class BaseFragment(@LayoutRes layout: Int) : Fragment(layout), ViewState by VS() {
     private val refWatcher: RefWatcher by inject()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? =
-        if (layout != null) inflater.inflate(layout, container, false)
-        else throw RuntimeException("Please implement onCreateView() and inflate your layout.")
 
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {

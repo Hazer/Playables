@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetEnd="@id/main_header_search"
+        app:constraintSetStart="@id/main_header_playables"
+        app:duration="300">
+    </Transition>
+
+    <ConstraintSet android:id="@+id/main_header_playables">
+        <Constraint
+            android:id="@id/playablesTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customFloatValue="26" />
+            <CustomAttribute
+                app:attributeName="textColor"
+                app:customColorValue="@color/textColor" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/searchTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBaseline_toBaselineOf="@id/playablesTitleTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/playablesTitleTextView">
+
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customFloatValue="14" />
+            <CustomAttribute
+                app:attributeName="textColor"
+                app:customColorValue="@color/textColorDisabled" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/main_header_search">
+        <Constraint
+            android:id="@id/playablesTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBaseline_toBaselineOf="@id/searchTitleTextView"
+            app:layout_constraintEnd_toStartOf="@id/searchTitleTextView"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customFloatValue="14" />
+            <CustomAttribute
+                app:attributeName="textColor"
+                app:customColorValue="@color/textColorDisabled" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/searchTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CustomAttribute
+                app:attributeName="textSize"
+                app:customFloatValue="26" />
+            <CustomAttribute
+                app:attributeName="textColor"
+                app:customColorValue="@color/textColor" />
+        </Constraint>
+    </ConstraintSet>
+
+</MotionScene>

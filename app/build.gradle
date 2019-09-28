@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'com.akaita.android.easylauncher'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 def keystorePropertiesFile = rootProject.file("secret.properties")

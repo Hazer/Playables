@@ -22,6 +22,7 @@ import android.webkit.WebSettings
 import at.florianschuster.playables.core.model.AppInfo
 import at.florianschuster.playables.detail.detailModule
 import at.florianschuster.playables.main.mainModule
+import at.florianschuster.playables.search.searchModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -42,4 +43,4 @@ private fun provideAppBuildInfo(context: Context): AppInfo = AppInfo(
     userAgent = WebSettings.getDefaultUserAgent(context)
 )
 
-internal val appModules = listOf(appModule, mainModule, detailModule)
+internal val appModules = listOf(appModule, mainModule, searchModule, detailModule)

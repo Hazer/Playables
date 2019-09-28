@@ -16,50 +16,61 @@
 
 package at.florianschuster.playables.detail
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.Html
-import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.liveData
-import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.coroutineScope
 import at.florianschuster.playables.R
+import at.florianschuster.playables.base.ui.BaseActivity
 import at.florianschuster.playables.core.DataRepo
-import at.florianschuster.playables.base.ui.BaseFragment
 import at.florianschuster.playables.base.ui.BaseViewModel
+import at.florianschuster.playables.controller.Data
 import at.florianschuster.playables.core.model.Game
-import com.tailoredapps.androidutil.async.Async
-import com.tailoredapps.androidutil.ui.extensions.argument
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.fragment_detail.*
+import com.tailoredapps.androidutil.ui.extensions.extra
+import com.tailoredapps.androidutil.ui.extensions.extras
+import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import timber.log.Timber
 
-@Parcelize
-data class DetailFragmentArgs(val id: Long) : Parcelable
+class DetailActivity : BaseActivity(R.layout.activity_detail) {
+    private val id: Long by extra(EXTRA_ID)
+    private val viewModel: DetailViewModel by viewModel { parametersOf(id) }
 
-class DetailFragment : BaseFragment(R.layout.fragment_detail) {
-    private val args: DetailFragmentArgs = DetailFragmentArgs(2) // todo
-    private val viewModel: DetailViewModel by viewModel { parametersOf(args.id) }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        closeButton.setOnClickListener { finish() }
 
-        viewModel.game.observe(this, Observer { game ->
-            progressBar.isVisible = game.loading
-            when (game) {
-                is Async.Success -> {
-                    nameTextView.text = game.element.name
-                    descriptionTextView.text = Html.fromHtml(game.element.description)
-                }
-                is Async.Error -> {
-                    nameTextView.text = "Error: ${game.error}"
+        viewModel.game.distinctUntilChanged()
+            .onEach { game ->
+                progressBar.isVisible = game.loading
+                when (game) {
+                    is Data.Success -> {
+                        nameTextView.text = game.element.name
+                        descriptionTextView.text = Html.fromHtml(game.element.description)
+                    }
+                    is Data.Failure -> {
+                        nameTextView.text = "Error: ${game.error}"
+                    }
                 }
             }
-        })
+            .launchIn(lifecycle.coroutineScope)
+    }
+
+    companion object {
+        private const val EXTRA_ID = "gameId"
+        fun start(context: Context, id: Long) {
+            val intent = Intent(context, DetailActivity::class.java)
+                .extras(EXTRA_ID to id)
+            context.startActivity(intent)
+        }
     }
 }
 
@@ -67,13 +78,8 @@ class DetailViewModel(
     private val gameId: Long,
     private val dataRepo: DataRepo
 ) : BaseViewModel() {
-    val game: LiveData<Async<Game>> = liveData {
-        emit(Async.Loading)
-        try {
-            emit(Async.success(dataRepo.game(gameId)))
-        } catch (exception: Exception) {
-            Timber.e(exception)
-            emit(Async.error(exception))
-        }
+    val game: Flow<Data<Game>> = flow {
+        emit(Data.Loading)
+        emit(Data.of { dataRepo.game(gameId) })
     }
 }

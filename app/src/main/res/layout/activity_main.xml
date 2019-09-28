@@ -1,112 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mainRecyclerView"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mainViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingStart="@dimen/margin_card"
-        android:paddingEnd="@dimen/margin_card"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_search" />
-
-    <TextView
-        android:id="@+id/titleTextView"
-        style="@style/Playables.Text.Headline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/bg_fade_toptobottom"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/margin"
-        android:text="@string/title_playables" />
+        android:layout_height="match_parent" />
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:padding="@dimen/margin"
-        app:layout_anchor="@id/searchLayout"
-        app:layout_anchorGravity="end">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/scrollFloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:src="@drawable/ic_keyboard_arrow_up"
-            android:visibility="gone"
-            app:backgroundTint="@color/black"
-            app:fabSize="mini"
-            app:layout_anchor="@id/searchLayout"
-            app:layout_anchorGravity="end"
-            app:tint="@color/white" />
-    </FrameLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/searchLayout"
+        android:id="@+id/motionHeaderContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/black_opacity_75"
-        android:fitsSystemWindows="true"
-        android:minHeight="?actionBarSize">
+        android:background="@drawable/bg_fade_toptobottom"
+        android:padding="@dimen/padding">
 
-        <ImageView
-            android:id="@+id/searchButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/padding"
-            android:src="@drawable/ic_search"
-            android:tint="@color/textColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <include layout="@layout/activity_main_header" />
+    </FrameLayout>
 
-        <EditText
-            android:id="@+id/searchEditText"
-            style="@style/Playables.View.EditText"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:hint="@string/main_search_hint"
-            android:inputType="text"
-            android:maxLines="1"
-            android:padding="@dimen/padding"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/searchClearButton"
-            app:layout_constraintStart_toEndOf="@id/searchButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/searchClearButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/padding"
-            android:src="@drawable/ic_close"
-            android:tint="@color/textColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/searchProgressBar"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/searchButton"
-            app:layout_constraintEnd_toEndOf="@id/searchButton"
-            app:layout_constraintStart_toStartOf="@id/searchButton"
-            app:layout_constraintTop_toTopOf="@id/searchButton" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

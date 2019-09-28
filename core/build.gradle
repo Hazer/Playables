@@ -9,7 +9,6 @@ dependencies {
     implementation Libs.kotlinx_serialization_runtime
 
     implementation Libs.util_network
-    api Libs.util_async
     api Libs.util_optional
 
     api Libs.koin_core

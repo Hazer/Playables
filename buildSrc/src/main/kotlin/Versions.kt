@@ -18,7 +18,7 @@ object Versions {
 
     const val collection_ktx: String = "1.1.0"
 
-    const val constraintlayout: String = "1.1.3"
+    const val constraintlayout: String = "2.0.0-beta1"
 
     const val core_ktx: String = "1.1.0"
 
@@ -33,8 +33,6 @@ object Versions {
     const val lifecycle_runtime_ktx: String = "2.2.0-alpha04"
 
     const val lifecycle_viewmodel_ktx: String = "2.2.0-alpha04"
-
-    const val androidx_navigation: String = "2.1.0"
 
     const val androidx_test_espresso: String = "3.2.0"
 
@@ -70,9 +68,9 @@ object Versions {
 
     const val com_squareup_leakcanary: String = "1.6.3"
 
-    const val com_squareup_okhttp3: String = "4.1.1"
+    const val com_squareup_okhttp3: String = "4.2.0"
 
-    const val retrofit: String = "2.6.1"
+    const val retrofit: String = "2.6.2"
 
     const val com_tailoredapps_androidutil: String = "16"
 
@@ -80,23 +78,23 @@ object Versions {
 
     const val buildsrcversions: String = "0.4.2"
 
-    const val graphviz_java: String = "0.10.0"
+    const val graphviz_java: String = "0.10.0" // available: "0.11.0"
 
-    const val coil: String = "0.6.1"
+    const val coil: String = "0.7.0"
 
     const val mockk: String = "1.9.3"
 
     const val junit_junit: String = "4.12"
 
-    const val kluent: String = "1.51" // available: "1.54"
+    const val kluent: String = "1.51" // available: "1.55"
 
     const val org_jetbrains_kotlin: String = "1.3.50"
 
-    const val kotlinx_coroutines_android: String = "1.3.1"
+    const val kotlinx_coroutines_android: String = "1.3.2"
 
-    const val kotlinx_coroutines_core: String = "1.3.1"
+    const val kotlinx_coroutines_core: String = "1.3.2"
 
-    const val kotlinx_serialization_runtime: String = "0.12.0"
+    const val kotlinx_serialization_runtime: String = "0.13.0"
 
     const val org_koin: String = "2.0.1"
 
@@ -104,7 +102,7 @@ object Versions {
 
     const val org_powermock: String = "2.0.2"
 
-    const val ru_ldralighieri_corbind: String = "1.1.0"
+    const val ru_ldralighieri_corbind: String = "1.1.2"
 
     /**
      *

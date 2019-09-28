@@ -72,24 +72,6 @@ object Libs {
             Versions.lifecycle_viewmodel_ktx
 
     /**
-     * https://developer.android.com/topic/libraries/architecture/index.html
-     */
-    const val navigation_fragment_ktx: String = "androidx.navigation:navigation-fragment-ktx:" +
-            Versions.androidx_navigation
-
-    /**
-     * https://developer.android.com/topic/libraries/architecture/index.html
-     */
-    const val navigation_safe_args_gradle_plugin: String =
-            "androidx.navigation:navigation-safe-args-gradle-plugin:" + Versions.androidx_navigation
-
-    /**
-     * https://developer.android.com/topic/libraries/architecture/index.html
-     */
-    const val navigation_ui_ktx: String = "androidx.navigation:navigation-ui-ktx:" +
-            Versions.androidx_navigation
-
-    /**
      * https://developer.android.com/testing
      */
     const val espresso_contrib: String = "androidx.test.espresso:espresso-contrib:" +
@@ -233,12 +215,6 @@ object Libs {
      * https://github.com/square/retrofit/
      */
     const val retrofit: String = "com.squareup.retrofit2:retrofit:" + Versions.retrofit
-
-    /**
-     * https://github.com/tailoredmedia/AndroidAppUtil
-     */
-    const val util_async: String = "com.tailoredapps.androidutil:util-async:" +
-            Versions.com_tailoredapps_androidutil
 
     /**
      * https://github.com/tailoredmedia/AndroidAppUtil

@@ -7,7 +7,7 @@
         <item name="colorControlHighlight">@color/white_opacity_20</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="android:statusBarColor">@color/black_opacity_75</item>
-        <item name="android:navigationBarColor">@color/black_opacity_75</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
     </style>
 
     <style name="AppTheme.Launcher">
@@ -21,19 +21,19 @@
 
     <style name="Playables.Text.Headline" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textColor">@color/textColor</item>
-        <item name="android:fontFamily">@font/archivo_black</item>
-        <item name="fontFamily">@font/archivo_black</item>
+        <item name="android:fontFamily">@font/noto_sans_bold</item>
+        <item name="fontFamily">@font/noto_sans_bold</item>
+    </style>
+
+    <style name="Playables.Text.Headline.Unselected">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorDisabled</item>
     </style>
 
     <style name="Playables.Text.Title" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/textColor</item>
         <item name="android:fontFamily">@font/noto_sans_bold</item>
         <item name="fontFamily">@font/noto_sans_bold</item>
-    </style>
-
-    <style name="Playables.Text.Title.Black">
-        <item name="android:fontFamily">@font/archivo_black</item>
-        <item name="fontFamily">@font/archivo_black</item>
     </style>
 
     <style name="Playables.Text.Body" parent="TextAppearance.MaterialComponents.Body1">
@@ -44,8 +44,9 @@
 
     <style name="Playables.View.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/size_corners_outer</item>
-        <item name="cardElevation">0dp</item>
-        <item name="android:stateListAnimator">@animator/card_lift_on_touch</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="android:clickable">true</item>
+        <item name="android:stateListAnimator">@animator/card_lift</item>
     </style>
 
     <style name="Playables.View.EditText" parent="Widget.AppCompat.EditText">
@@ -54,5 +55,14 @@
         <item name="android:fontFamily">@font/noto_sans</item>
         <item name="fontFamily">@font/noto_sans</item>
         <item name="android:background">@null</item>
+    </style>
+
+    <style name="Platform">
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="Platform.Small">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
     </style>
 </resources>
