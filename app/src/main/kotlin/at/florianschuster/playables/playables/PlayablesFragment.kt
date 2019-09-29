@@ -1,5 +1,6 @@
 package at.florianschuster.playables.playables
 
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseFragment
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.onEach
 class PlayablesFragment : BaseFragment(R.layout.fragment_playables) {
     init {
         lifecycleScope.launchWhenStarted {
-
+            playablesRecyclerView.isVisible = false
+            layoutPlayablesEmpty.isVisible = true
         }
     }
 }

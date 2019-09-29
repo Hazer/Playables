@@ -5,8 +5,7 @@
     <Transition
         app:constraintSetEnd="@id/main_header_search"
         app:constraintSetStart="@id/main_header_playables"
-        app:duration="300">
-    </Transition>
+        app:duration="300"></Transition>
 
     <ConstraintSet android:id="@+id/main_header_playables">
         <Constraint
@@ -19,10 +18,10 @@
             app:layout_constraintTop_toTopOf="parent">
             <CustomAttribute
                 app:attributeName="textSize"
-                app:customFloatValue="26" />
+                app:customFloatValue="30" />
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/textColor" />
+                app:customColorValue="@color/textDarkPrimary" />
         </Constraint>
 
         <Constraint
@@ -35,10 +34,10 @@
 
             <CustomAttribute
                 app:attributeName="textSize"
-                app:customFloatValue="14" />
+                app:customFloatValue="16" />
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/textColorDisabled" />
+                app:customColorValue="@color/textDarkDisabled" />
         </Constraint>
     </ConstraintSet>
 
@@ -53,10 +52,10 @@
 
             <CustomAttribute
                 app:attributeName="textSize"
-                app:customFloatValue="14" />
+                app:customFloatValue="16" />
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/textColorDisabled" />
+                app:customColorValue="@color/textDarkDisabled" />
         </Constraint>
 
         <Constraint
@@ -70,10 +69,10 @@
 
             <CustomAttribute
                 app:attributeName="textSize"
-                app:customFloatValue="26" />
+                app:customFloatValue="30" />
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/textColor" />
+                app:customColorValue="@color/textDarkPrimary" />
         </Constraint>
     </ConstraintSet>
 

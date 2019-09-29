@@ -27,4 +27,9 @@
         app:backgroundTint="@color/black"
         app:fabSize="mini"
         app:tint="@color/white" />
+
+    <include
+        android:id="@+id/layoutPlayablesEmpty"
+        layout="@layout/fragment_playables_empty"
+        android:visibility="gone" />
 </FrameLayout>

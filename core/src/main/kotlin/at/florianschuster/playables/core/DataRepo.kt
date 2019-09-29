@@ -51,6 +51,6 @@ class CoreDataRepo(
     }
 
     private fun RemoteGame.asGame(): Game {
-        return Game(id, name, descriptionHtml)
+        return Game(id, name, descriptionHtml, backgroundImage)
     }
 }

@@ -25,5 +25,6 @@ data class SearchResult(
 data class Game(
     val id: Long,
     val name: String,
-    val description: String
+    val description: String,
+    val image: String? = null
 )

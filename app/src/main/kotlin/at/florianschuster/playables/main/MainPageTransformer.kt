@@ -9,13 +9,15 @@ import kotlin.math.max
 class MainPageTransformer : ViewPager2.PageTransformer {
 
     override fun transformPage(page: View, position: Float) {
-        val searchLayout = page.findViewById<View?>(R.id.searchLayout)
-        val searchScrollButton = page.findViewById<View?>(R.id.searchScrollButton)
+        val searchAlphaViews = listOfNotNull(
+            page.findViewById<View?>(R.id.searchLayout),
+            page.findViewById<View?>(R.id.searchScrollButton),
+            page.findViewById<View?>(R.id.searchBottomShadowLayout)
+        )
 
         if (position in -1f..1f) {
-            max(0f, 1 - (abs(position) * 5)).let {
-                searchLayout?.alpha = it
-                searchScrollButton?.alpha = it
+            max(0f, 1 - (abs(position) * 5)).let { newAlpha ->
+                searchAlphaViews.forEach { it.alpha = newAlpha }
             }
 
             max(0.9f, 1 - abs(position)).let {
@@ -25,8 +27,7 @@ class MainPageTransformer : ViewPager2.PageTransformer {
 
             page.translationY = 0f
         } else {
-            searchLayout?.alpha = 1f
-            searchScrollButton?.alpha = 1f
+            searchAlphaViews.forEach { it.alpha = 1f }
 
             page.scaleX = 1f
             page.scaleY = 1f

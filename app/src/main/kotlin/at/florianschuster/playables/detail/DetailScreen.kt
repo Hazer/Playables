@@ -18,16 +18,19 @@ package at.florianschuster.playables.detail
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.text.Html
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseActivity
 import at.florianschuster.playables.core.DataRepo
 import at.florianschuster.playables.base.ui.BaseViewModel
 import at.florianschuster.playables.controller.Data
 import at.florianschuster.playables.core.model.Game
+import coil.api.load
+import coil.transform.BlurTransformation
 import com.tailoredapps.androidutil.ui.extensions.extra
 import com.tailoredapps.androidutil.ui.extensions.extras
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -39,37 +42,44 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class DetailActivity : BaseActivity(R.layout.activity_detail) {
+private const val EXTRA_ID = "gameId"
+
+fun Context.startDetail(id: Long) {
+    val intent = Intent(this, DetailActivity::class.java)
+        .extras(EXTRA_ID to id)
+    startActivity(intent)
+}
+
+class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
     private val id: Long by extra(EXTRA_ID)
     private val viewModel: DetailViewModel by viewModel { parametersOf(id) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    init {
+        lifecycleScope.launchWhenCreated {
+            scrollDetail.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
-        closeButton.setOnClickListener { finish() }
+            closeButton.setOnClickListener { finish() }
 
-        viewModel.game.distinctUntilChanged()
-            .onEach { game ->
-                progressBar.isVisible = game.loading
-                when (game) {
-                    is Data.Success -> {
-                        nameTextView.text = game.element.name
-                        descriptionTextView.text = Html.fromHtml(game.element.description)
-                    }
-                    is Data.Failure -> {
-                        nameTextView.text = "Error: ${game.error}"
+            viewModel.game.distinctUntilChanged()
+                .onEach { game ->
+                    progressBar.isVisible = game.loading
+                    when (game) {
+                        is Data.Success -> {
+                            backgroundImageView.load(game.element.image) {
+                                crossfade(true)
+                                transformations(BlurTransformation(this@DetailActivity, 25f, 5f))
+                            }
+                            nameTextView.text = game.element.name
+                            descriptionTextView.text = Html.fromHtml(game.element.description)
+                        }
+                        is Data.Failure -> {
+                            nameTextView.text = "Error: ${game.error}"
+                        }
                     }
                 }
-            }
-            .launchIn(lifecycle.coroutineScope)
-    }
-
-    companion object {
-        private const val EXTRA_ID = "gameId"
-        fun start(context: Context, id: Long) {
-            val intent = Intent(context, DetailActivity::class.java)
-                .extras(EXTRA_ID to id)
-            context.startActivity(intent)
+                .launchIn(lifecycle.coroutineScope)
         }
     }
 }

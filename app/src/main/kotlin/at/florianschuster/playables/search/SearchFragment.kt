@@ -3,6 +3,7 @@ package at.florianschuster.playables.search
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -15,6 +16,7 @@ import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseFragment
 import at.florianschuster.playables.controller.Data
 import at.florianschuster.playables.detail.DetailActivity
+import at.florianschuster.playables.detail.startDetail
 import com.tailoredapps.androidutil.ui.extensions.addScrolledPastItemListener
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 import com.tailoredapps.androidutil.ui.extensions.hideKeyboard
@@ -31,7 +33,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.ldralighieri.corbind.view.clicks
 import ru.ldralighieri.corbind.widget.textChanges
-import timber.log.Timber
 
 class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
     private val viewModel: SearchControllerViewModel by viewModel()
@@ -41,7 +42,7 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
         lifecycleScope.launchWhenStarted {
             searchRecyclerView.adapter = adapter
 
-            adapter.interaction = { DetailActivity.start(requireContext(), it.id) }
+            adapter.interaction = { requireContext().startDetail(it.id) }
 
             searchRecyclerView.addScrolledPastItemListener {
                 searchScrollButton?.isVisible = it
@@ -94,7 +95,7 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
             view?.let(ViewCompat::requestApplyInsets)
 
             searchLayout.setOnApplyWindowInsetsListener { view, windowInsets ->
-                view.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                view.updateLayoutParams<ConstraintLayout.LayoutParams> {
                     updateMargins(bottom = bottomMargin + windowInsets.systemWindowInsetBottom)
                 }
                 windowInsets
