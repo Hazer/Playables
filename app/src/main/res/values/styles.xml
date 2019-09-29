@@ -6,12 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/white_opacity_20</item>
 
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@drawable/bg_window</item>
 
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:navigationBarColor">@color/transparent</item>
-
-        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="AppTheme.Launcher">
@@ -24,24 +22,24 @@
     <style name="Playables.Text" />
 
     <style name="Playables.Text.Headline" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="android:textColor">@color/textDarkPrimary</item>
+        <item name="android:textColor">@color/textLightPrimary</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
     <style name="Playables.Text.Headline.Unselected">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/textDarkDisabled</item>
+        <item name="android:textColor">@color/textLightDisabled</item>
     </style>
 
     <style name="Playables.Text.Title" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/textDarkPrimary</item>
+        <item name="android:textColor">@color/textLightPrimary</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
     <style name="Playables.Text.Body" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/textDarkPrimary</item>
+        <item name="android:textColor">@color/textLightPrimary</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
     </style>
@@ -54,16 +52,11 @@
     </style>
 
     <style name="Playables.View.EditText" parent="Widget.AppCompat.EditText">
-        <item name="android:textColor">@color/textDarkPrimary</item>
-        <item name="android:textColorHint">@color/textDarkHint</item>
+        <item name="android:textColor">@color/textLightPrimary</item>
+        <item name="android:textColorHint">@color/textLightHint</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
         <item name="android:background">@null</item>
-    </style>
-
-    <style name="Playables.View.EditText.Dark">
-        <item name="android:textColor">@color/textLightPrimary</item>
-        <item name="android:textColorHint">@color/textLightHint</item>
     </style>
 
     <style name="Platform">

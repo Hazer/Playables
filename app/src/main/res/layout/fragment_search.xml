@@ -51,7 +51,7 @@
 
         <EditText
             android:id="@+id/searchEditText"
-            style="@style/Playables.View.EditText.Dark"
+            style="@style/Playables.View.EditText"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:hint="@string/search_search_hint"
@@ -98,7 +98,6 @@
         android:padding="@dimen/padding"
         android:src="@drawable/ic_keyboard_arrow_up"
         android:tint="@color/white"
-        app:backgroundTint="@color/black"
         app:layout_constraintBottom_toTopOf="@id/searchLayout"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
