@@ -26,5 +26,6 @@ data class Game(
     val id: Long,
     val name: String,
     val description: String,
-    val image: String? = null
+    val image: String? = null,
+    var played: Boolean = false
 )

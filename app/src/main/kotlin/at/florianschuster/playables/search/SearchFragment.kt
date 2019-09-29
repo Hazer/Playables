@@ -3,8 +3,7 @@ package at.florianschuster.playables.search
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
@@ -14,8 +13,8 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseFragment
+import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
 import at.florianschuster.playables.controller.Data
-import at.florianschuster.playables.detail.DetailActivity
 import at.florianschuster.playables.detail.startDetail
 import com.tailoredapps.androidutil.ui.extensions.addScrolledPastItemListener
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
@@ -45,7 +44,7 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
             adapter.interaction = { requireContext().startDetail(it.id) }
 
             searchRecyclerView.addScrolledPastItemListener {
-                searchScrollButton?.isVisible = it
+                searchScrollButton?.visibility = if (it) VISIBLE else INVISIBLE
             }
 
             searchScrollButton.clicks()
@@ -71,10 +70,9 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
 
             searchEditText.textChanges()
                 .drop(1)
-                .distinctUntilChanged()
                 .debounce(500)
-                .map { it.toString() }
-                .map { SearchController.Action.Search(it) }
+                .distinctUntilChanged()
+                .map { SearchController.Action.Search(it.toString()) }
                 .onEach { viewModel.action.offer(it) }
                 .launchIn(this)
 
@@ -94,34 +92,31 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
         lifecycleScope.launchWhenCreated {
             view?.let(ViewCompat::requestApplyInsets)
 
-            searchLayout.setOnApplyWindowInsetsListener { view, windowInsets ->
-                view.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                    updateMargins(bottom = bottomMargin + windowInsets.systemWindowInsetBottom)
+            searchLayout.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+                view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    updateMargins(bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom)
                 }
-                windowInsets
             }
 
             val activityHeader = activity?.findViewById<View>(R.id.motionHeaderContainer)
-            searchRecyclerView.setOnApplyWindowInsetsListener { view, windowInsets ->
+            searchRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
                 if (activityHeader != null) {
                     activityHeader.afterMeasured {
                         searchLayout.afterMeasured {
                             view.updatePadding(
-                                top = windowInsets.systemWindowInsetTop + activityHeader.height,
-                                bottom = windowInsets.systemWindowInsetBottom + searchLayout.height + searchLayout.marginBottom
+                                top = windowInsets.systemWindowInsetTop + activityHeader.height + initialPadding.top,
+                                bottom = windowInsets.systemWindowInsetBottom + searchLayout.height + searchLayout.marginBottom + initialPadding.bottom
                             )
                         }
                     }
                 } else {
                     searchLayout.afterMeasured {
                         view.updatePadding(
-                            top = windowInsets.systemWindowInsetTop,
-                            bottom = windowInsets.systemWindowInsetBottom + searchLayout.height + searchLayout.marginBottom
+                            top = windowInsets.systemWindowInsetTop + initialPadding.top,
+                            bottom = windowInsets.systemWindowInsetBottom + searchLayout.height + searchLayout.marginBottom + initialPadding.bottom
                         )
                     }
                 }
-
-                windowInsets
             }
         }
     }

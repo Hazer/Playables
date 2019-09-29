@@ -23,11 +23,16 @@ import at.florianschuster.playables.core.remote.RAWGApi
 import at.florianschuster.playables.core.remote.RemoteGame
 import at.florianschuster.playables.core.remote.RemoteSearch
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 interface DataRepo {
     suspend fun search(query: String, page: Int): List<SearchResult>
+
     suspend fun game(id: Long): Game
+
+    fun playables(): Flow<List<Game>>
 }
 
 class CoreDataRepo(
@@ -44,6 +49,13 @@ class CoreDataRepo(
 
     override suspend fun game(id: Long): Game = withContext(Dispatchers.IO) {
         api.game(id).asGame()
+    }
+
+    override fun playables(): Flow<List<Game>> = flow {
+        val games = listOf(3498L, 802L, 12020L)
+            .map { api.game(it).asGame() }
+            .sortedBy(Game::name)
+        emit(games)
     }
 
     private fun RemoteSearch.Result.asSearchResult(): SearchResult {

@@ -12,21 +12,21 @@
         android:clipToPadding="false"
         android:paddingStart="@dimen/margin_card"
         android:paddingEnd="@dimen/margin_card"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_playables" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/playablesScrollFAB"
+    <ImageView
+        android:id="@+id/playablesScrollButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:layout_marginBottom="@dimen/margin"
+        android:background="@drawable/bg_button_square"
+        android:padding="@dimen/padding"
         android:src="@drawable/ic_keyboard_arrow_up"
-        android:visibility="gone"
-        app:backgroundTint="@color/black"
-        app:fabSize="mini"
-        app:tint="@color/white" />
+        android:tint="@color/white"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/layoutPlayablesEmpty"

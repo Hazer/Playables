@@ -38,7 +38,7 @@
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="Playables.Text.Body" parent="TextAppearance.MaterialComponents.Body1">
+    <style name="Playables.Text.Body" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">@color/textLightPrimary</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
@@ -46,9 +46,9 @@
 
     <style name="Playables.View.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/size_corners_outer</item>
-        <item name="cardElevation">@dimen/card_elevation</item>
         <item name="android:clickable">true</item>
         <item name="android:stateListAnimator">@animator/card_lift</item>
+        <item name="cardBackgroundColor">@color/colorPrimaryLight</item>
     </style>
 
     <style name="Playables.View.EditText" parent="Widget.AppCompat.EditText">
@@ -59,12 +59,25 @@
         <item name="android:background">@null</item>
     </style>
 
+    <!-- Platform -->
     <style name="Platform">
         <item name="android:tint">@color/white</item>
     </style>
 
     <style name="Platform.Small">
-        <item name="android:layout_width">16dp</item>
-        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">12dp</item>
+    </style>
+
+    <!-- BottomSheetDialogFragment -->
+    <style name="Playables.BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryLight</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
     </style>
 </resources>

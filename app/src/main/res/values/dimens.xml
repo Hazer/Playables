@@ -5,7 +5,7 @@
     <dimen name="padding_half">6dp</dimen>
     <dimen name="margin_card">8dp</dimen>
 
-    <dimen name="size_corners_search">18dp</dimen>
+    <dimen name="size_corners_special">18dp</dimen>
     <dimen name="size_corners_outer">14dp</dimen>
     <dimen name="size_corners_inner">9dp</dimen>
 

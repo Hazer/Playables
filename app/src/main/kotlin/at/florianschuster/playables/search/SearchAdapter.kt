@@ -28,9 +28,7 @@ import com.tailoredapps.androidutil.ui.extensions.inflate
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_search.*
 
-class SearchAdapter : ListAdapter<SearchResult, SearchViewHolder>(
-    diff
-) {
+class SearchAdapter : ListAdapter<SearchResult, SearchViewHolder>(diff) {
     var interaction: ((SearchResult) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder =
@@ -56,6 +54,9 @@ class SearchViewHolder(
     fun bind(searchResult: SearchResult, onClick: (SearchResult) -> Unit) {
         cardView.setOnClickListener { onClick(searchResult) }
         nameTextView.text = searchResult.name
-        backgroundImageView.load(searchResult.image) { crossfade(true) }
+        with(gameImageView) {
+            clipToOutline = true
+            load(searchResult.image) { crossfade(true) }
+        }
     }
 }

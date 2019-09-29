@@ -12,7 +12,8 @@
         android:clipToPadding="false"
         android:paddingStart="@dimen/margin_card"
         android:paddingEnd="@dimen/margin_card"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
         tools:listitem="@layout/item_search" />
 
     <View
@@ -21,9 +22,9 @@
         android:layout_height="0dp"
         android:background="@drawable/bg_fade_search_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchScrollButton" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/searchLayout"
@@ -76,8 +77,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ProgressBar
+        <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/searchProgressBar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:indeterminate="true"

@@ -3,12 +3,15 @@ package at.florianschuster.playables.main
 import android.os.Bundle
 import android.view.View.*
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.forEach
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseActivity
+import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
+import at.florianschuster.playables.info.showInfoBottomSheet
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_header.*
 import org.koin.android.ext.android.inject
@@ -32,16 +35,20 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
             adapter = this@MainActivity.adapter
             setPageTransformer(transformer)
             registerOnPageChangeCallback(viewPagerChangeCallback)
+            fixOverScrollMode()
         }
 
         playablesTitleTextView.setOnClickListener {
             motionHeader.progress = 0f
             mainViewPager.currentItem = 0
         }
+
         searchTitleTextView.setOnClickListener {
             motionHeader.progress = 1f
             mainViewPager.currentItem = 1
         }
+
+        logoImageView.setOnClickListener { showInfoBottomSheet() }
     }
 
     override fun onDestroy() {
@@ -54,20 +61,21 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                 SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                 SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
-        motionHeaderContainer.setOnApplyWindowInsetsListener { view, insets ->
-            view.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                updateMargins(top = insets.systemWindowInsetTop)
+        motionHeaderContainer.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                updateMargins(top = initialMargin.top + windowInsets.systemWindowInsetTop)
             }
-            insets
         }
 
-        mainViewPager.setOnApplyWindowInsetsListener { view, windowInsets ->
-            var consumed = false
-            (view as? ViewGroup)?.forEach { child ->
-                val childResult = child.dispatchApplyWindowInsets(windowInsets)
-                if (childResult.isConsumed) consumed = true
+        logoImageView.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                updateMargins(top = initialMargin.top + windowInsets.systemWindowInsetTop)
             }
-            if (consumed) windowInsets.consumeSystemWindowInsets() else windowInsets
         }
+    }
+
+    @Deprecated(message = "This is a bug in ViewPager2, replace with overScrollMode=\"none\" in layout when fixed")
+    private fun ViewPager2.fixOverScrollMode() {
+        (getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
     }
 }
