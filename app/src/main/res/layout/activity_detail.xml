@@ -21,11 +21,10 @@
         tools:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/contentConstraintLayout"
+            android:id="@+id/detailContentConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin"
-            android:paddingBottom="@dimen/margin">
+            android:paddingTop="@dimen/margin">
 
             <View
                 android:id="@+id/topGuideline"
@@ -36,31 +35,30 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/gameImageView"
-                app:layout_constraintVertical_bias="0.2" />
+                app:layout_constraintVertical_bias="0.4" />
 
-            <com.google.android.material.card.MaterialCardView
+            <View
                 android:id="@+id/backgroundCard"
-                style="@style/Playables.View.Card"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@drawable/bg_bottom_sheet"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/topGuideline"
-                app:layout_constraintWidth_percent="0.9" />
+                app:layout_constraintWidth_percent="0.95" />
 
             <ImageView
                 android:id="@+id/gameImageView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/bg_rounded_image"
-                android:elevation="@dimen/card_elevation_lifted"
                 android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintDimensionRatio="1.3:1"
                 app:layout_constraintEnd_toEndOf="@id/backgroundCard"
                 app:layout_constraintStart_toStartOf="@id/backgroundCard"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.75"
+                app:layout_constraintWidth_percent="0.8"
                 tools:background="@color/grey_500" />
 
             <androidx.core.widget.ContentLoadingProgressBar
@@ -68,7 +66,6 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:elevation="@dimen/card_elevation_lifted"
                 app:layout_constraintBottom_toBottomOf="@id/gameImageView"
                 app:layout_constraintEnd_toEndOf="@id/gameImageView"
                 app:layout_constraintStart_toStartOf="@id/gameImageView"
@@ -80,7 +77,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin"
-                android:elevation="@dimen/card_elevation_lifted"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="@id/backgroundCard"
                 app:layout_constraintStart_toStartOf="@id/backgroundCard"
@@ -95,7 +91,6 @@
                 android:layout_marginStart="@dimen/margin"
                 android:layout_marginTop="@dimen/margin_half"
                 android:layout_marginEnd="@dimen/margin"
-                android:elevation="@dimen/card_elevation_lifted"
                 app:layout_constraintEnd_toEndOf="@id/backgroundCard"
                 app:layout_constraintStart_toStartOf="@id/backgroundCard"
                 app:layout_constraintTop_toBottomOf="@id/nameTextView" />
@@ -108,7 +103,6 @@
                 android:layout_marginStart="@dimen/margin"
                 android:layout_marginTop="@dimen/margin_half"
                 android:layout_marginEnd="@dimen/margin"
-                android:elevation="@dimen/card_elevation_lifted"
                 app:layout_constraintEnd_toEndOf="@id/backgroundCard"
                 app:layout_constraintStart_toStartOf="@id/backgroundCard"
                 app:layout_constraintTop_toBottomOf="@id/platforms"
@@ -119,25 +113,13 @@
                 style="@style/Playables.View.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_marginTop="@dimen/margin"
-                android:layout_marginEnd="@dimen/margin"
-                android:elevation="@dimen/card_elevation_lifted"
+                android:layout_margin="@dimen/margin"
                 android:text="@string/detail_button_open_website"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/backgroundCard"
                 app:layout_constraintStart_toStartOf="@id/backgroundCard"
-                app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
-
-            <View
-                android:id="@+id/bottomGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/margin"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@id/backgroundCard"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+                app:layout_constraintVertical_bias="1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>

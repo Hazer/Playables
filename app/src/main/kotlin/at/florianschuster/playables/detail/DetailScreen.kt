@@ -19,7 +19,10 @@ package at.florianschuster.playables.detail
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import at.florianschuster.playables.R
@@ -58,6 +61,7 @@ fun Context.startDetail(id: Long, backGroundFile: File?) {
     startActivity(intent)
 }
 
+//todo refactor to bottomsheet
 class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
     private val id: Long by extra(EXTRA_ID)
     private val backgroundFile: File? by extra(EXTRA_BACKGROUND_FILE)
@@ -110,11 +114,18 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
 
             window.statusBarColor = resources.getColor(R.color.transparent, null)
 
-            contentConstraintLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
+            detailContentConstraintLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
                 view.updatePadding(
-                    top = initialPadding.top + windowInsets.systemWindowInsetTop,
-                    bottom = initialPadding.bottom + windowInsets.systemWindowInsetBottom
+                    top = initialPadding.top + windowInsets.systemWindowInsetTop
                 )
+            }
+
+            websiteButton.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+                view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    updateMargins(
+                        bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom
+                    )
+                }
             }
         }
     }
