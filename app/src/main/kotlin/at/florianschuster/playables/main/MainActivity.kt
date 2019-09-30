@@ -17,7 +17,9 @@ import kotlinx.android.synthetic.main.activity_main_header.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
-class MainActivity : BaseActivity(R.layout.activity_main) {
+class MainActivity : BaseActivity(R.layout.activity_main), MainBackGroundRetriever {
+
+    override val background: ViewGroup get() = mainContainer
 
     private val transformer: MainPageTransformer by inject()
     private val adapter: MainAdapter by inject { parametersOf(this) }
@@ -60,6 +62,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         mainContainer.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_STABLE or
                 SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                 SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+        window.statusBarColor = resources.getColor(R.color.black_opacity_75, null)
 
         motionHeaderContainer.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {

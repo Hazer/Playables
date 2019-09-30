@@ -27,5 +27,5 @@ data class Game(
     val name: String,
     val description: String,
     val image: String? = null,
-    var played: Boolean = false
+    val website: String
 )

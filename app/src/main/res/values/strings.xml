@@ -3,4 +3,5 @@
     <string name="title_playables">My Games</string>
     <string name="title_search">Search</string>
     <string name="search_search_hint">Search for games…</string>
+    <string name="detail_button_open_website">Open Website</string>
 </resources>

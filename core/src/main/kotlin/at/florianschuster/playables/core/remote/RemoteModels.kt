@@ -48,7 +48,7 @@ data class RemoteSearch(
 data class RemoteGame(
     val id: Long,
     val name: String,
-    @SerialName("description") val descriptionHtml: String,
+    @SerialName("description_raw") val description: String,
     val released: @Serializable(with = LocalDateSerializer::class) LocalDate,
     val tba: Boolean,
     @SerialName("background_image") val backgroundImage: String,

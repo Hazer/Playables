@@ -42,7 +42,7 @@
 
         <include
             android:id="@+id/platforms"
-            layout="@layout/layout_platforms"
+            layout="@layout/layout_platforms_small"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"

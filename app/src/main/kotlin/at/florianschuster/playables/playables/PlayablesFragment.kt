@@ -21,9 +21,11 @@ import at.florianschuster.playables.controller.Controller
 import at.florianschuster.playables.controller.ControllerViewModel
 import at.florianschuster.playables.controller.Data
 import at.florianschuster.playables.controller.DefaultController
+import at.florianschuster.playables.controller.bind
 import at.florianschuster.playables.core.DataRepo
 import at.florianschuster.playables.core.model.Game
 import at.florianschuster.playables.detail.startDetail
+import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
 import com.tailoredapps.androidutil.ui.extensions.addScrolledPastItemListener
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 import com.tailoredapps.androidutil.ui.extensions.toast
@@ -34,6 +36,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.ldralighieri.corbind.view.clicks
@@ -48,7 +51,10 @@ class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
             adapter.interaction = {
                 when (it) {
                     is PlayablesAdapterInteraction.Clicked -> {
-                        requireContext().startDetail(it.game.id)
+                        lifecycleScope.launch {
+                            val screenShotFile = retrieveActivityBlurredScreenShot()
+                            requireContext().startDetail(it.game.id, screenShotFile)
+                        }
                     }
                     is PlayablesAdapterInteraction.PlayedClicked -> {
                         // todo
@@ -61,12 +67,12 @@ class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
             }
 
             playablesScrollButton.clicks()
-                .onEach { playablesRecyclerView.smoothScrollToPosition(0) }
+                .bind { playablesRecyclerView.smoothScrollToPosition(0) }
                 .launchIn(this)
 
             viewModel.playables
                 .distinctUntilChanged()
-                .onEach { games ->
+                .bind { games ->
                     playablesRecyclerView.isVisible = !games().isNullOrEmpty()
                     layoutPlayablesEmpty.isVisible = games().isNullOrEmpty()
 

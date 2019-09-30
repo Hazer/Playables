@@ -1,5 +1,9 @@
 package at.florianschuster.playables.controller
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
+
 sealed class Data<out T> {
     open operator fun invoke(): T? = null
 
@@ -25,3 +29,12 @@ sealed class Data<out T> {
             }
     }
 }
+
+fun <T> Flow<Data<T>>.filterDataLoading(): Flow<Unit> =
+    filterIsInstance<Data.Loading>().map { Unit }
+
+fun <T> Flow<Data<T>>.filterDataSuccess(): Flow<T> =
+    filterIsInstance<Data.Success<T>>().map { it.element }
+
+fun <T> Flow<Data<T>>.filterDataFailure(): Flow<Throwable> =
+    filterIsInstance<Data.Failure>().map { it.error }

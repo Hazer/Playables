@@ -15,7 +15,9 @@ import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseFragment
 import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
 import at.florianschuster.playables.controller.Data
+import at.florianschuster.playables.controller.bind
 import at.florianschuster.playables.detail.startDetail
+import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
 import com.tailoredapps.androidutil.ui.extensions.addScrolledPastItemListener
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 import com.tailoredapps.androidutil.ui.extensions.hideKeyboard
@@ -28,6 +30,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.ldralighieri.corbind.view.clicks
@@ -41,28 +44,33 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
         lifecycleScope.launchWhenStarted {
             searchRecyclerView.adapter = adapter
 
-            adapter.interaction = { requireContext().startDetail(it.id) }
+            adapter.interaction = {
+                lifecycleScope.launch {
+                    val screenShotFile = retrieveActivityBlurredScreenShot()
+                    requireContext().startDetail(it.id, screenShotFile)
+                }
+            }
 
             searchRecyclerView.addScrolledPastItemListener {
                 searchScrollButton?.visibility = if (it) VISIBLE else INVISIBLE
             }
 
             searchScrollButton.clicks()
-                .onEach { searchRecyclerView.smoothScrollToPosition(0) }
+                .bind { searchRecyclerView.smoothScrollToPosition(0) }
                 .launchIn(this)
 
             searchEditText.textChanges()
                 .distinctUntilChanged()
                 .map { if (it.isEmpty()) INVISIBLE else VISIBLE }
-                .onEach { searchClearButton.visibility = it }
+                .bind { searchClearButton.visibility = it }
                 .launchIn(this)
 
             searchButton.clicks()
-                .onEach { searchEditText.showKeyBoard() }
+                .bind { searchEditText.showKeyBoard() }
                 .launchIn(this)
 
             searchClearButton.clicks()
-                .onEach {
+                .bind {
                     searchEditText.setText("")
                     searchEditText.hideKeyboard()
                 }
@@ -73,12 +81,12 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
                 .debounce(500)
                 .distinctUntilChanged()
                 .map { SearchController.Action.Search(it.toString()) }
-                .onEach { viewModel.action.offer(it) }
+                .bind { viewModel.action.offer(it) }
                 .launchIn(this)
 
             viewModel.state.map { it.searchItems }
                 .distinctUntilChanged()
-                .onEach {
+                .bind {
                     searchProgressBar.isVisible = it.loading
                     when (it) {
                         is Data.Success -> adapter.submitList(it.element)
@@ -119,5 +127,10 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        searchEditText.hideKeyboard()
+        super.onPause()
     }
 }

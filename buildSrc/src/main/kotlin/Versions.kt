@@ -102,7 +102,7 @@ object Versions {
 
     const val org_powermock: String = "2.0.2"
 
-    const val ru_ldralighieri_corbind: String = "1.1.2"
+    const val ru_ldralighieri_corbind: String = "1.2.0-RC"
 
     /**
      *
