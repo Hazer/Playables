@@ -23,7 +23,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".detail.DetailActivity" />
+        <activity
+            android:name=".detail.DetailActivity"
+            android:theme="@style/AppTheme.Transparent" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/detailContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,114 +11,118 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
-    <ScrollView
+    <at.florianschuster.playables.detail.DraggableFrameLayout
+        android:id="@+id/detailContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        tools:background="@color/white">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/detailContentConstraintLayout"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            tools:background="@color/white">
 
-            <View
-                android:id="@+id/topGuideline"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/detailContentConstraintLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/gameImageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/gameImageView"
-                app:layout_constraintVertical_bias="0.4" />
+                android:paddingTop="@dimen/margin">
 
-            <View
-                android:id="@+id/backgroundCard"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_bottom_sheet"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/topGuideline"
-                app:layout_constraintWidth_percent="0.95" />
+                <View
+                    android:id="@+id/topGuideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/gameImageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/gameImageView"
+                    app:layout_constraintVertical_bias="0.4" />
 
-            <ImageView
-                android:id="@+id/gameImageView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_rounded_image"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="1.3:1"
-                app:layout_constraintEnd_toEndOf="@id/backgroundCard"
-                app:layout_constraintStart_toStartOf="@id/backgroundCard"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.8"
-                tools:background="@color/grey_500" />
+                <View
+                    android:id="@+id/backgroundCard"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_bottom_sheet"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/topGuideline"
+                    app:layout_constraintWidth_percent="0.95" />
 
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/loadingProgressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/gameImageView"
-                app:layout_constraintEnd_toEndOf="@id/gameImageView"
-                app:layout_constraintStart_toStartOf="@id/gameImageView"
-                app:layout_constraintTop_toTopOf="@id/gameImageView" />
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/loadingProgressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/gameImageView"
+                    app:layout_constraintEnd_toEndOf="@id/gameImageView"
+                    app:layout_constraintStart_toStartOf="@id/gameImageView"
+                    app:layout_constraintTop_toTopOf="@id/gameImageView" />
 
-            <TextView
-                android:id="@+id/nameTextView"
-                style="@style/Playables.Text.Headline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="@id/backgroundCard"
-                app:layout_constraintStart_toStartOf="@id/backgroundCard"
-                app:layout_constraintTop_toBottomOf="@id/gameImageView"
-                tools:text="Game" />
+                <TextView
+                    android:id="@+id/nameTextView"
+                    style="@style/Playables.Text.Headline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="@id/backgroundCard"
+                    app:layout_constraintStart_toStartOf="@id/backgroundCard"
+                    app:layout_constraintTop_toBottomOf="@id/gameImageView"
+                    tools:text="Game" />
 
-            <include
-                android:id="@+id/platforms"
-                layout="@layout/layout_platforms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_marginTop="@dimen/margin_half"
-                android:layout_marginEnd="@dimen/margin"
-                app:layout_constraintEnd_toEndOf="@id/backgroundCard"
-                app:layout_constraintStart_toStartOf="@id/backgroundCard"
-                app:layout_constraintTop_toBottomOf="@id/nameTextView" />
+                <include
+                    android:id="@+id/platforms"
+                    layout="@layout/layout_platforms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin_half"
+                    android:layout_marginEnd="@dimen/margin"
+                    app:layout_constraintEnd_toEndOf="@id/backgroundCard"
+                    app:layout_constraintStart_toStartOf="@id/backgroundCard"
+                    app:layout_constraintTop_toBottomOf="@id/nameTextView" />
 
-            <TextView
-                android:id="@+id/descriptionTextView"
-                style="@style/Playables.Text.Body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_marginTop="@dimen/margin_half"
-                android:layout_marginEnd="@dimen/margin"
-                app:layout_constraintEnd_toEndOf="@id/backgroundCard"
-                app:layout_constraintStart_toStartOf="@id/backgroundCard"
-                app:layout_constraintTop_toBottomOf="@id/platforms"
-                tools:text="@tools:sample/lorem/random" />
+                <TextView
+                    android:id="@+id/descriptionTextView"
+                    style="@style/Playables.Text.Body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="@dimen/margin_half"
+                    android:layout_marginEnd="@dimen/margin"
+                    app:layout_constraintEnd_toEndOf="@id/backgroundCard"
+                    app:layout_constraintStart_toStartOf="@id/backgroundCard"
+                    app:layout_constraintTop_toBottomOf="@id/platforms"
+                    tools:text="@tools:sample/lorem/random" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/websiteButton"
-                style="@style/Playables.View.Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:text="@string/detail_button_open_website"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/backgroundCard"
-                app:layout_constraintStart_toStartOf="@id/backgroundCard"
-                app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-                app:layout_constraintVertical_bias="1" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/websiteButton"
+                    style="@style/Playables.View.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:text="@string/detail_button_open_website"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/backgroundCard"
+                    app:layout_constraintStart_toStartOf="@id/backgroundCard"
+                    app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+                    app:layout_constraintVertical_bias="1" />
+
+                <ImageView
+                    android:id="@+id/gameImageView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_rounded_image"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintDimensionRatio="1.3:1"
+                    app:layout_constraintEnd_toEndOf="@id/backgroundCard"
+                    app:layout_constraintStart_toStartOf="@id/backgroundCard"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.8"
+                    tools:background="@color/grey_500" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </at.florianschuster.playables.detail.DraggableFrameLayout>
 </FrameLayout>

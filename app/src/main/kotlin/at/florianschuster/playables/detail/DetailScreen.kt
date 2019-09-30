@@ -50,6 +50,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.ldralighieri.corbind.view.clicks
 import java.io.File
+import kotlin.math.max
 
 private const val EXTRA_ID = "gameId"
 private const val EXTRA_BACKGROUND_FILE = "bg_file"
@@ -72,6 +73,34 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
             gameImageView.clipToOutline = true
 
             backgroundImageView.load(backgroundFile)
+
+            detailContent.onDismissed = { finish() }
+            detailContent.onDragOffset = { direction, percent ->
+                when (direction) {
+                    DragDirection.DOWN -> max(0f, 1 - (percent * 2))
+                    else -> 1f
+                }.let(backgroundImageView::setAlpha)
+
+                when (direction) {
+                    DragDirection.DOWN -> max(0f, 1 - (percent * 1.75f))
+                    else -> 1f
+                }.let {
+                    nameTextView.alpha = it
+                    platforms.alpha = it
+                    descriptionTextView.alpha = it
+                    websiteButton.alpha = it
+                }
+
+                when (direction) {
+                    DragDirection.DOWN -> max(0f, 1 - percent)
+                    else -> 1f
+                }.let(backgroundCard::setAlpha)
+
+                gameImageView.translationY = when (direction) {
+                    DragDirection.DOWN -> gameImageView.height * (percent * 0.5f)
+                    else -> 0f
+                }
+            }
 
             viewModel.game.distinctUntilChanged()
                 .bind { game ->
