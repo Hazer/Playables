@@ -26,6 +26,7 @@ import com.tailoredapps.androidutil.ui.extensions.toast
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -35,6 +36,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.ldralighieri.corbind.view.clicks
 import ru.ldralighieri.corbind.widget.textChanges
+import timber.log.Timber
 
 class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
     private val viewModel: SearchControllerViewModel by viewModel()
@@ -60,9 +62,7 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
                 .launchIn(this)
 
             searchEditText.textChanges()
-                .distinctUntilChanged()
-                .map { if (it.isEmpty()) INVISIBLE else VISIBLE }
-                .bind { searchClearButton.visibility = it }
+                .bind { searchClearButton.isVisible = it.isNotEmpty() }
                 .launchIn(this)
 
             searchButton.clicks()
@@ -79,7 +79,6 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
             searchEditText.textChanges()
                 .drop(1)
                 .debounce(500)
-                .distinctUntilChanged()
                 .map { SearchController.Action.Search(it.toString()) }
                 .bind { viewModel.action.offer(it) }
                 .launchIn(this)
