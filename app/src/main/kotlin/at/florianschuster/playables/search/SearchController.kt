@@ -1,7 +1,7 @@
 package at.florianschuster.playables.search
 
-import at.florianschuster.playables.controller.Controller
-import at.florianschuster.playables.controller.ControllerViewModel
+import androidx.lifecycle.viewModelScope
+import at.florianschuster.playables.controller.android.ControllerViewModel
 import at.florianschuster.playables.controller.Data
 import at.florianschuster.playables.core.DataRepo
 import at.florianschuster.playables.core.model.SearchResult
@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withTimeout
 import timber.log.Timber
-import java.lang.IllegalStateException
 
 sealed class SearchAction {
     data class Query(val query: String) : SearchAction()

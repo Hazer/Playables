@@ -25,6 +25,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseActivity
 import at.florianschuster.playables.base.ui.BaseViewModel
@@ -40,12 +41,15 @@ import coil.transform.BlurTransformation
 import com.tailoredapps.androidutil.ui.extensions.extra
 import com.tailoredapps.androidutil.ui.extensions.extras
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.ldralighieri.corbind.view.clicks
@@ -97,6 +101,11 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                     else -> 1f
                 }.let(backgroundCard::setAlpha)
 
+                when (direction) {
+                    DragDirection.DOWN -> max(0f, 1 - (percent * 0.7f))
+                    else -> 1f
+                }.let(gameImageView::setAlpha)
+
                 gameImageView.translationY = when (direction) {
                     DragDirection.DOWN -> gameImageView.height * (percent * 0.5f)
                     else -> 0f
@@ -129,7 +138,7 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                 .launchIn(this)
 
             websiteButton.clicks()
-                .map { viewModel.latestGame }
+                .map { viewModel.currentGame }
                 .filterNotNull()
                 .filterDataSuccess()
                 .bind { openChromeTab(it.website) }
@@ -165,13 +174,15 @@ class DetailViewModel(
     private val dataRepo: DataRepo
 ) : BaseViewModel() {
     @Deprecated("Replace with stateFlow: https://github.com/Kotlin/kotlinx.coroutines/issues/1082")
-    var latestGame: Data<Game>? = null
+    private val gameState = ConflatedBroadcastChannel<Data<Game>>(Data.Uninitialized)
 
-    @Deprecated("Replace with stateFlow: https://github.com/Kotlin/kotlinx.coroutines/issues/1082")
-    val game: Flow<Data<Game>> = flow {
-        emit(Data.Loading)
-        val game = Data.of { dataRepo.game(gameId) }
-        latestGame = game
-        emit(game)
+    val currentGame: Data<Game> get() = gameState.value
+    val game: Flow<Data<Game>> get() = gameState.asFlow()
+
+    init {
+        viewModelScope.launch {
+            gameState.offer(Data.Loading)
+            gameState.offer(Data.of { dataRepo.game(gameId) })
+        }
     }
 }
