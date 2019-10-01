@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseFragment
 import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
+import at.florianschuster.playables.controller.ControllerView
 import at.florianschuster.playables.controller.Data
 import at.florianschuster.playables.controller.bind
 import at.florianschuster.playables.detail.startDetail
@@ -38,12 +39,14 @@ import ru.ldralighieri.corbind.view.clicks
 import ru.ldralighieri.corbind.widget.textChanges
 import timber.log.Timber
 
-class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
-    private val viewModel: SearchControllerViewModel by viewModel()
+class SearchFragment : BaseFragment(layout = R.layout.fragment_search),
+    ControllerView<SearchControllerViewModel> {
+    override val controller: SearchControllerViewModel by viewModel()
     private val adapter: SearchAdapter by inject()
 
     init {
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenCreated {
+            applyInsets()
             searchRecyclerView.adapter = adapter
 
             adapter.interaction = {
@@ -79,11 +82,11 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
             searchEditText.textChanges()
                 .drop(1)
                 .debounce(500)
-                .map { SearchController.Action.Search(it.toString()) }
-                .bind { viewModel.action.offer(it) }
+                .map { SearchAction.Query(it.toString()) }
+                .bind { controller.action.offer(it) }
                 .launchIn(this)
 
-            viewModel.state.map { it.searchItems }
+            controller.state.map { it.searchItems }
                 .distinctUntilChanged()
                 .bind {
                     searchProgressBar.isVisible = it.loading
@@ -94,41 +97,41 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
                 }
                 .launchIn(this)
         }
+    }
 
-        //insets
-        lifecycleScope.launchWhenCreated {
-            view?.let(ViewCompat::requestApplyInsets)
+    private fun applyInsets() {
+        view?.let(ViewCompat::requestApplyInsets)
 
-            searchLayout.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
-                view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    updateMargins(bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom)
-                }
+        searchLayout.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                updateMargins(bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom)
             }
+        }
 
-            val activityHeader = activity?.findViewById<View>(R.id.motionHeaderContainer)
-            searchRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
-                if (activityHeader != null) {
-                    activityHeader.afterMeasured {
-                        searchLayout.afterMeasured {
-                            view.updatePadding(
-                                top = windowInsets.systemWindowInsetTop + activityHeader.height + initialPadding.top,
-                                bottom = windowInsets.systemWindowInsetBottom + searchLayout.height + searchLayout.marginBottom + initialPadding.bottom
-                            )
-                        }
-                    }
-                } else {
+        val activityHeader = activity?.findViewById<View>(R.id.motionHeaderContainer)
+        searchRecyclerView.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
+            if (activityHeader != null) {
+                activityHeader.afterMeasured {
                     searchLayout.afterMeasured {
                         view.updatePadding(
-                            top = windowInsets.systemWindowInsetTop + initialPadding.top,
+                            top = windowInsets.systemWindowInsetTop + activityHeader.height + initialPadding.top,
                             bottom = windowInsets.systemWindowInsetBottom + searchLayout.height + searchLayout.marginBottom + initialPadding.bottom
                         )
                     }
+                }
+            } else {
+                searchLayout.afterMeasured {
+                    view.updatePadding(
+                        top = windowInsets.systemWindowInsetTop + initialPadding.top,
+                        bottom = windowInsets.systemWindowInsetBottom + searchLayout.height + searchLayout.marginBottom + initialPadding.bottom
+                    )
                 }
             }
         }
     }
 
     override fun onPause() {
+        searchEditText.setText("")
         searchEditText.hideKeyboard()
         super.onPause()
     }

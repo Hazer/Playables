@@ -21,9 +21,9 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import at.florianschuster.playables.core.coreModules
 import at.florianschuster.playables.base.ui.baseUIModule
+import at.florianschuster.playables.controller.ControllerLib
 import coil.Coil
 import coil.ImageLoader
-import coil.ImageLoaderBuilder
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -42,6 +42,8 @@ class PlayablesApp : Application() {
         AndroidThreeTen.init(this)
 
         Coil.setDefaultImageLoader(ImageLoader(this) { allowHardware(false) })
+
+        ControllerLib.onErrors(escalateCrashes = false, handler = Timber::e)
 
         startKoin {
             androidContext(this@PlayablesApp)

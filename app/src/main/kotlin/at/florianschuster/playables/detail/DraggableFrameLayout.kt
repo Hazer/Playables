@@ -40,7 +40,7 @@ enum class DragDirection {
     NONE, UP, DOWN
 }
 
-class DraggableFrameLayout @JvmOverloads constructor( // todo disable drag down
+class DraggableFrameLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

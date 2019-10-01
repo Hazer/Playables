@@ -62,13 +62,14 @@ fun Context.startDetail(id: Long, backGroundFile: File?) {
     startActivity(intent)
 }
 
-//todo refactor to bottomsheet
 class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
     private val id: Long by extra(EXTRA_ID)
     private val backgroundFile: File? by extra(EXTRA_BACKGROUND_FILE)
     private val viewModel: DetailViewModel by viewModel { parametersOf(id) }
 
     init {
+        lifecycleScope.launchWhenCreated { applyInsets() }
+
         lifecycleScope.launchWhenStarted {
             gameImageView.clipToOutline = true
 
@@ -134,27 +135,26 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                 .bind { openChromeTab(it.website) }
                 .launchIn(this)
         }
+    }
 
-        //fullscreen + insets
-        lifecycleScope.launchWhenCreated {
-            detailContent.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+    private fun applyInsets() {
+        detailContent.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
-            window.statusBarColor = resources.getColor(R.color.transparent, null)
+        window.statusBarColor = resources.getColor(R.color.transparent, null)
 
-            detailContentConstraintLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
-                view.updatePadding(
-                    top = initialPadding.top + windowInsets.systemWindowInsetTop
+        detailContentConstraintLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
+            view.updatePadding(
+                top = initialPadding.top + windowInsets.systemWindowInsetTop
+            )
+        }
+
+        websiteButton.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                updateMargins(
+                    bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom
                 )
-            }
-
-            websiteButton.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
-                view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    updateMargins(
-                        bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom
-                    )
-                }
             }
         }
     }

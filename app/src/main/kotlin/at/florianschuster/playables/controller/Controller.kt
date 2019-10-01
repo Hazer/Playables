@@ -1,12 +1,15 @@
 package at.florianschuster.playables.controller
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 interface Controller<Action : Any, Mutation : Any, State : Any> {
+    val controllerScope: CoroutineScope
+
     val initialState: State
-    var currentState: State
+    val currentState: State
 
     val action: SendChannel<Action>
     val state: Flow<State>
@@ -17,5 +20,13 @@ interface Controller<Action : Any, Mutation : Any, State : Any> {
     fun transformAction(action: Flow<Action>): Flow<Action> = action
     fun transformMutation(mutation: Flow<Mutation>): Flow<Mutation> = mutation
 
-    fun cancel()
+    companion object {
+        operator fun <Action : Any, Mutation : Any, State : Any> invoke(
+            initializer: ControllerBuilder<Action, Mutation, State>.() -> Unit
+        ): Controller<Action, Mutation, State> {
+            val builder = ControllerBuilder<Action, Mutation, State>()
+            initializer(builder)
+            return builder.build()
+        }
+    }
 }
