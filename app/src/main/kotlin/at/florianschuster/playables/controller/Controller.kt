@@ -1,6 +1,6 @@
 package at.florianschuster.playables.controller
 
-import at.florianschuster.playables.controller.build.ControllerBuilder
+import at.florianschuster.playables.controller.builder.ControllerBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow

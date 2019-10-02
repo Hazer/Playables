@@ -10,7 +10,7 @@ fun <T> Flow<T>.bind(
     to: suspend (T) -> Unit
 ): Flow<T> {
     return catch {
-        ControllerLib.handleError(it)
+        Control.handleError(it)
         emitAll(emptyFlow())
     }.onEach { to(it) }
 }

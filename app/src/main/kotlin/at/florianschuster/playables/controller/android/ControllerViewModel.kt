@@ -2,7 +2,7 @@ package at.florianschuster.playables.controller.android
 
 import androidx.lifecycle.ViewModel
 import at.florianschuster.playables.controller.Controller
-import at.florianschuster.playables.controller.build.ControllerBuilder
+import at.florianschuster.playables.controller.builder.ControllerBuilder
 import kotlinx.coroutines.cancel
 
 abstract class ControllerViewModel<Action : Any, Mutation : Any, State : Any>(

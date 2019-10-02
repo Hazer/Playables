@@ -2,7 +2,7 @@ package at.florianschuster.playables.controller
 
 import androidx.annotation.RestrictTo
 
-object ControllerLib {
+object Control {
     private var escalateCrashes: Boolean = false
     private var errorHandler: ((Throwable) -> Unit)? = null
 
