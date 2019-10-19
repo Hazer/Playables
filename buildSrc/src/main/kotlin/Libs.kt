@@ -123,6 +123,23 @@ object Libs {
     const val androidx_test_runner: String = "androidx.test:runner:" + Versions.androidx_test
 
     /**
+     * https://github.com/floschu/control
+     */
+    const val control_core: String = "at.florianschuster.control:control-core:" +
+            Versions.at_florianschuster_control
+
+    /**
+     * https://github.com/floschu/control
+     */
+    const val control_test: String = "at.florianschuster.control:control-test:" +
+            Versions.at_florianschuster_control
+
+    /**
+     * https://github.com/floschu/lce-data
+     */
+    const val lce_data: String = "at.florianschuster.data:lce-data:" + Versions.lce_data
+
+    /**
      * https://github.com/akaita/easylauncher-gradle-plugin
      */
     const val easylauncher: String = "com.akaita.android:easylauncher:" + Versions.easylauncher

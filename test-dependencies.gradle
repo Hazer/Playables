@@ -10,4 +10,5 @@ dependencies {
     testImplementation Libs.mockk
     testImplementation Libs.kluent
     testImplementation Libs.koin_test
+    testImplementation(Libs.control_test)
 }

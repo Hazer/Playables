@@ -9,11 +9,12 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import at.florianschuster.control.bind
+import at.florianschuster.data.lce.Data
+import at.florianschuster.data.lce.mapAsData
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseFragment
 import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
-import at.florianschuster.playables.controller.Data
-import at.florianschuster.playables.controller.bind
 import at.florianschuster.playables.core.DataRepo
 import at.florianschuster.playables.core.model.Game
 import at.florianschuster.playables.detail.startDetail
@@ -25,7 +26,6 @@ import kotlinx.android.synthetic.main.fragment_playables.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -69,7 +69,7 @@ class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
                     layoutPlayablesEmpty.isVisible = games().isNullOrEmpty()
 
                     when (games) {
-                        is Data.Success -> adapter.submitList(games.element)
+                        is Data.Success -> adapter.submitList(games.value)
                         is Data.Failure -> toast("Error todo")
                     }
                 }
@@ -108,5 +108,5 @@ class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
 class PlayablesViewModel(
     dataRepo: DataRepo
 ) : ViewModel() {
-    val playables: Flow<Data<List<Game>>> = dataRepo.playables().map { Data.Success(it) }
+    val playables: Flow<Data<List<Game>>> = dataRepo.playables().mapAsData()
 }

@@ -24,15 +24,17 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import at.florianschuster.control.bind
+import at.florianschuster.data.lce.Data
+import at.florianschuster.data.lce.dataFlowOf
+import at.florianschuster.data.lce.dataOf
+import at.florianschuster.data.lce.filterSuccessData
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseActivity
-import at.florianschuster.playables.base.ui.BaseViewModel
 import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
-import at.florianschuster.playables.controller.Data
-import at.florianschuster.playables.controller.bind
-import at.florianschuster.playables.controller.filterDataSuccess
 import at.florianschuster.playables.core.DataRepo
 import at.florianschuster.playables.core.model.Game
 import at.florianschuster.playables.util.openChromeTab
@@ -46,7 +48,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -101,11 +102,6 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                     else -> 1f
                 }.let(backgroundCard::setAlpha)
 
-                when (direction) {
-                    DragDirection.DOWN -> max(0f, 1 - (percent * 0.7f))
-                    else -> 1f
-                }.let(gameImageView::setAlpha)
-
                 gameImageView.translationY = when (direction) {
                     DragDirection.DOWN -> gameImageView.height * (percent * 0.5f)
                     else -> 0f
@@ -117,18 +113,18 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                     loadingProgressBar.isVisible = game.loading
                     when (game) {
                         is Data.Success -> {
-                            gameImageView.load(game.element.image) { crossfade(true) }
+                            gameImageView.load(game.value.image) { crossfade(true) }
                             if (backgroundFile == null) {
-                                backgroundImageView.load(game.element.image) {
+                                backgroundImageView.load(game.value.image) {
                                     crossfade(true)
                                     transformations(
                                         BlurTransformation(this@DetailActivity, 25f, 5f)
                                     )
                                 }
                             }
-                            nameTextView.text = game.element.name
-                            descriptionTextView.text = game.element.description
-                            websiteButton.isVisible = !game.element.website.isNullOrEmpty()
+                            nameTextView.text = game.value.name
+                            descriptionTextView.text = game.value.description
+                            websiteButton.isVisible = !game.value.website.isNullOrEmpty()
                         }
                         is Data.Failure -> {
                             nameTextView.text = "Error: ${game.error}"
@@ -140,7 +136,7 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
             websiteButton.clicks()
                 .map { viewModel.currentGame }
                 .filterNotNull()
-                .filterDataSuccess()
+                .filterSuccessData()
                 .bind { openChromeTab(it.website) }
                 .launchIn(this)
         }
@@ -172,7 +168,7 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
 class DetailViewModel(
     private val gameId: Long,
     private val dataRepo: DataRepo
-) : BaseViewModel() {
+) : ViewModel() {
     @Deprecated("Replace with stateFlow: https://github.com/Kotlin/kotlinx.coroutines/issues/1082")
     private val gameState = ConflatedBroadcastChannel<Data<Game>>(Data.Uninitialized)
 
@@ -182,7 +178,7 @@ class DetailViewModel(
     init {
         viewModelScope.launch {
             gameState.offer(Data.Loading)
-            gameState.offer(Data.of { dataRepo.game(gameId) })
+            gameState.offer(dataOf { dataRepo.game(gameId) })
         }
     }
 }

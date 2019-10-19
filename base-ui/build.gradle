@@ -4,6 +4,9 @@ dependencies {
     api Libs.kotlin_stdlib_jdk7
     api Libs.kotlinx_coroutines_android
 
+    api(Libs.lce_data)
+    api(Libs.control_core)
+
     api Libs.appcompat
     api Libs.activity_ktx
     api Libs.fragment

@@ -1,10 +1,10 @@
 package at.florianschuster.playables.search
 
-import androidx.lifecycle.viewModelScope
-import at.florianschuster.playables.controller.android.ControllerViewModel
-import at.florianschuster.playables.controller.Data
+import at.florianschuster.data.lce.Data
+import at.florianschuster.playables.base.ui.BaseController
 import at.florianschuster.playables.core.DataRepo
 import at.florianschuster.playables.core.model.SearchResult
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -24,38 +24,34 @@ data class SearchState(
 )
 
 class SearchControllerViewModel(
-    dataRepo: DataRepo
-) : ControllerViewModel<SearchAction, SearchMutation, SearchState>({
-    initialState { SearchState() }
+    private val dataRepo: DataRepo
+) : BaseController<SearchAction, SearchMutation, SearchState>() {
 
-    transformAction { it.onStart { emit(SearchAction.Query("")) } }
+    override val initialState: SearchState = SearchState()
 
-    mutate { action ->
-        //        throw IllegalStateException("AAA")
-        when (action) {
-            is SearchAction.Query -> {
-                flow {
-                    //                    throw IllegalStateException("BBB")
-                    emit(Data.Loading)
+    override fun transformAction(action: Flow<SearchAction>): Flow<SearchAction> {
+        return action.onStart { emit(SearchAction.Query("")) }
+    }
 
-                    val data: Data<List<SearchResult>> = try {
-                        withTimeout(3000) {
-                            Data.Success(dataRepo.search(action.query, 1))
-                        }
-                    } catch (e: Exception) {
-                        Timber.e(e)
-                        Data.Failure(e)
+    override fun mutate(action: SearchAction): Flow<SearchMutation> = when (action) {
+        is SearchAction.Query -> {
+            flow {
+                emit(Data.Loading)
+                val data: Data<List<SearchResult>> = try {
+                    withTimeout(3000) {
+                        Data.Success(dataRepo.search(action.query, 1))
                     }
-                    emit(data)
-                }.map { SearchMutation.SetSearchItems(it) }
-            }
+                } catch (e: Exception) {
+                    Timber.e(e)
+                    Data.Failure(e)
+                }
+                emit(data)
+            }.map { SearchMutation.SetSearchItems(it) }
         }
     }
 
-    reduce { previousState, mutation ->
-//        throw IllegalStateException("CCC")
+    override fun reduce(previousState: SearchState, mutation: SearchMutation): SearchState =
         when (mutation) {
             is SearchMutation.SetSearchItems -> previousState.copy(searchItems = mutation.searchItems)
         }
-    }
-})
+}

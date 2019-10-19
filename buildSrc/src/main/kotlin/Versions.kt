@@ -42,13 +42,17 @@ object Versions {
 
     const val androidx_test: String = "1.2.0"
 
+    const val at_florianschuster_control: String = "0.0.10"
+
+    const val lce_data: String = "1.0.0"
+
     const val easylauncher: String = "1.3.1"
 
-    const val aapt2: String = "3.5.0-5435860"
+    const val aapt2: String = "3.5.1-5435860"
 
-    const val com_android_tools_build_gradle: String = "3.5.0"
+    const val com_android_tools_build_gradle: String = "3.5.1"
 
-    const val lint_gradle: String = "26.5.0"
+    const val lint_gradle: String = "26.5.1"
 
     const val ktlint: String = "0.34.2"
 
@@ -68,7 +72,7 @@ object Versions {
 
     const val com_squareup_leakcanary: String = "1.6.3"
 
-    const val com_squareup_okhttp3: String = "4.2.0"
+    const val com_squareup_okhttp3: String = "4.2.2"
 
     const val retrofit: String = "2.6.2"
 
@@ -78,7 +82,7 @@ object Versions {
 
     const val buildsrcversions: String = "0.4.2"
 
-    const val graphviz_java: String = "0.10.0" // available: "0.11.0"
+    const val graphviz_java: String = "0.11.0"
 
     const val coil: String = "0.7.0"
 
@@ -86,7 +90,7 @@ object Versions {
 
     const val junit_junit: String = "4.12"
 
-    const val kluent: String = "1.51" // available: "1.55"
+    const val kluent: String = "1.51" // available: "1.56"
 
     const val org_jetbrains_kotlin: String = "1.3.50"
 
@@ -98,18 +102,18 @@ object Versions {
 
     const val org_koin: String = "2.0.1"
 
-    const val org_mockito: String = "3.0.0"
+    const val org_mockito: String = "3.0.0" // available: "3.1.0"
 
-    const val org_powermock: String = "2.0.2"
+    const val org_powermock: String = "2.0.2" // available: "2.0.4"
 
-    const val ru_ldralighieri_corbind: String = "1.2.0-RC"
+    const val ru_ldralighieri_corbind: String = "1.2.0"
 
     /**
      *
      * See issue 19: How to update Gradle itself?
      * https://github.com/jmfayard/buildSrcVersions/issues/19
      */
-    const val gradleLatestVersion: String = "5.6.2"
+    const val gradleLatestVersion: String = "5.6.3"
 
-    const val gradleCurrentVersion: String = "5.6.2"
+    const val gradleCurrentVersion: String = "5.6.3"
 }

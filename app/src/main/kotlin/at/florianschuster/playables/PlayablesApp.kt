@@ -17,11 +17,11 @@
 package at.florianschuster.playables
 
 import android.app.Application
+import at.florianschuster.control.configuration.configureControl
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import at.florianschuster.playables.core.coreModules
 import at.florianschuster.playables.base.ui.baseUIModule
-import at.florianschuster.playables.controller.Control
 import coil.Coil
 import coil.ImageLoader
 import org.koin.android.ext.koin.androidContext
@@ -43,7 +43,10 @@ class PlayablesApp : Application() {
 
         Coil.setDefaultImageLoader(ImageLoader(this) { allowHardware(false) })
 
-        Control.onErrors(escalateCrashes = false, handler = Timber::e)
+        configureControl {
+            errors(Timber::e)
+            operations { Timber.d(it) }
+        }
 
         startKoin {
             androidContext(this@PlayablesApp)

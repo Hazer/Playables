@@ -11,12 +11,12 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
+import at.florianschuster.control.bind
+import at.florianschuster.control.changesFrom
+import at.florianschuster.data.lce.Data
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.ui.BaseFragment
 import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
-import at.florianschuster.playables.controller.ControllerView
-import at.florianschuster.playables.controller.Data
-import at.florianschuster.playables.controller.bind
 import at.florianschuster.playables.detail.startDetail
 import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
 import com.tailoredapps.androidutil.ui.extensions.addScrolledPastItemListener
@@ -39,9 +39,8 @@ import ru.ldralighieri.corbind.view.clicks
 import ru.ldralighieri.corbind.widget.textChanges
 import timber.log.Timber
 
-class SearchFragment : BaseFragment(layout = R.layout.fragment_search),
-    ControllerView<SearchControllerViewModel> {
-    override val controller: SearchControllerViewModel by viewModel()
+class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
+    private val controller: SearchControllerViewModel by viewModel()
     private val adapter: SearchAdapter by inject()
 
     init {
@@ -83,15 +82,14 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search),
                 .drop(1)
                 .debounce(500)
                 .map { SearchAction.Query(it.toString()) }
-                .bind { controller.action.offer(it) }
+                .bind(to = controller.action)
                 .launchIn(this)
 
-            controller.state.map { it.searchItems }
-                .distinctUntilChanged()
+            controller.state.changesFrom { it.searchItems }
                 .bind {
                     searchProgressBar.isVisible = it.loading
                     when (it) {
-                        is Data.Success -> adapter.submitList(it.element)
+                        is Data.Success -> adapter.submitList(it.value)
                         is Data.Failure -> toast("Error: ${it.error}")
                     }
                 }
