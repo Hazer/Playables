@@ -47,6 +47,12 @@
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
+    <style name="Playables.Text.Subtitle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/textLightPrimary</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
     <style name="Playables.Text.Body" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">@color/textLightPrimary</item>
         <item name="android:fontFamily">@font/roboto</item>

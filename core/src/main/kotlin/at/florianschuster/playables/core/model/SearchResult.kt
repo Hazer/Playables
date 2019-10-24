@@ -16,6 +16,8 @@
 
 package at.florianschuster.playables.core.model
 
+import org.threeten.bp.LocalDate
+
 data class SearchResult(
     val id: Long,
     val name: String,
@@ -27,5 +29,6 @@ data class Game(
     val name: String,
     val description: String,
     val image: String? = null,
-    val website: String
+    val website: String,
+    val releaseDate: LocalDate
 )

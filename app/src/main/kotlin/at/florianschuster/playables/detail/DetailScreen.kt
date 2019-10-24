@@ -49,10 +49,7 @@ import java.io.File
 import kotlin.math.max
 
 @Parcelize
-data class DetailArgs(
-    val id: Long,
-    val backGroundFile: File?
-) : Parcelable {
+data class DetailArgs(val id: Long, val backGroundFile: File?) : Parcelable {
     companion object {
         const val KEY = "detail_args"
     }
@@ -87,11 +84,14 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                 when (direction) {
                     DragDirection.DOWN -> max(0f, 1 - (percent * 1.75f))
                     else -> 1f
-                }.let {
-                    nameTextView.alpha = it
-                    platforms.alpha = it
-                    descriptionTextView.alpha = it
-                    websiteButton.alpha = it
+                }.let { alpha ->
+                    listOf(
+                        nameTextView,
+                        platforms,
+                        descriptionTextView,
+                        releasedTextView,
+                        websiteButton
+                    ).forEach { it.alpha = alpha }
                 }
 
                 when (direction) {
@@ -120,6 +120,7 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                                 }
                             }
                             nameTextView.text = game.value.name
+                            releasedTextView.text = game.value.releaseDate.toString()
                             descriptionTextView.text = game.value.description
                             websiteButton.isVisible = !game.value.website.isNullOrEmpty()
                         }
