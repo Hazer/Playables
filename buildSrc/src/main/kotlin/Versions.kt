@@ -54,13 +54,13 @@ object Versions {
 
     const val lint_gradle: String = "26.5.1"
 
-    const val ktlint: String = "0.34.2"
-
     const val material: String = "1.1.0-alpha10"
 
     const val threetenabp: String = "1.2.1"
 
     const val timber: String = "4.7.1"
+
+    const val ktlint: String = "0.34.2" // available: "0.35.0"
 
     const val com_squareup_leakcanary: String = "1.6.3"
 
@@ -85,6 +85,8 @@ object Versions {
     const val kotlinx_coroutines_core: String = "1.3.2"
 
     const val kotlinx_serialization_runtime: String = "0.13.0"
+
+    const val ktlint_gradle: String = "9.0.0"
 
     const val org_koin: String = "2.0.1"
 

@@ -160,11 +160,6 @@ object Libs {
     const val lint_gradle: String = "com.android.tools.lint:lint-gradle:" + Versions.lint_gradle
 
     /**
-     * https://github.com/shyiko/ktlint
-     */
-    const val ktlint: String = "com.github.shyiko:ktlint:" + Versions.ktlint
-
-    /**
      * http://developer.android.com/tools/extras/support-library.html
      */
     const val material: String = "com.google.android.material:material:" + Versions.material
@@ -179,6 +174,11 @@ object Libs {
      * https://github.com/JakeWharton/timber
      */
     const val timber: String = "com.jakewharton.timber:timber:" + Versions.timber
+
+    /**
+     * https://github.com/pinterest/ktlint
+     */
+    const val ktlint: String = "com.pinterest:ktlint:" + Versions.ktlint
 
     /**
      * http://github.com/square/leakcanary/
@@ -311,6 +311,9 @@ object Libs {
     const val kotlinx_serialization_runtime: String =
             "org.jetbrains.kotlinx:kotlinx-serialization-runtime:" +
             Versions.kotlinx_serialization_runtime
+
+    const val ktlint_gradle: String = "org.jlleitschuh.gradle:ktlint-gradle:" +
+            Versions.ktlint_gradle
 
     const val koin_android: String = "org.koin:koin-android:" + Versions.org_koin
 
