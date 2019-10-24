@@ -1,4 +1,4 @@
-package at.florianschuster.playables.base.ui
+package at.florianschuster.playables.base
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel

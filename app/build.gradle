@@ -27,8 +27,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         resValue "string", "app_name", "Playables"
-
-        buildConfigField "String", "BASE_URL", "\"https://api.rawg.io/api/\""
     }
 
     signingConfigs {
@@ -91,6 +89,14 @@ android {
     lintOptions {
         abortOnError true
     }
+
+    packagingOptions {
+        pickFirst 'META-INF/kotlinx-io.kotlin_module'
+        pickFirst 'META-INF/atomicfu.kotlin_module'
+        pickFirst 'META-INF/kotlinx-coroutines-io.kotlin_module'
+        pickFirst 'META-INF/kotlinx-coroutines-core.kotlin_module'
+        pickFirst 'META-INF/kotlinx-serialization-runtime.kotlin_module'
+    }
 }
 
 androidExtensions {
@@ -102,7 +108,39 @@ apply from: rootProject.file("test-dependencies-android.gradle")
 
 dependencies {
     implementation(project(path: ':core'))
-    implementation(project(path: ':base-ui'))
+
+    implementation Libs.appcompat
+    implementation Libs.activity_ktx
+    implementation Libs.fragment_ktx
+    implementation Libs.core_ktx
+    implementation Libs.constraintlayout
+    implementation Libs.material
+    implementation Libs.browser
+    implementation Libs.collection_ktx
+
+    implementation Libs.util_ui
+
+    implementation Libs.lifecycle_extensions
+    implementation Libs.lifecycle_viewmodel_ktx
+    implementation Libs.lifecycle_livedata_ktx
+    implementation Libs.lifecycle_runtime_ktx
+    kapt Libs.lifecycle_compiler
+
+    implementation Libs.corbind
+    implementation Libs.corbind_core
+    implementation Libs.corbind_appcompat
+    implementation Libs.corbind_recyclerview
+    implementation Libs.corbind_material
+
+    implementation Libs.koin_android
+    implementation Libs.koin_androidx_scope
+    implementation Libs.koin_androidx_viewmodel
+
+    implementation Libs.coil
+
+    implementation Libs.timber
+    debugImplementation Libs.leakcanary_android
+    releaseImplementation Libs.leakcanary_android_no_op
 }
 
 

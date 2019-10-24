@@ -18,59 +18,56 @@ package at.florianschuster.playables.detail
 
 import android.content.Context
 import android.content.Intent
+import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import at.florianschuster.control.bind
+import at.florianschuster.control.changesFrom
 import at.florianschuster.data.lce.Data
-import at.florianschuster.data.lce.dataFlowOf
-import at.florianschuster.data.lce.dataOf
 import at.florianschuster.data.lce.filterSuccessData
 import at.florianschuster.playables.R
-import at.florianschuster.playables.base.ui.BaseActivity
-import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
-import at.florianschuster.playables.core.DataRepo
-import at.florianschuster.playables.core.model.Game
+import at.florianschuster.playables.base.BaseActivity
+import at.florianschuster.playables.util.doOnApplyWindowInsets
 import at.florianschuster.playables.util.openChromeTab
 import coil.api.load
 import coil.transform.BlurTransformation
 import com.tailoredapps.androidutil.ui.extensions.extra
 import com.tailoredapps.androidutil.ui.extensions.extras
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.ldralighieri.corbind.view.clicks
 import java.io.File
 import kotlin.math.max
 
-private const val EXTRA_ID = "gameId"
-private const val EXTRA_BACKGROUND_FILE = "bg_file"
+@Parcelize
+data class DetailArgs(
+    val id: Long,
+    val backGroundFile: File?
+) : Parcelable {
+    companion object {
+        const val KEY = "detail_args"
+    }
+}
 
-fun Context.startDetail(id: Long, backGroundFile: File?) {
-    val intent = Intent(this, DetailActivity::class.java)
-        .extras(EXTRA_ID to id)
-        .apply { if (backGroundFile != null) extras(EXTRA_BACKGROUND_FILE to backGroundFile) }
-    startActivity(intent)
+fun Context.openDetailScreen(id: Long, backGroundFile: File?) {
+    startActivity(
+        Intent(this, DetailActivity::class.java)
+            .extras(DetailArgs.KEY to DetailArgs(id, backGroundFile))
+    )
 }
 
 class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
-    private val id: Long by extra(EXTRA_ID)
-    private val backgroundFile: File? by extra(EXTRA_BACKGROUND_FILE)
-    private val viewModel: DetailViewModel by viewModel { parametersOf(id) }
+    private val args: DetailArgs by extra(DetailArgs.KEY)
+    private val controller: DetailController by viewModel { parametersOf(args.id) }
 
     init {
         lifecycleScope.launchWhenCreated { applyInsets() }
@@ -78,7 +75,7 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
         lifecycleScope.launchWhenStarted {
             gameImageView.clipToOutline = true
 
-            backgroundImageView.load(backgroundFile)
+            backgroundImageView.load(args.backGroundFile)
 
             detailContent.onDismissed = { finish() }
             detailContent.onDragOffset = { direction, percent ->
@@ -108,13 +105,13 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                 }
             }
 
-            viewModel.game.distinctUntilChanged()
+            controller.state.changesFrom { it.game }
                 .bind { game ->
                     loadingProgressBar.isVisible = game.loading
                     when (game) {
                         is Data.Success -> {
                             gameImageView.load(game.value.image) { crossfade(true) }
-                            if (backgroundFile == null) {
+                            if (args.backGroundFile == null) {
                                 backgroundImageView.load(game.value.image) {
                                     crossfade(true)
                                     transformations(
@@ -134,8 +131,7 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                 .launchIn(this)
 
             websiteButton.clicks()
-                .map { viewModel.currentGame }
-                .filterNotNull()
+                .map { controller.currentState.game }
                 .filterSuccessData()
                 .bind { openChromeTab(it.website) }
                 .launchIn(this)
@@ -161,24 +157,6 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                     bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom
                 )
             }
-        }
-    }
-}
-
-class DetailViewModel(
-    private val gameId: Long,
-    private val dataRepo: DataRepo
-) : ViewModel() {
-    @Deprecated("Replace with stateFlow: https://github.com/Kotlin/kotlinx.coroutines/issues/1082")
-    private val gameState = ConflatedBroadcastChannel<Data<Game>>(Data.Uninitialized)
-
-    val currentGame: Data<Game> get() = gameState.value
-    val game: Flow<Data<Game>> get() = gameState.asFlow()
-
-    init {
-        viewModelScope.launch {
-            gameState.offer(Data.Loading)
-            gameState.offer(dataOf { dataRepo.game(gameId) })
         }
     }
 }

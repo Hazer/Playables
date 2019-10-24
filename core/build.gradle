@@ -3,21 +3,20 @@ apply from: rootProject.file("library-module.gradle")
 apply plugin: 'kotlinx-serialization'
 
 dependencies {
-    api Libs.kotlin_stdlib_jdk7
-    api Libs.kotlinx_coroutines_core
+    api(Libs.kotlin_stdlib_jdk8)
+    api(Libs.kotlinx_coroutines_core)
 
-    implementation Libs.kotlinx_serialization_runtime
+    api(Libs.koin_core)
 
-    implementation Libs.util_network
-    api Libs.util_optional
+    api(Libs.control_core)
+    api(Libs.lce_data)
 
-    api Libs.koin_core
+    implementation(Libs.kotlinx_serialization_runtime)
+    implementation(Libs.ktor_client_cio)
+    implementation(Libs.ktor_client_json_jvm)
+    implementation(Libs.ktor_client_serialization_jvm)
+    implementation(Libs.ktor_client_logging_jvm)
 
-    implementation Libs.retrofit
-    implementation Libs.retrofit2_kotlinx_serialization_converter
-    implementation Libs.okhttp
-    implementation Libs.logging_interceptor
-
-    api Libs.timber
     api Libs.threetenabp
+
 }

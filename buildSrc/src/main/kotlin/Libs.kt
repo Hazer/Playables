@@ -42,7 +42,7 @@ object Libs {
     /**
      * https://developer.android.com/jetpack/androidx
      */
-    const val fragment: String = "androidx.fragment:fragment:" + Versions.fragment
+    const val fragment_ktx: String = "androidx.fragment:fragment-ktx:" + Versions.fragment_ktx
 
     /**
      * https://developer.android.com/topic/libraries/architecture/index.html
@@ -104,8 +104,7 @@ object Libs {
     /**
      * https://developer.android.com/testing
      */
-    const val androidx_test_ext_truth: String = "androidx.test.ext:truth:" +
-            Versions.androidx_test_ext_truth
+    const val truth: String = "androidx.test.ext:truth:" + Versions.truth
 
     /**
      * https://developer.android.com/testing
@@ -171,24 +170,6 @@ object Libs {
     const val material: String = "com.google.android.material:material:" + Versions.material
 
     /**
-     * http://findbugs.sourceforge.net/
-     */
-    const val jsr305: String = "com.google.code.findbugs:jsr305:" + Versions.jsr305
-
-    /**
-     * http://github.com/google/truth
-     */
-    const val com_google_truth_truth: String = "com.google.truth:truth:" +
-            Versions.com_google_truth_truth
-
-    /**
-     * https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter/
-     */
-    const val retrofit2_kotlinx_serialization_converter: String =
-            "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:" +
-            Versions.retrofit2_kotlinx_serialization_converter
-
-    /**
      * https://github.com/JakeWharton/ThreeTenABP/
      */
     const val threetenabp: String = "com.jakewharton.threetenabp:threetenabp:" +
@@ -198,12 +179,6 @@ object Libs {
      * https://github.com/JakeWharton/timber
      */
     const val timber: String = "com.jakewharton.timber:timber:" + Versions.timber
-
-    /**
-     * https://github.com/nhaarman/mockito-kotlin
-     */
-    const val mockito_kotlin_kt1_1: String = "com.nhaarman:mockito-kotlin-kt1.1:" +
-            Versions.mockito_kotlin_kt1_1
 
     /**
      * http://github.com/square/leakcanary/
@@ -218,50 +193,9 @@ object Libs {
             Versions.com_squareup_leakcanary
 
     /**
-     * https://github.com/square/okhttp
-     */
-    const val logging_interceptor: String = "com.squareup.okhttp3:logging-interceptor:" +
-            Versions.com_squareup_okhttp3
-
-    /**
-     * https://github.com/square/okhttp
-     */
-    const val okhttp: String = "com.squareup.okhttp3:okhttp:" + Versions.com_squareup_okhttp3
-
-    /**
-     * https://github.com/square/retrofit/
-     */
-    const val retrofit: String = "com.squareup.retrofit2:retrofit:" + Versions.retrofit
-
-    /**
      * https://github.com/tailoredmedia/AndroidAppUtil
      */
-    const val util_network: String = "com.tailoredapps.androidutil:util-network:" +
-            Versions.com_tailoredapps_androidutil
-
-    /**
-     * https://github.com/tailoredmedia/AndroidAppUtil
-     */
-    const val util_optional: String = "com.tailoredapps.androidutil:util-optional:" +
-            Versions.com_tailoredapps_androidutil
-
-    /**
-     * https://github.com/tailoredmedia/AndroidAppUtil
-     */
-    const val util_permissions: String = "com.tailoredapps.androidutil:util-permissions:" +
-            Versions.com_tailoredapps_androidutil
-
-    /**
-     * https://github.com/tailoredmedia/AndroidAppUtil
-     */
-    const val util_ui: String = "com.tailoredapps.androidutil:util-ui:" +
-            Versions.com_tailoredapps_androidutil
-
-    /**
-     * https://github.com/tailoredmedia/AndroidAppUtil
-     */
-    const val util_viewstate: String = "com.tailoredapps.androidutil:util-viewstate:" +
-            Versions.com_tailoredapps_androidutil
+    const val util_ui: String = "com.tailoredapps.androidutil:util-ui:" + Versions.util_ui
 
     /**
      * http://github.com/vanniktech/gradle-dependency-graph-generator-plugin/
@@ -283,6 +217,28 @@ object Libs {
     const val coil: String = "io.coil-kt:coil:" + Versions.coil
 
     /**
+     * https://github.com/ktorio/ktor
+     */
+    const val ktor_client_cio: String = "io.ktor:ktor-client-cio:" + Versions.io_ktor
+
+    /**
+     * https://github.com/ktorio/ktor
+     */
+    const val ktor_client_json_jvm: String = "io.ktor:ktor-client-json-jvm:" + Versions.io_ktor
+
+    /**
+     * https://github.com/ktorio/ktor
+     */
+    const val ktor_client_logging_jvm: String = "io.ktor:ktor-client-logging-jvm:" +
+            Versions.io_ktor
+
+    /**
+     * https://github.com/ktorio/ktor
+     */
+    const val ktor_client_serialization_jvm: String = "io.ktor:ktor-client-serialization-jvm:" +
+            Versions.io_ktor
+
+    /**
      * http://mockk.io
      */
     const val mockk: String = "io.mockk:mockk:" + Versions.mockk
@@ -291,8 +247,6 @@ object Libs {
      * http://junit.org
      */
     const val junit_junit: String = "junit:junit:" + Versions.junit_junit
-
-    const val kluent: String = "org.amshove.kluent:kluent:" + Versions.kluent
 
     /**
      * https://kotlinlang.org/
@@ -323,12 +277,6 @@ object Libs {
     /**
      * https://kotlinlang.org/
      */
-    const val kotlin_reflect: String = "org.jetbrains.kotlin:kotlin-reflect:" +
-            Versions.org_jetbrains_kotlin
-
-    /**
-     * https://kotlinlang.org/
-     */
     const val kotlin_scripting_compiler_embeddable: String =
             "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:" +
             Versions.org_jetbrains_kotlin
@@ -348,15 +296,8 @@ object Libs {
     /**
      * https://kotlinlang.org/
      */
-    const val kotlin_stdlib_jdk7: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:" +
+    const val kotlin_stdlib_jdk8: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" +
             Versions.org_jetbrains_kotlin
-
-    /**
-     * https://github.com/Kotlin/kotlinx.coroutines
-     */
-    const val kotlinx_coroutines_android: String =
-            "org.jetbrains.kotlinx:kotlinx-coroutines-android:" +
-            Versions.kotlinx_coroutines_android
 
     /**
      * https://github.com/Kotlin/kotlinx.coroutines
@@ -381,34 +322,6 @@ object Libs {
     const val koin_core: String = "org.koin:koin-core:" + Versions.org_koin
 
     const val koin_test: String = "org.koin:koin-test:" + Versions.org_koin
-
-    /**
-     * https://github.com/mockito/mockito
-     */
-    const val mockito_android: String = "org.mockito:mockito-android:" + Versions.org_mockito
-
-    /**
-     * https://github.com/mockito/mockito
-     */
-    const val mockito_core: String = "org.mockito:mockito-core:" + Versions.org_mockito
-
-    /**
-     * http://www.powermock.org
-     */
-    const val powermock_api_mockito2: String = "org.powermock:powermock-api-mockito2:" +
-            Versions.org_powermock
-
-    /**
-     * http://www.powermock.org
-     */
-    const val powermock_module_junit4_rule: String = "org.powermock:powermock-module-junit4-rule:" +
-            Versions.org_powermock
-
-    /**
-     * http://www.powermock.org
-     */
-    const val powermock_module_junit4: String = "org.powermock:powermock-module-junit4:" +
-            Versions.org_powermock
 
     /**
      * https://github.com/LDRAlighieri/Corbind/

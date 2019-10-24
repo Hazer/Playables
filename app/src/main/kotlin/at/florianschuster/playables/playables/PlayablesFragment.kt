@@ -7,24 +7,19 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import at.florianschuster.control.bind
+import at.florianschuster.control.changesFrom
 import at.florianschuster.data.lce.Data
-import at.florianschuster.data.lce.mapAsData
 import at.florianschuster.playables.R
-import at.florianschuster.playables.base.ui.BaseFragment
-import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
-import at.florianschuster.playables.core.DataRepo
-import at.florianschuster.playables.core.model.Game
-import at.florianschuster.playables.detail.startDetail
+import at.florianschuster.playables.base.BaseFragment
+import at.florianschuster.playables.detail.openDetailScreen
 import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
+import at.florianschuster.playables.util.doOnApplyWindowInsets
 import com.tailoredapps.androidutil.ui.extensions.addScrolledPastItemListener
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 import com.tailoredapps.androidutil.ui.extensions.toast
 import kotlinx.android.synthetic.main.fragment_playables.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -32,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.ldralighieri.corbind.view.clicks
 
 class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
-    private val viewModel: PlayablesViewModel by viewModel()
+    private val controller: PlayablesController by viewModel()
     private val adapter: PlayablesAdapter by inject()
 
     init {
@@ -45,7 +40,7 @@ class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
                     is PlayablesAdapterInteraction.Clicked -> {
                         lifecycleScope.launch {
                             val screenShotFile = retrieveActivityBlurredScreenShot()
-                            requireContext().startDetail(it.game.id, screenShotFile)
+                            requireContext().openDetailScreen(it.game.id, screenShotFile)
                         }
                     }
                     is PlayablesAdapterInteraction.PlayedClicked -> {
@@ -62,8 +57,7 @@ class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
                 .bind { playablesRecyclerView.smoothScrollToPosition(0) }
                 .launchIn(this)
 
-            viewModel.playables
-                .distinctUntilChanged()
+            controller.state.changesFrom { it.games }
                 .bind { games ->
                     playablesRecyclerView.isVisible = !games().isNullOrEmpty()
                     layoutPlayablesEmpty.isVisible = games().isNullOrEmpty()
@@ -103,10 +97,4 @@ class PlayablesFragment : BaseFragment(layout = R.layout.fragment_playables) {
             }
         }
     }
-}
-
-class PlayablesViewModel(
-    dataRepo: DataRepo
-) : ViewModel() {
-    val playables: Flow<Data<List<Game>>> = dataRepo.playables().mapAsData()
 }

@@ -1,4 +1,4 @@
-package at.florianschuster.playables.base.ui
+package at.florianschuster.playables.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,9 @@ import com.squareup.leakcanary.RefWatcher
 import org.koin.android.ext.android.inject
 
 abstract class BaseBottomSheetDialogFragment(
-    @LayoutRes protected val layout: Int
+    @LayoutRes private val layout: Int
 ) : BottomSheetDialogFragment() {
+
     private val refWatcher: RefWatcher by inject()
 
     override fun onCreateView(

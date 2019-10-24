@@ -22,7 +22,7 @@ object Versions {
 
     const val core_ktx: String = "1.1.0"
 
-    const val fragment: String = "1.1.0"
+    const val fragment_ktx: String = "1.1.0"
 
     const val lifecycle_compiler: String = "2.1.0"
 
@@ -38,13 +38,13 @@ object Versions {
 
     const val androidx_test_ext_junit: String = "1.1.1"
 
-    const val androidx_test_ext_truth: String = "1.2.0"
+    const val truth: String = "1.2.0"
 
     const val androidx_test: String = "1.2.0"
 
-    const val at_florianschuster_control: String = "0.0.10"
+    const val at_florianschuster_control: String = "0.0.13"
 
-    const val lce_data: String = "1.0.0"
+    const val lce_data: String = "1.0.1"
 
     const val easylauncher: String = "1.3.1"
 
@@ -58,25 +58,13 @@ object Versions {
 
     const val material: String = "1.1.0-alpha10"
 
-    const val jsr305: String = "3.0.2"
-
-    const val com_google_truth_truth: String = "1.0"
-
-    const val retrofit2_kotlinx_serialization_converter: String = "0.4.0"
-
     const val threetenabp: String = "1.2.1"
 
     const val timber: String = "4.7.1"
 
-    const val mockito_kotlin_kt1_1: String = "1.5.0"
-
     const val com_squareup_leakcanary: String = "1.6.3"
 
-    const val com_squareup_okhttp3: String = "4.2.2"
-
-    const val retrofit: String = "2.6.2"
-
-    const val com_tailoredapps_androidutil: String = "16"
+    const val util_ui: String = "16"
 
     const val gradle_dependency_graph_generator_plugin: String = "0.5.0"
 
@@ -84,27 +72,21 @@ object Versions {
 
     const val graphviz_java: String = "0.11.0"
 
-    const val coil: String = "0.7.0"
+    const val coil: String = "0.8.0"
+
+    const val io_ktor: String = "1.2.5"
 
     const val mockk: String = "1.9.3"
 
     const val junit_junit: String = "4.12"
 
-    const val kluent: String = "1.51" // available: "1.56"
-
     const val org_jetbrains_kotlin: String = "1.3.50"
-
-    const val kotlinx_coroutines_android: String = "1.3.2"
 
     const val kotlinx_coroutines_core: String = "1.3.2"
 
     const val kotlinx_serialization_runtime: String = "0.13.0"
 
     const val org_koin: String = "2.0.1"
-
-    const val org_mockito: String = "3.0.0" // available: "3.1.0"
-
-    const val org_powermock: String = "2.0.2" // available: "2.0.4"
 
     const val ru_ldralighieri_corbind: String = "1.2.0"
 

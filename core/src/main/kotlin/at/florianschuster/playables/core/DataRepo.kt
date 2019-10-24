@@ -29,9 +29,7 @@ import kotlinx.coroutines.withContext
 
 interface DataRepo {
     suspend fun search(query: String, page: Int): List<SearchResult>
-
     suspend fun game(id: Long): Game
-
     fun playables(): Flow<List<Game>>
 }
 

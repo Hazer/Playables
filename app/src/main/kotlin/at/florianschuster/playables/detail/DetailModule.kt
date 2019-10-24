@@ -20,5 +20,5 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val detailModule = module {
-    viewModel { (id: Long) -> DetailViewModel(gameId = id, dataRepo = get()) }
+    viewModel { (id: Long) -> DetailController(gameId = id, dataRepo = get()) }
 }

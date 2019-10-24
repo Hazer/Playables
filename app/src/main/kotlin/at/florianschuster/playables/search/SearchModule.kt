@@ -20,6 +20,6 @@ import org.koin.dsl.module
  */
 
 internal val searchModule = module {
-    viewModel { SearchControllerViewModel(dataRepo = get()) }
+    viewModel { SearchController(dataRepo = get()) }
     factory { SearchAdapter() }
 }

@@ -1,57 +1,43 @@
 package at.florianschuster.playables.search
 
 import at.florianschuster.data.lce.Data
-import at.florianschuster.playables.base.ui.BaseController
+import at.florianschuster.data.lce.dataFlowOf
+import at.florianschuster.playables.base.BaseController
 import at.florianschuster.playables.core.DataRepo
 import at.florianschuster.playables.core.model.SearchResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withTimeout
-import timber.log.Timber
 
-sealed class SearchAction {
-    data class Query(val query: String) : SearchAction()
-}
-
-sealed class SearchMutation {
-    data class SetSearchItems(val searchItems: Data<List<SearchResult>>) : SearchMutation()
-}
-
-data class SearchState(
-    val searchItems: Data<List<SearchResult>> = Data.Uninitialized
-)
-
-class SearchControllerViewModel(
+class SearchController(
     private val dataRepo: DataRepo
-) : BaseController<SearchAction, SearchMutation, SearchState>() {
-
-    override val initialState: SearchState = SearchState()
-
-    override fun transformAction(action: Flow<SearchAction>): Flow<SearchAction> {
-        return action.onStart { emit(SearchAction.Query("")) }
+) : BaseController<SearchController.Action, SearchController.Mutation, SearchController.State>() {
+    sealed class Action {
+        data class Query(val query: String) : Action()
     }
 
-    override fun mutate(action: SearchAction): Flow<SearchMutation> = when (action) {
-        is SearchAction.Query -> {
-            flow {
-                emit(Data.Loading)
-                val data: Data<List<SearchResult>> = try {
-                    withTimeout(3000) {
-                        Data.Success(dataRepo.search(action.query, 1))
-                    }
-                } catch (e: Exception) {
-                    Timber.e(e)
-                    Data.Failure(e)
-                }
-                emit(data)
-            }.map { SearchMutation.SetSearchItems(it) }
+    sealed class Mutation {
+        data class SetSearchItems(val searchItems: Data<List<SearchResult>>) : Mutation()
+    }
+
+    data class State(
+        val searchItems: Data<List<SearchResult>> = Data.Uninitialized
+    )
+
+    override val initialState: State = State()
+
+    override fun transformAction(action: Flow<Action>): Flow<Action> =
+        action.onStart { emit(Action.Query("")) }
+
+    override fun mutate(action: Action): Flow<Mutation> = when (action) {
+        is Action.Query -> {
+            dataFlowOf { withTimeout(3000) { dataRepo.search(action.query, 1) } }
+                .map { Mutation.SetSearchItems(it) }
         }
     }
 
-    override fun reduce(previousState: SearchState, mutation: SearchMutation): SearchState =
-        when (mutation) {
-            is SearchMutation.SetSearchItems -> previousState.copy(searchItems = mutation.searchItems)
-        }
+    override fun reduce(previousState: State, mutation: Mutation): State = when (mutation) {
+        is Mutation.SetSearchItems -> previousState.copy(searchItems = mutation.searchItems)
+    }
 }

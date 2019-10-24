@@ -16,20 +16,42 @@
 
 package at.florianschuster.playables.core.remote
 
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import at.florianschuster.playables.core.model.ClientInfo
+import io.ktor.client.HttpClient
+import io.ktor.client.features.DefaultRequest
+import io.ktor.client.request.get
+import io.ktor.client.request.headers
+import io.ktor.client.request.parameter
 
 interface RAWGApi {
+    suspend fun search(query: String, page: Int = 1): RemoteSearch
+    suspend fun game(id: Long): RemoteGame
+}
 
-    @GET("games")
-    suspend fun search(
-        @Query("search") query: String,
-        @Query("page") page: Int = 1,
-        @Query("page_size") pageSize: Int = 20
-    ): RemoteSearch
+class HttpClientRAWGApi(
+    private val httpClient: HttpClient,
+    clientInfo: ClientInfo
+) : RAWGApi {
+    private val baseUrl = "https://api.rawg.io/api"
 
-    @GET("games/{id}")
-    suspend fun game(@Path("id") id: Long): RemoteGame
+    init {
+        val userAgent = "${clientInfo.appName}/${clientInfo.version.code} ${clientInfo.userAgent}"
+        httpClient.config {
+            install(DefaultRequest) {
+                headers { append("User-Agent", userAgent) }
+            }
+        }
+    }
 
+    override suspend fun search(query: String, page: Int): RemoteSearch =
+        httpClient.get("${baseUrl}/games") {
+            url {
+                parameter("search", query)
+                parameter("page", page)
+                parameter("page_size", 20)
+            }
+        }
+
+    override suspend fun game(id: Long): RemoteGame =
+        httpClient.get("${baseUrl}/games/$id")
 }

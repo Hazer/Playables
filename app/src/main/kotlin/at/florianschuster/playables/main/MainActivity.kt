@@ -3,15 +3,14 @@ package at.florianschuster.playables.main
 import android.os.Bundle
 import android.view.View.*
 import android.view.ViewGroup
-import androidx.core.view.forEach
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import at.florianschuster.playables.R
-import at.florianschuster.playables.base.ui.BaseActivity
-import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
+import at.florianschuster.playables.base.BaseActivity
 import at.florianschuster.playables.info.showInfoBottomSheet
+import at.florianschuster.playables.util.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_header.*
 import org.koin.android.ext.android.inject

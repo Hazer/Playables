@@ -16,13 +16,12 @@
 
 package at.florianschuster.playables.core.model
 
-data class AppInfo(
+data class ClientInfo(
     val appName: String,
     val debug: Boolean,
     val version: Version,
     val buildType: String,
     val flavor: String,
-    val baseUrl: String,
     val userAgent: String
 ) {
     data class Version(

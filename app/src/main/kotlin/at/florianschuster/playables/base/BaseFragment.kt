@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.base.ui
+package at.florianschuster.playables.base
 
-import com.squareup.leakcanary.LeakCanary
-import org.koin.android.ext.koin.androidApplication
-import org.koin.dsl.module
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
+import com.squareup.leakcanary.RefWatcher
+import org.koin.android.ext.android.inject
 
-val baseUIModule = module {
-    single { LeakCanary.install(androidApplication()) }
+abstract class BaseFragment(@LayoutRes layout: Int) : Fragment(layout) {
+
+    private val refWatcher: RefWatcher by inject()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        refWatcher.watch(this)
+    }
 }

@@ -3,9 +3,8 @@ package at.florianschuster.playables.info
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import at.florianschuster.playables.R
-import at.florianschuster.playables.base.ui.BaseBottomSheetDialogFragment
+import at.florianschuster.playables.base.BaseBottomSheetDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 fun AppCompatActivity.showInfoBottomSheet(): InfoBottomSheetDialogFragment {

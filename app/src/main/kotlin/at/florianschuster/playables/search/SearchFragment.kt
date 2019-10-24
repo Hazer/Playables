@@ -15,10 +15,10 @@ import at.florianschuster.control.bind
 import at.florianschuster.control.changesFrom
 import at.florianschuster.data.lce.Data
 import at.florianschuster.playables.R
-import at.florianschuster.playables.base.ui.BaseFragment
-import at.florianschuster.playables.base.ui.doOnApplyWindowInsets
-import at.florianschuster.playables.detail.startDetail
+import at.florianschuster.playables.base.BaseFragment
+import at.florianschuster.playables.detail.openDetailScreen
 import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
+import at.florianschuster.playables.util.doOnApplyWindowInsets
 import com.tailoredapps.androidutil.ui.extensions.addScrolledPastItemListener
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 import com.tailoredapps.androidutil.ui.extensions.hideKeyboard
@@ -26,21 +26,17 @@ import com.tailoredapps.androidutil.ui.extensions.showKeyBoard
 import com.tailoredapps.androidutil.ui.extensions.toast
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.ldralighieri.corbind.view.clicks
 import ru.ldralighieri.corbind.widget.textChanges
-import timber.log.Timber
 
 class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
-    private val controller: SearchControllerViewModel by viewModel()
+    private val controller: SearchController by viewModel()
     private val adapter: SearchAdapter by inject()
 
     init {
@@ -51,7 +47,7 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
             adapter.interaction = {
                 lifecycleScope.launch {
                     val screenShotFile = retrieveActivityBlurredScreenShot()
-                    requireContext().startDetail(it.id, screenShotFile)
+                    requireContext().openDetailScreen(it.id, screenShotFile)
                 }
             }
 
@@ -81,7 +77,7 @@ class SearchFragment : BaseFragment(layout = R.layout.fragment_search) {
             searchEditText.textChanges()
                 .drop(1)
                 .debounce(500)
-                .map { SearchAction.Query(it.toString()) }
+                .map { SearchController.Action.Query(it.toString()) }
                 .bind(to = controller.action)
                 .launchIn(this)
 

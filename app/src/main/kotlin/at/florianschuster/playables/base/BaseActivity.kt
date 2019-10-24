@@ -14,32 +14,19 @@
  * limitations under the License.
  */
 
-package at.florianschuster.playables.base.ui
+package at.florianschuster.playables.base
 
-import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.squareup.leakcanary.RefWatcher
-import com.tailoredapps.androidutil.viewstate.VS
-import com.tailoredapps.androidutil.viewstate.ViewState
 import org.koin.android.ext.android.inject
 
-abstract class BaseFragment(@LayoutRes layout: Int) : Fragment(layout), ViewState by VS() {
+abstract class BaseActivity(@LayoutRes layout: Int) : AppCompatActivity(layout) {
+
     private val refWatcher: RefWatcher by inject()
 
     @CallSuper
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        storeStateIn(outState)
-    }
-
-    @CallSuper
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        restoreStateFrom(savedInstanceState)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         refWatcher.watch(this)

@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 import org.threeten.bp.LocalDate
 
 @Serializable
-data class RemoteSearch(
+ data class RemoteSearch(
     val count: Long,
     val next: String?,
     val previous: String?,
@@ -45,7 +45,7 @@ data class RemoteSearch(
 }
 
 @Serializable
-data class RemoteGame(
+ data class RemoteGame(
     val id: Long,
     val name: String,
     @SerialName("description_raw") val description: String,
@@ -66,30 +66,30 @@ data class RemoteGame(
 )
 
 @Serializable
-data class RemotePlatform(val id: Long? = null, val name: String? = null)
+internal data class RemotePlatform(val id: Long? = null, val name: String? = null)
 
 @Serializable
-data class RemoteStore(val id: Long? = null, val name: String? = null)
+internal data class RemoteStore(val id: Long? = null, val name: String? = null)
 
 @Serializable
-data class RemoteGenre(val id: Long? = null, val name: String? = null, val image: String? = null)
+internal data class RemoteGenre(val id: Long? = null, val name: String? = null, val image: String? = null)
 
 @Serializable
-data class RemoteScreenShot(val id: Long? = null, val image: String? = null)
+internal data class RemoteScreenShot(val id: Long? = null, val image: String? = null)
 
 @Serializable
-data class RemoteDeveloper(
+internal data class RemoteDeveloper(
     val id: Long? = null,
     val name: String? = null,
     @SerialName("image_background") val image: String? = null
 )
 
 @Serializable
-data class RemoteTag(
+internal data class RemoteTag(
     val id: Long? = null,
     val name: String? = null,
     @SerialName("image_background") val image: String? = null
 )
 
 @Serializable
-data class RemoteRating(val id: Long? = null, val name: String? = null)
+internal data class RemoteRating(val id: Long? = null, val name: String? = null)

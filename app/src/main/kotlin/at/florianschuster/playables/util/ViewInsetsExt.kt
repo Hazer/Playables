@@ -1,4 +1,4 @@
-package at.florianschuster.playables.base.ui
+package at.florianschuster.playables.util
 
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +35,12 @@ class InitialMargin(
 )
 
 private fun recordInitialPaddingForView(view: View) =
-    InitialPadding(view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom)
+    InitialPadding(
+        view.paddingLeft,
+        view.paddingTop,
+        view.paddingRight,
+        view.paddingBottom
+    )
 
 private fun recordInitialMarginForView(view: View) =
     InitialMargin(

@@ -7,16 +7,14 @@ sourceSets {
     test.java.srcDirs += 'src/test/kotlin'
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+
 compileKotlin {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 apply from: rootProject.file("test-dependencies.gradle")

@@ -16,49 +16,32 @@
 
 package at.florianschuster.playables.core.remote
 
-import at.florianschuster.playables.core.model.AppInfo
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import at.florianschuster.playables.core.model.ClientInfo
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.features.logging.LogLevel
+import io.ktor.client.features.logging.Logger
+import io.ktor.client.features.logging.Logging
+import io.ktor.client.features.logging.SIMPLE
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
-import retrofit2.Retrofit
 
 internal val remoteModule = module {
-    factory { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY } }
-    factory { provideUserAgentInterceptor(appInfo = get()) }
-    single {
-        provideOkHttpClient(
-            loggingInterceptor = get(),
-            userAgentInterceptor = get(),
-            appInfo = get()
-        )
-    }
-    single { provideApi<RAWGApi>(okHttpClient = get(), json = get(), appInfo = get()) }
+    single { provideHttpClient(json = get(), clientInfo = get()) }
+    single<RAWGApi> { HttpClientRAWGApi(httpClient = get(), clientInfo = get()) }
 }
 
-private fun provideUserAgentInterceptor(appInfo: AppInfo) = UserAgentInterceptor(
-    appName = appInfo.appName,
-    version = "${appInfo.version.code}",
-    agent = appInfo.userAgent
-)
-
-private fun provideOkHttpClient(
-    loggingInterceptor: HttpLoggingInterceptor,
-    userAgentInterceptor: UserAgentInterceptor,
-    appInfo: AppInfo
-) = OkHttpClient().newBuilder().apply {
-    if (appInfo.debug) addInterceptor(loggingInterceptor)
-    addInterceptor(userAgentInterceptor)
-}.build()
-
-private inline fun <reified T> provideApi(
-    okHttpClient: OkHttpClient,
+private fun provideHttpClient(
     json: Json,
-    appInfo: AppInfo
-): T = Retrofit.Builder().apply {
-    baseUrl(appInfo.baseUrl)
-    client(okHttpClient)
-    addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-}.build().create(T::class.java)
+    clientInfo: ClientInfo
+) = HttpClient(engineFactory = CIO) {
+    install(feature = JsonFeature) { serializer = KotlinxSerializer(json = json) }
+    if (clientInfo.debug) {
+        install(feature = Logging) {
+            logger = Logger.SIMPLE
+            level = LogLevel.BODY
+        }
+    }
+}
