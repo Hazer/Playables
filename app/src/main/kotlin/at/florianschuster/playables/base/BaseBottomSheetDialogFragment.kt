@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.leakcanary.RefWatcher
-import org.koin.android.ext.android.inject
+import org.koin.android.ext.android.get
 
 abstract class BaseBottomSheetDialogFragment(
     @LayoutRes private val layout: Int
 ) : BottomSheetDialogFragment() {
-
-    private val refWatcher: RefWatcher by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +21,6 @@ abstract class BaseBottomSheetDialogFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        refWatcher.watch(this)
+        get<RefWatcher>().watch(this)
     }
 }

@@ -16,6 +16,16 @@
         app:spanCount="2"
         tools:listitem="@layout/item_search" />
 
+    <include
+        android:id="@+id/layoutSearchLoading"
+        layout="@layout/fragment_search_loading"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/layoutSearchError"
+        layout="@layout/fragment_error"
+        android:visibility="gone" />
+
     <View
         android:id="@+id/searchBottomShadowLayout"
         android:layout_width="0dp"

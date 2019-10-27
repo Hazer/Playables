@@ -7,4 +7,7 @@
     <dimen name="size_corners_special">18dp</dimen>
     <dimen name="size_corners_outer">14dp</dimen>
     <dimen name="size_corners_inner">9dp</dimen>
+
+    <dimen name="size_main_logo">24dp</dimen>
+    <dimen name="button_stroke_width">1dp</dimen>
 </resources>

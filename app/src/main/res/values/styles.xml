@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/white_opacity_20</item>
+        <item name="colorControlHighlight">@color/colorControlHighLight</item>
 
         <item name="android:windowBackground">@drawable/bg_window</item>
 
@@ -59,6 +59,12 @@
         <item name="fontFamily">@font/roboto</item>
     </style>
 
+    <style name="Playables.Text.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/textLightPrimary</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
     <style name="Playables.View.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/size_corners_outer</item>
         <item name="cardBackgroundColor">@color/colorPrimaryLight</item>
@@ -73,10 +79,17 @@
     </style>
 
     <style name="Playables.View.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeWidth">@dimen/button_stroke_width</item>
         <item name="strokeColor">@color/textLightPrimary</item>
         <item name="android:textColor">@color/textLightPrimary</item>
         <item name="cornerRadius">@dimen/size_corners_inner</item>
         <item name="android:textAllCaps">false</item>
+        <item name="rippleColor">@color/colorControlHighLight</item>
+    </style>
+
+    <style name="Playables.View.Button.Accent">
+        <item name="strokeColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <!-- Platform -->

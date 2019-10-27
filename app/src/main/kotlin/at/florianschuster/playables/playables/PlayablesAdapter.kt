@@ -7,25 +7,29 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.florianschuster.playables.R
 import at.florianschuster.playables.core.model.Game
+import at.florianschuster.playables.util.inflate
 import coil.api.load
-import com.tailoredapps.androidutil.ui.extensions.inflate
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_playables.*
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.SendChannel
+import kotlinx.coroutines.flow.asFlow
 
 sealed class PlayablesAdapterInteraction {
-    data class Clicked(val game: Game) : PlayablesAdapterInteraction()
-    data class PlayedClicked(val game: Game, val played: Boolean) :
+    data class Clicked(val gameId: Long) : PlayablesAdapterInteraction()
+    data class PlayedClicked(val gameId: Long, val played: Boolean) :
         PlayablesAdapterInteraction()
 }
 
 class PlayablesAdapter : ListAdapter<Game, PlayableViewHolder>(diff) {
-    var interaction: ((PlayablesAdapterInteraction) -> Unit)? = null
+    private val _interaction = BroadcastChannel<PlayablesAdapterInteraction>(1)
+    val interaction = _interaction.asFlow()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayableViewHolder =
         PlayableViewHolder(parent.inflate(R.layout.item_playables))
 
     override fun onBindViewHolder(holder: PlayableViewHolder, position: Int) =
-        holder.bind(getItem(position)) { interaction?.invoke(it) }
+        holder.bind(getItem(position), _interaction)
 
     companion object {
         private val diff = object : DiffUtil.ItemCallback<Game>() {
@@ -42,9 +46,9 @@ class PlayableViewHolder(
     override val containerView: View
 ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(game: Game, onClick: (PlayablesAdapterInteraction) -> Unit) {
+    fun bind(game: Game, interaction: SendChannel<PlayablesAdapterInteraction>) {
         cardView.setOnClickListener {
-            onClick(PlayablesAdapterInteraction.Clicked(game))
+            interaction.offer(PlayablesAdapterInteraction.Clicked(game.id))
         }
         nameTextView.text = game.name
         with(gameImageView) {
@@ -54,7 +58,9 @@ class PlayableViewHolder(
         playedButton.isSelected = false
         playedButton.setOnClickListener {
             playedButton.isSelected = !playedButton.isSelected
-            onClick(PlayablesAdapterInteraction.PlayedClicked(game, false))
+            interaction.offer(
+                PlayablesAdapterInteraction.PlayedClicked(game.id, playedButton.isSelected)
+            )
         }
     }
 }

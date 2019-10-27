@@ -15,15 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_fade_main_top"
-        android:padding="@dimen/margin">
+        android:padding="@dimen/size_main_logo">
 
         <include layout="@layout/activity_main_header" />
     </FrameLayout>
 
     <ImageView
         android:id="@+id/logoImageView"
-        android:layout_width="@dimen/margin"
-        android:layout_height="@dimen/margin"
+        android:layout_width="@dimen/size_main_logo"
+        android:layout_height="@dimen/size_main_logo"
         android:layout_gravity="top|center_horizontal"
         android:background="?selectableItemBackgroundBorderless"
         android:src="@drawable/ic_logo" />

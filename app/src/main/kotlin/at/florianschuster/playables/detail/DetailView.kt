@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 Florian Schuster.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package at.florianschuster.playables.detail
 
 import android.content.Context
@@ -32,12 +16,12 @@ import at.florianschuster.data.lce.Data
 import at.florianschuster.data.lce.filterSuccessData
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.BaseActivity
-import at.florianschuster.playables.util.doOnApplyWindowInsets
 import at.florianschuster.playables.util.openChromeTab
 import coil.api.load
 import coil.transform.BlurTransformation
 import com.tailoredapps.androidutil.ui.extensions.extra
 import com.tailoredapps.androidutil.ui.extensions.extras
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.coroutines.flow.launchIn
@@ -49,20 +33,14 @@ import java.io.File
 import kotlin.math.max
 
 @Parcelize
-data class DetailArgs(val id: Long, val backGroundFile: File?) : Parcelable {
+private data class DetailArgs(val id: Long, val backGroundFile: File?) : Parcelable {
     companion object {
         const val KEY = "detail_args"
     }
 }
 
-fun Context.openDetailScreen(id: Long, backGroundFile: File?) {
-    startActivity(
-        Intent(this, DetailActivity::class.java)
-            .extras(DetailArgs.KEY to DetailArgs(id, backGroundFile))
-    )
-}
+class DetailView : BaseActivity(layout = R.layout.activity_detail) {
 
-class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
     private val args: DetailArgs by extra(DetailArgs.KEY)
     private val controller: DetailController by viewModel { parametersOf(args.id) }
 
@@ -86,10 +64,8 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                     else -> 1f
                 }.let { alpha ->
                     listOf(
-                        nameTextView,
-                        platforms,
+                        detailHeaderContentLayout,
                         descriptionTextView,
-                        releasedTextView,
                         websiteButton
                     ).forEach { it.alpha = alpha }
                 }
@@ -115,12 +91,12 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
                                 backgroundImageView.load(game.value.image) {
                                     crossfade(true)
                                     transformations(
-                                        BlurTransformation(this@DetailActivity, 25f, 5f)
+                                        BlurTransformation(this@DetailView, 25f, 5f)
                                     )
                                 }
                             }
                             nameTextView.text = game.value.name
-                            releasedTextView.text = game.value.releaseDate.toString()
+                            releasedTextView.text = game.value.releaseDateInUnix.toString()
                             descriptionTextView.text = game.value.description
                             websiteButton.isVisible = !game.value.website.isNullOrEmpty()
                         }
@@ -146,18 +122,26 @@ class DetailActivity : BaseActivity(layout = R.layout.activity_detail) {
 
         window.statusBarColor = resources.getColor(R.color.transparent, null)
 
-        detailContentConstraintLayout.doOnApplyWindowInsets { view, windowInsets, initialPadding, _ ->
+        detailContentConstraintLayout.doOnApplyWindowInsets { view, windowInsets, viewState ->
             view.updatePadding(
-                top = initialPadding.top + windowInsets.systemWindowInsetTop
+                top = viewState.paddings.top + windowInsets.systemWindowInsetTop
             )
         }
 
-        websiteButton.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+        websiteButton.doOnApplyWindowInsets { view, windowInsets, viewState ->
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 updateMargins(
-                    bottom = initialMargin.bottom + windowInsets.systemWindowInsetBottom
+                    bottom = viewState.margins.bottom + windowInsets.systemWindowInsetBottom
                 )
             }
+        }
+    }
+
+    companion object {
+        fun start(context: Context, id: Long, backGroundFile: File?) {
+            Intent(context, DetailView::class.java)
+                .extras(DetailArgs.KEY to DetailArgs(id, backGroundFile))
+                .let(context::startActivity)
         }
     }
 }

@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".detail.DetailActivity"
+            android:name=".detail.DetailView"
             android:theme="@style/AppTheme.Transparent" />
 
         <meta-data

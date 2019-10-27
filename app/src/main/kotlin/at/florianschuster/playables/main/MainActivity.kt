@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.BaseActivity
 import at.florianschuster.playables.info.showInfoBottomSheet
-import at.florianschuster.playables.util.doOnApplyWindowInsets
+import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_header.*
 import org.koin.android.ext.android.inject
@@ -64,15 +64,15 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainBackGroundRetriev
 
         window.statusBarColor = resources.getColor(R.color.black_opacity_75, null)
 
-        motionHeaderContainer.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+        motionHeaderContainer.doOnApplyWindowInsets { view, windowInsets, viewState ->
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                updateMargins(top = initialMargin.top + windowInsets.systemWindowInsetTop)
+                updateMargins(top = viewState.margins.top + windowInsets.systemWindowInsetTop)
             }
         }
 
-        logoImageView.doOnApplyWindowInsets { view, windowInsets, _, initialMargin ->
+        logoImageView.doOnApplyWindowInsets { view, windowInsets, viewState ->
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                updateMargins(top = initialMargin.top + windowInsets.systemWindowInsetTop)
+                updateMargins(top = viewState.margins.top + windowInsets.systemWindowInsetTop)
             }
         }
     }

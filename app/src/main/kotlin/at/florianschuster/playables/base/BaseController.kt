@@ -5,15 +5,14 @@ import androidx.lifecycle.ViewModel
 import at.florianschuster.control.Controller
 import com.squareup.leakcanary.RefWatcher
 import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.get
 
 abstract class BaseController<A, M, S> : ViewModel(), Controller<A, M, S>, KoinComponent {
-    private val refWatcher: RefWatcher by inject()
 
     @CallSuper
     override fun onCleared() {
         super.onCleared()
         cancel()
-        refWatcher.watch(this)
+        get<RefWatcher>().watch(this)
     }
 }

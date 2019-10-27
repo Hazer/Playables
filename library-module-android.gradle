@@ -29,6 +29,10 @@ android {
     lintOptions {
         abortOnError true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 apply from: rootProject.file("test-dependencies.gradle")

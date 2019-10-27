@@ -107,7 +107,7 @@ apply from: rootProject.file("test-dependencies.gradle")
 apply from: rootProject.file("test-dependencies-android.gradle")
 
 dependencies {
-    implementation(project(path: ':core'))
+    implementation(project(path: ':core-android'))
 
     implementation Libs.appcompat
     implementation Libs.activity_ktx
@@ -131,12 +131,15 @@ dependencies {
     implementation Libs.corbind_appcompat
     implementation Libs.corbind_recyclerview
     implementation Libs.corbind_material
+    implementation Libs.corbind_swiperefreshlayout
 
     implementation Libs.koin_android
     implementation Libs.koin_androidx_scope
     implementation Libs.koin_androidx_viewmodel
 
     implementation Libs.coil
+    implementation Libs.shimmer
+    implementation Libs.insetter_ktx
 
     implementation Libs.timber
     debugImplementation Libs.leakcanary_android

@@ -2,10 +2,12 @@
 <resources>
     <color name="colorPrimary">#171718</color>
     <color name="colorPrimaryLight">#252528</color>
+    <color name="colorPrimaryLightTranslucent">#A6252528</color>
     <color name="colorPrimaryDark">#171718</color>
     <color name="colorAccent">@color/red_700</color>
     <color name="colorAccentLight">@color/red_300</color>
     <color name="colorAccentDark">@color/red_900</color>
+    <color name="colorControlHighLight">@color/white_opacity_20</color>
 
     <!--
     text colors
