@@ -37,7 +37,7 @@ class PlayablesController(
         is Action.ReloadGames -> flow {
             emit(Mutation.SetGames(Data.Loading))
             delay(300)
-            dataRepo.reloadPlayables()
+            dataRepo.reloadMyGames()
         }
         is Action.SetGamePlayed -> emptyFlow() // todo
     }
@@ -46,7 +46,7 @@ class PlayablesController(
         val playablesUpdateFlow = flow<Mutation> {
             emit(Mutation.SetGames(Data.Loading))
             delay(300)
-            emitAll(dataRepo.playables().mapAsData().map { Mutation.SetGames(it) })
+            emitAll(dataRepo.observeMyGames().mapAsData().map { Mutation.SetGames(it) })
         }
         return flowOf(mutation, playablesUpdateFlow).flattenMerge()
     }

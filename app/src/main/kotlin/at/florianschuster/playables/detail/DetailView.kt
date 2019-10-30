@@ -24,6 +24,7 @@ import com.tailoredapps.androidutil.ui.extensions.extras
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -110,7 +111,9 @@ class DetailView : BaseActivity(layout = R.layout.activity_detail) {
             websiteButton.clicks()
                 .map { controller.currentState.game }
                 .filterSuccessData()
-                .bind { openChromeTab(it.website) }
+                .map { it.website }
+                .filterNotNull()
+                .bind { openChromeTab(it) }
                 .launchIn(this)
         }
     }

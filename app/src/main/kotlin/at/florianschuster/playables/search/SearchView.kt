@@ -1,9 +1,7 @@
 package at.florianschuster.playables.search
 
-import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
@@ -13,7 +11,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import at.florianschuster.control.bind
 import at.florianschuster.control.changesFrom
-import at.florianschuster.data.lce.Data
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.BaseFragment
 import at.florianschuster.playables.detail.DetailView
@@ -24,7 +21,6 @@ import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 import com.tailoredapps.androidutil.ui.extensions.hideKeyboard
 import com.tailoredapps.androidutil.ui.extensions.shouldLoadMore
 import com.tailoredapps.androidutil.ui.extensions.showKeyBoard
-import com.tailoredapps.androidutil.ui.extensions.toast
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_error.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -80,7 +76,7 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
                 .launchIn(this)
 
             adapter.interaction
-                .filterIsInstance<SearchAdapterInteraction.Click>()
+                .filterIsInstance<SearchAdapterInteraction.Select>()
                 .map { it.gameId to retrieveActivityBlurredScreenShot() }
                 .bind { (id, screenshot) ->
                     DetailView.start(requireContext(), id, screenshot)
@@ -88,7 +84,7 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
                 .launchIn(this)
 
             adapter.interaction
-                .filterIsInstance<SearchAdapterInteraction.AddGame>()
+                .filterIsInstance<SearchAdapterInteraction.Add>()
                 .map { SearchController.Action.AddGame(it.game) }
                 .bind(to = controller.action)
                 .launchIn(this)

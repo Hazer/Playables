@@ -2,17 +2,15 @@ package at.florianschuster.playables.search
 
 import at.florianschuster.data.lce.Data
 import at.florianschuster.data.lce.dataFlowOf
-import at.florianschuster.data.lce.onEachDataFailure
 import at.florianschuster.playables.base.BaseController
 import at.florianschuster.playables.core.DataRepo
-import at.florianschuster.playables.core.model.SearchResult
+import at.florianschuster.playables.core.model.Game
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import timber.log.Timber
 
 class SearchController(
     val dataRepo: DataRepo
@@ -20,21 +18,21 @@ class SearchController(
     sealed class Action {
         data class Query(val query: String) : Action()
         object LoadNextPage : Action()
-        data class AddGame(val game: SearchResult) : Action()
+        data class AddGame(val game: Game) : Action()
         object ReloadCurrentQuery : Action()
     }
 
     sealed class Mutation {
         data class SetQuery(val query: String) : Mutation()
-        data class SetSearchItems(val items: Data<List<SearchResult>>) : Mutation()
-        data class AppendSearchItems(val items: Data<List<SearchResult>>) : Mutation()
+        data class SetSearchItems(val items: Data<List<Game>>) : Mutation()
+        data class AppendSearchItems(val items: Data<List<Game>>) : Mutation()
     }
 
     data class State(
         val query: String = "",
         val page: Int = 1,
-        val items: List<SearchResult> = emptyList(),
-        val pageLoad: Data<List<SearchResult>> = Data.Uninitialized,
+        val items: List<Game> = emptyList(),
+        val pageLoad: Data<List<Game>> = Data.Uninitialized,
         val firstLoadComplete: Boolean = false
     )
 

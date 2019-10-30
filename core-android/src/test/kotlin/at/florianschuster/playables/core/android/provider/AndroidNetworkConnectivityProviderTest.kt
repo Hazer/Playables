@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import at.florianschuster.control.test.TestCollector
 import at.florianschuster.control.test.TestCoroutineScopeRule
 import at.florianschuster.control.test.emissions
 import at.florianschuster.control.test.expect
@@ -16,18 +15,12 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.test.TestCoroutineScope
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class AndroidNetworkConnectivityProviderTest {
+internal class AndroidNetworkConnectivityProviderTest {
 
     @get:Rule
     val scopeRule = TestCoroutineScopeRule()
@@ -38,7 +31,7 @@ class AndroidNetworkConnectivityProviderTest {
     internal val capabilities = mockk<NetworkCapabilities>()
     internal val networkCallback = slot<ConnectivityManager.NetworkCallback>()
 
-    internal val instance = AndroidNetworkConnectivityProvider(context)
+    internal val sut = AndroidNetworkConnectivityProvider(context)
 
     @Before
     fun setup() {
@@ -71,7 +64,7 @@ class AndroidNetworkConnectivityProviderTest {
 
     @Test
     fun `network connectivity flow`() {
-        val collector = instance.networkConnectivity.test(scopeRule)
+        val collector = sut.networkConnectivity.test(scopeRule)
         thenNetworkCallbackRegistered()
 
         whenNetworkCallbackOnAvailable()
@@ -107,7 +100,7 @@ private fun AndroidNetworkConnectivityProviderTest.whenNetworkCallbackOnLost() {
 }
 
 private fun AndroidNetworkConnectivityProviderTest.thenNetworkConnectivity(connectivity: NetworkConnectivity) {
-    assertEquals(connectivity, instance.currentNetworkConnectivity)
+    assertEquals(connectivity, sut.currentNetworkConnectivity)
 }
 
 private fun AndroidNetworkConnectivityProviderTest.thenNetworkCallbackRegistered() {

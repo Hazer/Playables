@@ -21,26 +21,26 @@ import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
 
-class PlayablesControllerTest {
+internal class PlayablesControllerTest {
 
     @get:Rule
     val testScopeRule = TestCoroutineScopeRule()
 
     private val dataRepo = mockk<DataRepo>()
-    private lateinit var instance: PlayablesController
+    private lateinit var sut: PlayablesController
     private lateinit var states: TestCollector<PlayablesController.State>
 
     private val mockedGames = ConflatedBroadcastChannel(mockedGamesList)
 
     @Before
     fun setup() {
-        every { dataRepo.reloadPlayables() } answers { mockedGames.offer(mockedGamesList) }
-        every { dataRepo.playables() } returns mockedGames.asFlow()
+        every { dataRepo.reloadMyGames() } answers { mockedGames.offer(mockedGamesList) }
+        every { dataRepo.observeMyGames() } returns mockedGames.asFlow()
     }
 
     private fun givenControllerInitialized() {
-        instance = PlayablesController(dataRepo = dataRepo).apply { scope = testScopeRule }
-        states = instance.test()
+        sut = PlayablesController(dataRepo = dataRepo).apply { scope = testScopeRule }
+        states = sut.test()
     }
 
     @Test
@@ -59,7 +59,7 @@ class PlayablesControllerTest {
         givenControllerInitialized()
         advanceTimeBy(300)
 
-        instance.action(PlayablesController.Action.ReloadGames)
+        sut.action(PlayablesController.Action.ReloadGames)
         advanceTimeBy(300)
 
         states expect emission(2, PlayablesController.State(Data.Loading))
@@ -72,14 +72,14 @@ class PlayablesControllerTest {
         advanceTimeBy(300)
 
         // todo
-//        instance.action(PlayablesController.Action.SetGamePlayed(0, true))
+//        sut.action(PlayablesController.Action.SetGamePlayed(0, true))
 //        advanceTimeBy(300)
     }
 
     @Test
     fun `failure on games load`() = testScopeRule.runBlockingTest {
         val exception = IOException()
-        every { dataRepo.playables() } returns flow { throw exception }
+        every { dataRepo.observeMyGames() } returns flow { throw exception }
         givenControllerInitialized()
         advanceTimeBy(300)
 
@@ -91,7 +91,7 @@ class PlayablesControllerTest {
 
     companion object {
         private val mockedGamesList = (0..3).map {
-            Game(it.toLong(), "name", "desc", null, "web", 0L)
+            Game(it.toLong(), "name", "desc", null, "web", 0L, false, false)
         }
     }
 }

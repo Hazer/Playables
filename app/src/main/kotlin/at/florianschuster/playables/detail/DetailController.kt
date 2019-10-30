@@ -32,7 +32,7 @@ class DetailController(
 
     override fun mutate(action: Action): Flow<Mutation> = when (action) {
         is Action.LoadGame -> {
-            dataFlowOf { dataRepo.game(gameId) }.map { Mutation.SetGame(it) }
+            dataFlowOf { dataRepo.get(gameId) }.map { Mutation.SetGame(it) }
         }
     }
 

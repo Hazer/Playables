@@ -20,8 +20,6 @@ class PlayablesApp : Application() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) return
 
-        instance = this
-
         Timber.plant(Timber.DebugTree())
         AndroidThreeTen.init(this)
         Coil.setDefaultImageLoader(ImageLoader(this) { allowHardware(false) })
@@ -36,10 +34,5 @@ class PlayablesApp : Application() {
             androidLogger(Level.INFO)
             modules(appModules + coreAndroidModule + coreModule)
         }
-    }
-
-    companion object {
-        lateinit var instance: PlayablesApp
-            private set
     }
 }
