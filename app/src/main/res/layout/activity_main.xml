@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@drawable/bg_window">
 
     <androidx.viewpager2.widget.ViewPager2
@@ -27,5 +29,23 @@
         android:layout_gravity="top|center_horizontal"
         android:background="?selectableItemBackgroundBorderless"
         android:src="@drawable/ic_logo" />
+
+    <TextView
+        android:id="@+id/notConnectedView"
+        style="@style/Playables.Text.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        android:background="@drawable/bg_not_connected"
+        android:gravity="center"
+        android:paddingStart="@dimen/padding"
+        android:paddingTop="2dp"
+        android:paddingEnd="@dimen/padding"
+        android:paddingBottom="2dp"
+        android:text="@string/main_not_connected"
+        app:layout_anchor="@id/motionHeaderContainer"
+        app:layout_anchorGravity="center_horizontal|bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

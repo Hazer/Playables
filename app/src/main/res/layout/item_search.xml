@@ -24,32 +24,45 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@color/grey_500" />
 
-        <include
-            android:id="@+id/platforms"
-            layout="@layout/layout_platforms_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding"
-            android:layout_marginTop="@dimen/padding"
-            android:layout_marginEnd="@dimen/padding"
-            app:layout_constraintBottom_toTopOf="@id/nameTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/gameImageView" />
-
         <TextView
             android:id="@+id/nameTextView"
             style="@style/Playables.Text.Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:padding="@dimen/padding"
+            android:gravity="center_horizontal"
+            android:maxLines="3"
             android:textColor="@color/textLightPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gameImageView"
+            tools:text="World of Warcraft" />
+
+        <at.florianschuster.playables.util.PlatformsView
+            android:id="@+id/platformsView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin_half"
+            app:layout_constraintBottom_toTopOf="@id/addButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameTextView"
+            tools:layout_height="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addButton"
+            style="@style/Playables.View.Button.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="World of Warcraft" />
+            tools:text="Add" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

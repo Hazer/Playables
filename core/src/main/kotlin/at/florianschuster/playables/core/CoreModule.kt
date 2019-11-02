@@ -1,8 +1,8 @@
 package at.florianschuster.playables.core
 
 import at.florianschuster.playables.core.model.ClientInfo
-import at.florianschuster.playables.core.remote.HttpClientRawgApi
-import at.florianschuster.playables.core.remote.RawgApi
+import at.florianschuster.playables.core.remote.HttpClientRemoteGamesApi
+import at.florianschuster.playables.core.remote.RemoteGamesApi
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
@@ -18,9 +18,15 @@ val coreModule = module {
     single { Json.nonstrict }
 
     single { provideHttpClient(json = get(), clientInfo = get()) }
-    single<RawgApi> { HttpClientRawgApi(httpClient = get(), clientInfo = get()) }
+    single<RemoteGamesApi> { HttpClientRemoteGamesApi(httpClient = get(), clientInfo = get()) }
 
-    single<DataRepo> { CoreDataRepo(api = get(), database = get(), dispatcherProvider = get()) }
+    single {
+        GamesRepo(
+            api = get(),
+            database = get(),
+            dispatcherProvider = get()
+        )
+    }
 }
 
 private fun provideHttpClient(

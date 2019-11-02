@@ -17,10 +17,11 @@ import at.florianschuster.playables.detail.DetailView
 import at.florianschuster.playables.main.MainHeaderChild
 import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
 import at.florianschuster.playables.util.scrolledPastItemChanges
+import at.florianschuster.playables.util.shouldLoadMore
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 import com.tailoredapps.androidutil.ui.extensions.hideKeyboard
-import com.tailoredapps.androidutil.ui.extensions.shouldLoadMore
 import com.tailoredapps.androidutil.ui.extensions.showKeyBoard
+import com.tailoredapps.androidutil.ui.extensions.smoothScrollUp
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_error.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -33,20 +34,23 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.sample
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.ldralighieri.corbind.recyclerview.scrollEvents
-import ru.ldralighieri.corbind.view.clicks
-import ru.ldralighieri.corbind.widget.textChanges
+import reactivecircus.flowbinding.android.view.clicks
+import reactivecircus.flowbinding.android.widget.textChanges
+import reactivecircus.flowbinding.recyclerview.scrollEvents
 
 class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderChild {
     private val controller: SearchController by viewModel()
     private val adapter: SearchAdapter by inject()
 
-    override val parent: FragmentActivity get() = requireActivity()
+    override val mainHeaderParent: FragmentActivity get() = requireActivity()
 
     init {
         lifecycleScope.launchWhenCreated {
             applyInsets()
-            searchRecyclerView.adapter = adapter
+            with(searchRecyclerView) {
+                adapter = this@SearchView.adapter
+                setOnTouchListener { _, _ -> searchEditText.hideKeyboard(); false }
+            }
         }
 
         lifecycleScope.launchWhenStarted {
@@ -56,7 +60,7 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
                 .launchIn(this)
 
             searchScrollButton.clicks()
-                .bind { searchRecyclerView.smoothScrollToPosition(0) }
+                .bind { searchRecyclerView.smoothScrollUp() }
                 .launchIn(this)
 
             searchEditText.textChanges()

@@ -1,12 +1,15 @@
 package at.florianschuster.playables.search
 
+import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.florianschuster.playables.R
 import at.florianschuster.playables.core.model.Game
+import at.florianschuster.playables.util.PlatformsView
 import at.florianschuster.playables.util.inflate
 import coil.api.load
 import kotlinx.android.extensions.LayoutContainer
@@ -18,6 +21,7 @@ import kotlinx.coroutines.flow.asFlow
 sealed class SearchAdapterInteraction {
     data class Select(val gameId: Long) : SearchAdapterInteraction()
     data class Add(val game: Game) : SearchAdapterInteraction()
+    data class Remove(val gameId: Long) : SearchAdapterInteraction()
 }
 
 class SearchAdapter : ListAdapter<Game, SearchViewHolder>(diff) {
@@ -34,6 +38,7 @@ class SearchAdapter : ListAdapter<Game, SearchViewHolder>(diff) {
         private val diff = object : DiffUtil.ItemCallback<Game>() {
             override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean =
                 oldItem.id == newItem.id
+
             override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean =
                 oldItem == newItem
         }
@@ -43,6 +48,7 @@ class SearchAdapter : ListAdapter<Game, SearchViewHolder>(diff) {
 class SearchViewHolder(
     override val containerView: View
 ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+
     fun bind(game: Game, interaction: SendChannel<SearchAdapterInteraction>) {
         cardView.setOnClickListener {
             interaction.offer(SearchAdapterInteraction.Select(game.id))
@@ -51,6 +57,25 @@ class SearchViewHolder(
         with(gameImageView) {
             clipToOutline = true
             load(game.image) { crossfade(true) }
+        }
+        with(platformsView) {
+            isVisible = game.platforms.isNotEmpty()
+            setPlatforms(game.platforms, PlatformsView.Style.Small)
+        }
+        with(addButton) {
+            setText(if (game.added) R.string.game_remove else R.string.game_add)
+            backgroundTintList = ColorStateList.valueOf(
+                when {
+                    game.added -> containerView.context.getColor(R.color.filledButtonRemove)
+                    else -> containerView.context.getColor(R.color.filledButtonAdd)
+                }
+            )
+            setOnClickListener {
+                interaction.offer(
+                    if (game.added) SearchAdapterInteraction.Remove(game.id)
+                    else SearchAdapterInteraction.Add(game)
+                )
+            }
         }
     }
 }

@@ -1,20 +1,26 @@
 package at.florianschuster.playables.detail
 
 import at.florianschuster.data.lce.Data
-import at.florianschuster.data.lce.dataFlowOf
+import at.florianschuster.data.lce.mapAsData
 import at.florianschuster.playables.base.BaseController
-import at.florianschuster.playables.core.DataRepo
+import at.florianschuster.playables.core.GamesRepo
 import at.florianschuster.playables.core.model.Game
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class DetailController(
     private val gameId: Long,
-    private val dataRepo: DataRepo
+    private val gamesRepo: GamesRepo
 ) : BaseController<DetailController.Action, DetailController.Mutation, DetailController.State>() {
     sealed class Action {
-        object LoadGame : Action()
+        object AddGame : Action()
+        object RemoveGame : Action()
+        object SetGamePlayed : Action()
+        object SetGameNotPlayed : Action()
     }
 
     sealed class Mutation {
@@ -27,12 +33,32 @@ class DetailController(
 
     override val initialState: State = State()
 
-    override fun transformAction(action: Flow<Action>): Flow<Action> =
-        action.onStart { emit(Action.LoadGame) }
+    override fun transformMutation(mutation: Flow<Mutation>): Flow<Mutation> {
+        val gameFlow = flow<Data<Game>> {
+            emit(Data.Loading)
+            emitAll(gamesRepo.observe(gameId).mapAsData())
+        }.map { Mutation.SetGame(it) }
+        return flowOf(mutation, gameFlow).flattenMerge()
+    }
 
     override fun mutate(action: Action): Flow<Mutation> = when (action) {
-        is Action.LoadGame -> {
-            dataFlowOf { dataRepo.get(gameId) }.map { Mutation.SetGame(it) }
+        is Action.AddGame -> flow {
+            val game = currentState.game() ?: return@flow
+            gamesRepo.add(game)
+        }
+        is Action.RemoveGame -> flow {
+            val game = currentState.game() ?: return@flow
+            gamesRepo.remove(game.id)
+        }
+        is Action.SetGamePlayed -> flow {
+            val game = currentState.game() ?: return@flow
+            if (!game.added) gamesRepo.add(game)
+            gamesRepo.setPlayed(game.id, true)
+        }
+        is Action.SetGameNotPlayed -> flow {
+            val game = currentState.game() ?: return@flow
+            if (!game.added) gamesRepo.add(game)
+            gamesRepo.setPlayed(game.id, false)
         }
     }
 

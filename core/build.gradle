@@ -5,9 +5,7 @@ apply plugin: 'kotlinx-serialization'
 dependencies {
     api(Libs.kotlin_stdlib_jdk8)
     api(Libs.kotlinx_coroutines_core)
-
     api(Libs.koin_core)
-
     api(Libs.control_core)
     api(Libs.lce_data)
 
@@ -16,7 +14,4 @@ dependencies {
     implementation(Libs.ktor_client_json_jvm)
     implementation(Libs.ktor_client_serialization_jvm)
     implementation(Libs.ktor_client_logging_jvm)
-
-    api Libs.threetenabp
-
 }

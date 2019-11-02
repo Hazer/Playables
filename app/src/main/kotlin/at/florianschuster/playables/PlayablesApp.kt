@@ -3,7 +3,6 @@ package at.florianschuster.playables
 import android.app.Application
 import at.florianschuster.control.configuration.configureControl
 import at.florianschuster.playables.core.android.coreAndroidModule
-import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import at.florianschuster.playables.core.coreModule
 import coil.Coil
@@ -21,12 +20,11 @@ class PlayablesApp : Application() {
         if (LeakCanary.isInAnalyzerProcess(this)) return
 
         Timber.plant(Timber.DebugTree())
-        AndroidThreeTen.init(this)
         Coil.setDefaultImageLoader(ImageLoader(this) { allowHardware(false) })
 
         configureControl {
             errors(Timber::e)
-            operations { Timber.d(it) }
+            operations(logger = { Timber.v(it) })
         }
 
         startKoin {

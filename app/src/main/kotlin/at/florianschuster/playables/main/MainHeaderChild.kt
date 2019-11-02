@@ -6,10 +6,10 @@ import at.florianschuster.playables.R
 import com.tailoredapps.androidutil.ui.extensions.afterMeasured
 
 interface MainHeaderChild {
-    val parent: FragmentActivity
+    val mainHeaderParent: FragmentActivity
 
     fun afterMainHeaderMeasure(after: (header: View) -> Unit) {
-        val activityHeader = parent.findViewById<View>(R.id.motionHeaderContainer)
+        val activityHeader = mainHeaderParent.findViewById<View>(R.id.motionHeaderContainer)
         require(activityHeader != null) { "${this::class.java.simpleName} is not child of MainActivity" }
         activityHeader.afterMeasured { after(this) }
     }

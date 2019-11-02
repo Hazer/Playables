@@ -7,15 +7,16 @@ import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 
-interface RawgApi {
-    suspend fun search(query: String, page: Int = 1, pageSize: Int = 12): RemoteSearch
-    suspend fun game(id: Long): RemoteGame
+interface RemoteGamesApi {
+    suspend fun search(query: String, page: Int = 1, pageSize: Int = 16): RemoteSearch
+    suspend fun game(gameId: Long): RemoteGame
+    suspend fun trailers(gameId: Long): RemoteTrailers
 }
 
-class HttpClientRawgApi(
+class HttpClientRemoteGamesApi(
     private val httpClient: HttpClient,
     clientInfo: ClientInfo
-) : RawgApi {
+) : RemoteGamesApi {
     private val baseUrl = "https://api.rawg.io/api"
 
     init {
@@ -30,12 +31,15 @@ class HttpClientRawgApi(
     override suspend fun search(query: String, page: Int, pageSize: Int): RemoteSearch =
         httpClient.get("${baseUrl}/games") {
             url {
-                parameter("searchGames", query)
+                parameter("search", query)
                 parameter("page", page)
                 parameter("page_size", pageSize)
             }
         }
 
-    override suspend fun game(id: Long): RemoteGame =
-        httpClient.get("${baseUrl}/games/$id")
+    override suspend fun game(gameId: Long): RemoteGame =
+        httpClient.get("${baseUrl}/games/$gameId")
+
+    override suspend fun trailers(gameId: Long): RemoteTrailers =
+        httpClient.get("$baseUrl/games/$gameId/movies")
 }

@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
         android:gravity="center"
-        android:text="An error has occured while loading your data"
+        android:text="@string/error_loading_text"
         app:layout_constraintBottom_toTopOf="@id/errorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,11 +35,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/errorButton"
-        style="@style/Playables.View.Button"
+        style="@style/Playables.View.Button.Outlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
-        android:text="Reload"
+        android:text="@string/error_loading_reload_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

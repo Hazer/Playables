@@ -2,5 +2,5 @@ dependencies {
     testImplementation(Libs.junit_junit)
     testImplementation(Libs.mockk)
     testImplementation(Libs.koin_test)
-    testImplementation(Libs.control_test)
+    testImplementation(Libs.flow_extensions)
 }

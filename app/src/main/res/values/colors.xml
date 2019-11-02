@@ -9,6 +9,9 @@
     <color name="colorAccentDark">@color/red_900</color>
     <color name="colorControlHighLight">@color/white_opacity_20</color>
 
+    <color name="filledButtonAdd">@color/colorPrimaryDark</color>
+    <color name="filledButtonRemove">@color/red_500</color>
+
     <!--
     text colors
     -->

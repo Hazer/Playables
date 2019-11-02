@@ -2,6 +2,9 @@ package at.florianschuster.playables.detail
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
@@ -16,20 +19,24 @@ import at.florianschuster.data.lce.Data
 import at.florianschuster.data.lce.filterSuccessData
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.BaseActivity
+import at.florianschuster.playables.util.displayString
 import at.florianschuster.playables.util.openChromeTab
 import coil.api.load
-import coil.transform.BlurTransformation
 import com.tailoredapps.androidutil.ui.extensions.extra
 import com.tailoredapps.androidutil.ui.extensions.extras
+import com.tailoredapps.androidutil.ui.extensions.toast
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.ldralighieri.corbind.view.clicks
+import reactivecircus.flowbinding.android.view.clicks
 import java.io.File
 import kotlin.math.max
 
@@ -46,41 +53,68 @@ class DetailView : BaseActivity(layout = R.layout.activity_detail) {
     private val controller: DetailController by viewModel { parametersOf(args.id) }
 
     init {
-        lifecycleScope.launchWhenCreated { applyInsets() }
-
-        lifecycleScope.launchWhenStarted {
-            gameImageView.clipToOutline = true
-
+        lifecycleScope.launchWhenCreated {
+            applyInsets()
             backgroundImageView.load(args.backGroundFile)
 
             detailContent.onDismissed = { finish() }
-            detailContent.onDragOffset = { direction, percent ->
-                when (direction) {
-                    DragDirection.DOWN -> max(0f, 1 - (percent * 2))
-                    else -> 1f
-                }.let(backgroundImageView::setAlpha)
+            detailContent.onDragOffset = ::onDrag
 
-                when (direction) {
-                    DragDirection.DOWN -> max(0f, 1 - (percent * 1.75f))
-                    else -> 1f
-                }.let { alpha ->
-                    listOf(
-                        detailHeaderContentLayout,
-                        descriptionTextView,
-                        websiteButton
-                    ).forEach { it.alpha = alpha }
-                }
-
-                when (direction) {
-                    DragDirection.DOWN -> max(0f, 1 - percent)
-                    else -> 1f
-                }.let(backgroundCard::setAlpha)
-
-                gameImageView.translationY = when (direction) {
-                    DragDirection.DOWN -> gameImageView.height * (percent * 0.5f)
-                    else -> 0f
-                }
+            gamePlayerView.setOnPreparedListener {
+                it.setVolume(0f,0f)
+                it.isLooping=true
             }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            websiteButton.clicks()
+                .map { controller.currentState.game }
+                .filterSuccessData()
+                .map { it.website }
+                .filterNotNull()
+                .bind { openChromeTab(it) }
+                .launchIn(scope = this)
+
+            playedButton.clicks()
+                .map { controller.currentState.game }
+                .filterSuccessData()
+                .map { game ->
+                    if (game.played) {
+                        DetailController.Action.SetGameNotPlayed
+                    } else {
+                        DetailController.Action.SetGamePlayed
+                    }
+                }
+                .bind(to = controller.action)
+                .launchIn(scope = this)
+
+            flowOf(gamePlayerView.clicks(), gameImageView.clicks(), videoPlayButton.clicks())
+                .flattenMerge()
+                .map { controller.currentState.game }
+                .filterSuccessData()
+                .filter { it.trailers.isNotEmpty() }
+                .bind {
+                    videoPlayButton.isVisible = gamePlayerView.isPlaying
+                    gameImageView.visibility = when {
+                        gamePlayerView.isPlaying -> View.VISIBLE
+                        else -> View.INVISIBLE
+                    }
+                    if (gamePlayerView.isPlaying) gamePlayerView.pause() else gamePlayerView.start()
+                }
+                .launchIn(scope = this)
+
+            addRemoveButton.clicks()
+                .map { controller.currentState.game }
+                .filterSuccessData()
+                .map { game ->
+                    if (game.added) {
+                        DetailController.Action.RemoveGame
+                    } else {
+                        DetailController.Action.AddGame
+                    }
+                }
+                .bind(to = controller.action)
+                .launchIn(scope = this)
 
             controller.state.changesFrom { it.game }
                 .bind { game ->
@@ -88,33 +122,39 @@ class DetailView : BaseActivity(layout = R.layout.activity_detail) {
                     when (game) {
                         is Data.Success -> {
                             gameImageView.load(game.value.image) { crossfade(true) }
-                            if (args.backGroundFile == null) {
-                                backgroundImageView.load(game.value.image) {
-                                    crossfade(true)
-                                    transformations(
-                                        BlurTransformation(this@DetailView, 25f, 5f)
-                                    )
-                                }
-                            }
                             nameTextView.text = game.value.name
-                            releasedTextView.text = game.value.releaseDateInUnix.toString()
+                            with(releasedTextView) {
+                                isVisible = game.value.releaseDate != null
+                                text = game.value.releaseDate?.displayString
+                            }
                             descriptionTextView.text = game.value.description
                             websiteButton.isVisible = !game.value.website.isNullOrEmpty()
+                            with(platformsView) {
+                                isVisible = game.value.platforms.isNotEmpty()
+                                setPlatforms(game.value.platforms)
+                            }
+                            with(addRemoveButton) {
+                                setText(if (game.value.added) R.string.game_remove else R.string.game_add)
+                                backgroundTintList = when {
+                                    game.value.added -> ColorStateList.valueOf(getColor(R.color.filledButtonRemove))
+                                    else -> ColorStateList.valueOf(getColor(R.color.filledButtonAdd))
+                                }
+                            }
+                            playedButton.setText(if (game.value.played) R.string.game_played else R.string.game_not_played)
+
+                            val trailers = game.value.trailers
+                            videoPlayButton.isVisible = trailers.isNotEmpty()
+                            if (trailers.isNotEmpty()) {
+                                gamePlayerView.setVideoURI(Uri.parse(trailers.random().videoUrl))
+                            }
                         }
                         is Data.Failure -> {
-                            nameTextView.text = "Error: ${game.error}"
+                            toast("Error: ${game.error}")
+                            finish()
                         }
                     }
                 }
-                .launchIn(this)
-
-            websiteButton.clicks()
-                .map { controller.currentState.game }
-                .filterSuccessData()
-                .map { it.website }
-                .filterNotNull()
-                .bind { openChromeTab(it) }
-                .launchIn(this)
+                .launchIn(scope = this)
         }
     }
 
@@ -138,6 +178,43 @@ class DetailView : BaseActivity(layout = R.layout.activity_detail) {
                 )
             }
         }
+    }
+
+    private fun onDrag(direction: DragDirection, percent: Float) {
+        when (direction) {
+            DragDirection.DOWN -> max(0f, 1 - (percent * 2.25f))
+            else -> 1f
+        }.let(backgroundImageView::setAlpha)
+
+        when (direction) {
+            DragDirection.DOWN -> max(0f, 1 - (percent * 1.75f))
+            else -> 1f
+        }.let { alpha ->
+            listOf(
+                descriptionTextView,
+                websiteButton
+            ).forEach { it.alpha = alpha }
+        }
+
+        when (direction) {
+            DragDirection.DOWN -> max(0f, 1 - percent)
+            else -> 1f
+        }.let(backgroundCard::setAlpha)
+
+        when (direction) {
+            DragDirection.DOWN -> max(0f, 1 - (percent * 0.25f))
+            else -> 1f
+        }.let(detailHeaderContentLayout::setAlpha)
+
+        detailHeaderContentLayout.translationY = when (direction) {
+            DragDirection.DOWN -> gameImageView.height * (percent * 0.5f)
+            else -> 0f
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        gamePlayerView.stopPlayback()
     }
 
     companion object {

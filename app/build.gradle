@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'com.akaita.android.easylauncher'
+    id 'io.fabric'
 }
 
 def keystorePropertiesFile = rootProject.file("secret.properties")
@@ -126,12 +127,12 @@ dependencies {
     implementation Libs.lifecycle_runtime_ktx
     kapt Libs.lifecycle_compiler
 
-    implementation Libs.corbind
-    implementation Libs.corbind_core
-    implementation Libs.corbind_appcompat
-    implementation Libs.corbind_recyclerview
-    implementation Libs.corbind_material
-    implementation Libs.corbind_swiperefreshlayout
+    implementation Libs.flowbinding_android
+    implementation Libs.flowbinding_core
+    implementation Libs.flowbinding_appcompat
+    implementation Libs.flowbinding_recyclerview
+    implementation Libs.flowbinding_material
+    implementation Libs.exoplayer
 
     implementation Libs.koin_android
     implementation Libs.koin_androidx_scope
@@ -144,8 +145,13 @@ dependencies {
     implementation Libs.timber
     debugImplementation Libs.leakcanary_android
     releaseImplementation Libs.leakcanary_android_no_op
+
+    implementation Libs.firebase_analytics
+    implementation Libs.firebase_dynamic_links
+    implementation Libs.crashlytics
 }
 
+apply plugin: 'com.google.gms.google-services'
 
 easylauncher {
     iconNames "@mipmap/ic_launcher_foreground"

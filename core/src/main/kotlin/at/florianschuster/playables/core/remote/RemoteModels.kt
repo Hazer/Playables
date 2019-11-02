@@ -2,78 +2,56 @@ package at.florianschuster.playables.core.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 @Serializable
- data class RemoteSearch(
-    val count: Long,
-    val next: String?,
-    val previous: String?,
-    val results: List<Result>
-) {
+data class RemoteSearch(val results: List<Result>) {
+
     @Serializable
     data class Result(
         val id: Long,
         val name: String,
-        val playtime: Long,
-//        val platforms: List<RemotePlatform>,
-//        val stores: List<RemoteStore>,
-        val released: @Serializable(with = LocalDateSerializer::class) LocalDate? = null,
-        val tba: Boolean,
-        @SerialName("background_image") val backgroundImage: String? = null,
-        @SerialName("suggestions_count") val suggestionsCount: Long,
-        @SerialName("metacritic_url") val metaCriticURL: String? = null
-//        @SerialName("short_screenshots") val screenshots: List<RemoteScreenShot>,
-//        val genres: List<RemoteGenre>
+        val released: @Serializable(with = LocalDateSerializer::class) LocalDate?,
+        @SerialName("background_image") val backgroundImage: String?,
+        val platforms: List<RemotePlatform>,
+        val playtime: Long
     )
 }
 
 @Serializable
- data class RemoteGame(
+data class RemoteGame(
     val id: Long,
     val name: String,
     @SerialName("description_raw") val description: String,
-    val released: @Serializable(with = LocalDateSerializer::class) LocalDate,
-    val tba: Boolean,
+    @SerialName("released") val releaseDate: @Serializable(with = LocalDateSerializer::class) LocalDate?,
     @SerialName("background_image") val backgroundImage: String,
     val website: String,
     val playtime: Long,
-    @SerialName("suggestions_count") val suggestionsCount: Long,
-    @SerialName("saturated_color") val saturatedColor: String,
-    @SerialName("dominant_color") val dominantColor: String
-//    val platforms: List<RemotePlatform>,
-//    val developers: List<RemoteDeveloper>,
-//    val genres: List<RemoteGenre>,
-//    val tags: List<RemoteTag>,
-//    val publishers: List<RemoteDeveloper>,
-//    @SerialName("esrb_rating") val esrbRating: RemoteRating
+    val platforms: List<RemotePlatform>
 )
 
 @Serializable
-internal data class RemotePlatform(val id: Long? = null, val name: String? = null)
+data class RemotePlatform(val platform: Item) {
+
+    @Serializable
+    data class Item(val id: Long, val name: String)
+}
 
 @Serializable
-internal data class RemoteStore(val id: Long? = null, val name: String? = null)
+data class RemoteTrailers(val results: List<Result>) {
 
-@Serializable
-internal data class RemoteGenre(val id: Long? = null, val name: String? = null, val image: String? = null)
+    @Serializable
+    data class Result(
+        val id: Long,
+        val name: String,
+        val preview: String,
+        val data: Data
+    ) {
 
-@Serializable
-internal data class RemoteScreenShot(val id: Long? = null, val image: String? = null)
-
-@Serializable
-internal data class RemoteDeveloper(
-    val id: Long? = null,
-    val name: String? = null,
-    @SerialName("image_background") val image: String? = null
-)
-
-@Serializable
-internal data class RemoteTag(
-    val id: Long? = null,
-    val name: String? = null,
-    @SerialName("image_background") val image: String? = null
-)
-
-@Serializable
-internal data class RemoteRating(val id: Long? = null, val name: String? = null)
+        @Serializable
+        data class Data(
+            @SerialName("480") val quality480Url: String,
+            @SerialName("max") val qualityMaxUrl: String
+        )
+    }
+}

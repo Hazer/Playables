@@ -5,5 +5,5 @@ import org.koin.dsl.module
 
 internal val playablesModule = module {
     factory { PlayablesAdapter() }
-    viewModel { PlayablesController(dataRepo = get()) }
+    viewModel { PlayablesController(gamesRepo = get()) }
 }

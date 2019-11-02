@@ -17,6 +17,7 @@ import at.florianschuster.playables.detail.DetailView
 import at.florianschuster.playables.main.MainHeaderChild
 import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
 import at.florianschuster.playables.util.scrolledPastItemChanges
+import com.tailoredapps.androidutil.ui.extensions.smoothScrollUp
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_playables.*
 import kotlinx.android.synthetic.main.fragment_error.view.*
@@ -25,13 +26,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.ldralighieri.corbind.view.clicks
+import reactivecircus.flowbinding.android.view.clicks
 
 class PlayablesView : BaseFragment(layout = R.layout.fragment_playables), MainHeaderChild {
     private val controller: PlayablesController by viewModel()
     private val adapter: PlayablesAdapter by inject()
 
-    override val parent: FragmentActivity get() = requireActivity()
+    override val mainHeaderParent: FragmentActivity get() = requireActivity()
 
     init {
         lifecycleScope.launchWhenCreated {
@@ -46,7 +47,7 @@ class PlayablesView : BaseFragment(layout = R.layout.fragment_playables), MainHe
                 .launchIn(this)
 
             playablesScrollButton.clicks()
-                .bind { playablesRecyclerView.smoothScrollToPosition(0) }
+                .bind { playablesRecyclerView.smoothScrollUp() }
                 .launchIn(this)
 
             adapter.interaction

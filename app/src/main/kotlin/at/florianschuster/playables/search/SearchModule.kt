@@ -4,6 +4,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val searchModule = module {
-    viewModel { SearchController(dataRepo = get()) }
+    viewModel { SearchController(gamesRepo = get()) }
     factory { SearchAdapter() }
 }

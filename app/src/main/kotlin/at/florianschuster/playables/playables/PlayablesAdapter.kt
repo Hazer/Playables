@@ -2,15 +2,22 @@ package at.florianschuster.playables.playables
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import at.florianschuster.playables.R
 import at.florianschuster.playables.core.model.Game
+import at.florianschuster.playables.util.PlatformsView
 import at.florianschuster.playables.util.inflate
 import coil.api.load
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_playables.*
+import kotlinx.android.synthetic.main.item_playables.cardView
+import kotlinx.android.synthetic.main.item_playables.gameImageView
+import kotlinx.android.synthetic.main.item_playables.nameTextView
+import kotlinx.android.synthetic.main.item_playables.platformsView
+import kotlinx.android.synthetic.main.item_search.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.asFlow
@@ -55,12 +62,15 @@ class PlayableViewHolder(
             clipToOutline = true
             load(game.image) { crossfade(true) }
         }
-        playedButton.isSelected = false
-        playedButton.setOnClickListener {
-            playedButton.isSelected = !playedButton.isSelected
-            interaction.offer(
-                PlayablesAdapterInteraction.PlayedClicked(game.id, playedButton.isSelected)
-            )
+        with(playedButton) {
+            setText(if (game.played) R.string.game_played else R.string.game_not_played)
+            setOnClickListener {
+                interaction.offer(PlayablesAdapterInteraction.PlayedClicked(game.id, !game.played))
+            }
+        }
+        with(platformsView) {
+            isVisible = game.platforms.isNotEmpty()
+            setPlatforms(game.platforms, PlatformsView.Style.Small)
         }
     }
 }

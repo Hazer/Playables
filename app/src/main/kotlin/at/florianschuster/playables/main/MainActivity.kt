@@ -5,14 +5,20 @@ import android.view.View.*
 import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import at.florianschuster.control.bind
 import at.florianschuster.playables.R
 import at.florianschuster.playables.base.BaseActivity
+import at.florianschuster.playables.core.provider.NetworkConnectivityProvider
 import at.florianschuster.playables.info.showInfoBottomSheet
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_header.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -25,6 +31,7 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainBackGroundRetriev
     private val viewPagerChangeCallback: MainViewPagerChangeCallback by inject {
         parametersOf(motionHeader)
     }
+    private val connectivityProvider: NetworkConnectivityProvider by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -50,6 +57,12 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainBackGroundRetriev
         }
 
         logoImageView.setOnClickListener { showInfoBottomSheet() }
+
+        connectivityProvider.networkConnectivity
+            .map { it.connected }
+            .map { if (!it) VISIBLE else GONE }
+            .bind(to = notConnectedView::setVisibility)
+            .launchIn(scope = lifecycleScope)
     }
 
     override fun onDestroy() {

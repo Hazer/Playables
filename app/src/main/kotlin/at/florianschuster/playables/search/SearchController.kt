@@ -3,7 +3,7 @@ package at.florianschuster.playables.search
 import at.florianschuster.data.lce.Data
 import at.florianschuster.data.lce.dataFlowOf
 import at.florianschuster.playables.base.BaseController
-import at.florianschuster.playables.core.DataRepo
+import at.florianschuster.playables.core.GamesRepo
 import at.florianschuster.playables.core.model.Game
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 class SearchController(
-    val dataRepo: DataRepo
+    val gamesRepo: GamesRepo
 ) : BaseController<SearchController.Action, SearchController.Mutation, SearchController.State>() {
     sealed class Action {
         data class Query(val query: String) : Action()
@@ -54,7 +54,7 @@ class SearchController(
                 emitAll(items.map { Mutation.AppendSearchItems(it) })
             }
         }
-        is Action.AddGame -> emptyFlow() // todo
+        is Action.AddGame -> flow { gamesRepo.add(action.game) }
         is Action.ReloadCurrentQuery -> flow {
             val items = search(currentState.query, 1)
             emitAll(items.map { Mutation.SetSearchItems(it) })
@@ -87,6 +87,6 @@ class SearchController(
     }
 
     private fun search(query: String, page: Int) = dataFlowOf {
-        dataRepo.search(query, page)
+        gamesRepo.search(query, page)
     }
 }

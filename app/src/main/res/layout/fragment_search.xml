@@ -12,7 +12,7 @@
         android:clipToPadding="false"
         android:paddingStart="@dimen/margin_half"
         android:paddingEnd="@dimen/margin_half"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         app:spanCount="2"
         tools:listitem="@layout/item_search" />
 
