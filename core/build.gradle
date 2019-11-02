@@ -1,4 +1,4 @@
-apply from: rootProject.file("library-module.gradle")
+apply from: rootProject.file("gradle/library-module.gradle")
 
 apply plugin: 'kotlinx-serialization'
 
