@@ -118,7 +118,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/nameTextView"
-                            tools:layout_height="24dp" />
+                            tools:layout_height="20dp" />
 
                         <TextView
                             android:id="@+id/releasedTextView"
@@ -131,6 +131,7 @@
                             android:layout_marginEnd="@dimen/margin"
                             android:layout_marginBottom="@dimen/margin_half"
                             android:gravity="center"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toTopOf="@id/playedButton"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -146,6 +147,8 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/addRemoveButton"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/releasedTextView"
+                            app:layout_goneMarginTop="@dimen/margin_half"
                             tools:text="@string/game_played" />
 
                         <com.google.android.material.button.MaterialButton
@@ -163,7 +166,7 @@
                             style="@style/Playables.View.Card"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            app:layout_constraintDimensionRatio="1.4:1"
+                            app:layout_constraintDimensionRatio="16:9"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">

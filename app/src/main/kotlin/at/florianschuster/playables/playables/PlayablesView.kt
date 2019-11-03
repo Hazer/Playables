@@ -16,6 +16,8 @@ import at.florianschuster.playables.base.BaseFragment
 import at.florianschuster.playables.detail.DetailView
 import at.florianschuster.playables.main.MainHeaderChild
 import at.florianschuster.playables.main.retrieveActivityBlurredScreenShot
+import at.florianschuster.playables.playables.adapter.PlayablesAdapter
+import at.florianschuster.playables.playables.adapter.PlayablesAdapterInteraction
 import at.florianschuster.playables.util.scrolledPastItemChanges
 import com.tailoredapps.androidutil.ui.extensions.smoothScrollUp
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
@@ -76,7 +78,7 @@ class PlayablesView : BaseFragment(layout = R.layout.fragment_playables), MainHe
                     layoutPlayablesEmpty.isVisible = games.successful && games().isNullOrEmpty()
                     layoutPlayablesError.isVisible = games.failed
 
-                    if (games is Data.Success) adapter.submitList(games.value)
+                    if (games is Data.Success) adapter.submitGames(games.value)
                 }
                 .launchIn(this)
         }

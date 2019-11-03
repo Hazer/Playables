@@ -19,7 +19,7 @@ class PlatformsView @JvmOverloads constructor(
             marginStart = 1.px
             marginEnd = 1.px
         }),
-        Default(LayoutParams(24.px, 24.px).apply {
+        Default(LayoutParams(20.px, 20.px).apply {
             marginStart = 2.px
             marginEnd = 2.px
         })

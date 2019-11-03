@@ -3,7 +3,6 @@ package at.florianschuster.playables.detail
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Parcelable
 import android.view.View
@@ -38,6 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import reactivecircus.flowbinding.android.view.clicks
 import java.io.File
+import java.time.LocalDate
 import kotlin.math.max
 
 @Parcelize
@@ -60,10 +60,7 @@ class DetailView : BaseActivity(layout = R.layout.activity_detail) {
             detailContent.onDismissed = { finish() }
             detailContent.onDragOffset = ::onDrag
 
-            gamePlayerView.setOnPreparedListener {
-                it.setVolume(0f,0f)
-                it.isLooping=true
-            }
+            gamePlayerView.setOnPreparedListener { it.isLooping = true }
         }
 
         lifecycleScope.launchWhenStarted {
@@ -124,8 +121,9 @@ class DetailView : BaseActivity(layout = R.layout.activity_detail) {
                             gameImageView.load(game.value.image) { crossfade(true) }
                             nameTextView.text = game.value.name
                             with(releasedTextView) {
-                                isVisible = game.value.releaseDate != null
-                                text = game.value.releaseDate?.displayString
+                                val date = game.value.releaseDate
+                                isVisible = date != null && date.isAfter(LocalDate.now())
+                                text = date?.displayString
                             }
                             descriptionTextView.text = game.value.description
                             websiteButton.isVisible = !game.value.website.isNullOrEmpty()

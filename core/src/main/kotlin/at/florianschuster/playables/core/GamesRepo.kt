@@ -5,12 +5,14 @@ import at.florianschuster.playables.core.local.LocalGameData
 import at.florianschuster.playables.core.model.Game
 import at.florianschuster.playables.core.model.Platform
 import at.florianschuster.playables.core.provider.DispatcherProvider
-import at.florianschuster.playables.core.remote.RemoteGamesApi
 import at.florianschuster.playables.core.remote.RemoteGame
+import at.florianschuster.playables.core.remote.RemoteGamesApi
 import at.florianschuster.playables.core.remote.RemotePlatform
 import at.florianschuster.playables.core.remote.RemoteSearch
 import at.florianschuster.playables.core.remote.RemoteTrailers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -32,8 +34,13 @@ class GamesRepo(
     private val reloadMyGamesChannel = ConflatedBroadcastChannel(Unit)
 
     fun observe(gameId: Long): Flow<Game> = flow<Game> {
-        val remoteGame = withTimeout(api_timeout) { api.game(gameId) }
-        val remoteTrailer = withTimeout(api_timeout) { api.trailers(gameId) }
+        val (remoteGame, remoteTrailer) = withTimeout(api_timeout) {
+            coroutineScope {
+                val remoteGame = async { api.game(gameId) }
+                val remoteTrailer = async { api.trailers(gameId) }
+                remoteGame.await() to remoteTrailer.await()
+            }
+        }
         emitAll(database.observe(gameId).map { remoteGame.asGame(it, remoteTrailer) })
     }.flowOn(dispatcherProvider.io)
 
@@ -61,7 +68,7 @@ class GamesRepo(
 
         val gamesFlow = flowOf(reloadFlow, databaseFlow)
             .flattenMerge()
-            .map { it.map(LocalGameData::asGame).sortedBy(Game::name) }
+            .map { it.map(LocalGameData::asGame) }
         emitAll(gamesFlow)
     }.flowOn(dispatcherProvider.io)
 
