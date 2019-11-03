@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import at.florianschuster.playables.R
 import timber.log.Timber
@@ -29,3 +30,5 @@ fun FragmentActivity.openChromeTab(
         }
     }
 }
+
+fun Fragment.openChromeTab(url: String) = requireActivity().openChromeTab(url)

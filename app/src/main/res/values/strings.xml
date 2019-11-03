@@ -12,4 +12,8 @@
     <string name="error_loading_text">An error has occurred while loading your data</string>
     <string name="error_loading_reload_button">Reload</string>
     <string name="main_not_connected">Internet not connected</string>
+    <string name="app_info_title">Playables App Info</string>
+    <string name="app_info_privacy_policy_button_text">Privacy Policy</string>
+    <string name="app_info_programmed_by_button_text">Programmed by Florian Schuster</string>
+    <string name="app_info_rawg_button_text">This product uses the RAWG.io API</string>
 </resources>

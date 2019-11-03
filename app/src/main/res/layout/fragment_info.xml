@@ -1,29 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
+        android:id="@+id/infoLogoImageView"
+        android:layout_width="72dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin"
-        android:src="@drawable/ic_logo" />
+        android:src="@drawable/ic_logo"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/infoTitleTextView"
         style="@style/Playables.Text.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin"
-        android:text="Playables App Info" />
+        android:text="@string/app_info_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoLogoImageView" />
 
-    <TextView
-        style="@style/Playables.Text.Body"
-        android:layout_width="wrap_content"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/infoPrivacyPolicyButton"
+        style="@style/Playables.View.Button.Outlined"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        tools:text="@tools:sample/lorem/random" />
-</LinearLayout>
+        android:layout_marginTop="@dimen/margin"
+        android:text="@string/app_info_privacy_policy_button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoTitleTextView"
+        app:layout_constraintWidth_percent="0.75" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/infoProgrammedByButton"
+        style="@style/Playables.View.Button.Outlined"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:text="@string/app_info_programmed_by_button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoPrivacyPolicyButton"
+        app:layout_constraintWidth_percent="0.75" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/infoRawgButton"
+        style="@style/Playables.View.Button.Outlined"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:layout_marginBottom="@dimen/margin"
+        android:text="@string/app_info_rawg_button_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoProgrammedByButton"
+        app:layout_constraintWidth_percent="0.75" />
+</androidx.constraintlayout.widget.ConstraintLayout>

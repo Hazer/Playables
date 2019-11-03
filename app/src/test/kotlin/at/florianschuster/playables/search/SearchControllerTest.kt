@@ -22,6 +22,6 @@ internal class SearchControllerTest {
         states = sut.state.testIn(testScopeRule)
     }
 
-    
+
 
 }
