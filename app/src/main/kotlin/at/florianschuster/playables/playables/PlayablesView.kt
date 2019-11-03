@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_error.view.*
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.sample
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import reactivecircus.flowbinding.android.view.clicks
@@ -54,6 +55,7 @@ class PlayablesView : BaseFragment(layout = R.layout.fragment_playables), MainHe
 
             adapter.interaction
                 .filterIsInstance<PlayablesAdapterInteraction.Clicked>()
+                .sample(500)
                 .map { it.gameId to retrieveActivityBlurredScreenShot() }
                 .bind { (id, screenshot) ->
                     DetailView.start(requireContext(), id, screenshot)

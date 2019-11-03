@@ -26,6 +26,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/infoLogoImageView" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/analyticsCheckbox"
+        style="@style/Playables.Text.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@drawable/bg_info_item"
+        android:drawableStart="@drawable/ic_show_chart"
+        android:drawablePadding="@dimen/padding_half"
+        android:drawableTint="@color/white"
+        android:padding="@dimen/padding"
+        android:text="@string/app_info_analytics_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoTitleTextView"
+        app:layout_constraintWidth_percent="0.75"
+        app:switchPadding="@dimen/margin"
+        app:thumbTint="@drawable/selector_switch_thumb"
+        app:trackTint="@drawable/selector_switch_track" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/infoPrivacyPolicyButton"
         style="@style/Playables.View.Button.Outlined"
@@ -35,7 +55,7 @@
         android:text="@string/app_info_privacy_policy_button_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/infoTitleTextView"
+        app:layout_constraintTop_toBottomOf="@id/analyticsCheckbox"
         app:layout_constraintWidth_percent="0.75" />
 
     <com.google.android.material.button.MaterialButton
@@ -43,7 +63,6 @@
         style="@style/Playables.View.Button.Outlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
         android:text="@string/app_info_programmed_by_button_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +74,6 @@
         style="@style/Playables.View.Button.Outlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
         android:layout_marginBottom="@dimen/margin"
         android:text="@string/app_info_rawg_button_text"
         app:layout_constraintBottom_toBottomOf="parent"

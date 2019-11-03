@@ -16,4 +16,5 @@
     <string name="app_info_privacy_policy_button_text">Privacy Policy</string>
     <string name="app_info_programmed_by_button_text">Programmed by Florian Schuster</string>
     <string name="app_info_rawg_button_text">This product uses the RAWG.io API</string>
+    <string name="app_info_analytics_title">Analytics</string>
 </resources>

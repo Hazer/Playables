@@ -132,13 +132,29 @@ class DetailView : BaseActivity(layout = R.layout.activity_detail) {
                                 setPlatforms(game.value.platforms)
                             }
                             with(addRemoveButton) {
-                                setText(if (game.value.added) R.string.game_remove else R.string.game_add)
-                                backgroundTintList = when {
-                                    game.value.added -> ColorStateList.valueOf(getColor(R.color.filledButtonRemove))
-                                    else -> ColorStateList.valueOf(getColor(R.color.filledButtonAdd))
+                                if (game.value.added) {
+                                    setText(R.string.game_remove)
+                                    backgroundTintList = ColorStateList.valueOf(
+                                        getColor(R.color.filledButtonRemove)
+                                    )
+                                    setIconResource(R.drawable.ic_remove_circle)
+                                } else {
+                                    setText(R.string.game_add)
+                                    backgroundTintList = ColorStateList.valueOf(
+                                        getColor(R.color.filledButtonAdd)
+                                    )
+                                    setIconResource(R.drawable.ic_add_circle_outline)
                                 }
                             }
-                            playedButton.setText(if (game.value.played) R.string.game_played else R.string.game_not_played)
+                            with(playedButton) {
+                                if (game.value.played) {
+                                    setText(R.string.game_played)
+                                    setIconResource(R.drawable.ic_controller_filled)
+                                } else {
+                                    setText(R.string.game_not_played)
+                                    setIconResource(R.drawable.ic_controller)
+                                }
+                            }
 
                             val trailers = game.value.trailers
                             videoPlayButton.isVisible = trailers.isNotEmpty()

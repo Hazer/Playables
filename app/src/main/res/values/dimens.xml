@@ -10,4 +10,6 @@
 
     <dimen name="size_main_logo">24dp</dimen>
     <dimen name="button_stroke_width">1dp</dimen>
+    
+    <dimen name="padding_bottom_main_recyclerview">64dp</dimen>
 </resources>

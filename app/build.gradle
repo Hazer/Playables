@@ -113,7 +113,6 @@ dependencies {
     implementation Libs.appcompat
     implementation Libs.activity_ktx
     implementation Libs.fragment_ktx
-    implementation Libs.core_ktx
     implementation Libs.constraintlayout
     implementation Libs.material
     implementation Libs.browser
@@ -134,8 +133,6 @@ dependencies {
     implementation Libs.flowbinding_material
     implementation Libs.exoplayer
 
-    implementation Libs.koin_android
-    implementation Libs.koin_androidx_scope
     implementation Libs.koin_androidx_viewmodel
 
     implementation Libs.coil
@@ -145,10 +142,6 @@ dependencies {
     implementation Libs.timber
     debugImplementation Libs.leakcanary_android
     releaseImplementation Libs.leakcanary_android_no_op
-
-    implementation Libs.firebase_analytics
-    implementation Libs.firebase_dynamic_links
-    implementation Libs.crashlytics
 }
 
 apply plugin: 'com.google.gms.google-services'

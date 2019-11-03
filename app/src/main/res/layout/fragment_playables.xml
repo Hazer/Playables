@@ -13,6 +13,7 @@
         android:clipToPadding="false"
         android:paddingStart="@dimen/margin_half"
         android:paddingEnd="@dimen/margin_half"
+        android:paddingBottom="@dimen/padding_bottom_main_recyclerview"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_playables" />
 

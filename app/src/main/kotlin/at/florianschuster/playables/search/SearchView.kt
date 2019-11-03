@@ -63,7 +63,7 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
                 .bind { searchRecyclerView.smoothScrollUp() }
                 .launchIn(this)
 
-            searchEditText.textChanges()
+            searchEditText.textChanges(emitImmediately = true)
                 .map { if (it.isNotEmpty()) VISIBLE else INVISIBLE }
                 .bind(to = searchClearButton::setVisibility)
                 .launchIn(this)
@@ -81,6 +81,7 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
 
             adapter.interaction
                 .filterIsInstance<SearchAdapterInteraction.Select>()
+                .sample(500)
                 .map { it.gameId to retrieveActivityBlurredScreenShot() }
                 .bind { (id, screenshot) ->
                     DetailView.start(requireContext(), id, screenshot)
@@ -94,7 +95,6 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
                 .launchIn(this)
 
             searchEditText.textChanges()
-                .drop(1)
                 .debounce(500)
                 .map { SearchController.Action.Query(it.toString()) }
                 .bind(to = controller.action)

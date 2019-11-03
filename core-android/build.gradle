@@ -2,12 +2,17 @@ apply from: rootProject.file("gradle/library-module-android.gradle")
 
 dependencies {
     api(project(":core"))
+    
+    api Libs.core_ktx
 
-    implementation(Libs.koin_android)
+    api(Libs.koin_android)
+    api Libs.koin_androidx_scope
 
     implementation(Libs.room_runtime)
-    kapt(Libs.room_compiler)
     implementation(Libs.room_ktx)
+    kapt(Libs.room_compiler)
 
-    testImplementation(Libs.room_testing)
+    implementation Libs.firebase_analytics
+    implementation Libs.firebase_dynamic_links
+    implementation Libs.crashlytics
 }

@@ -70,6 +70,9 @@ class SearchViewHolder(
                     else -> containerView.context.getColor(R.color.filledButtonAdd)
                 }
             )
+            setIconResource(
+                if (game.added) R.drawable.ic_remove_circle else R.drawable.ic_add_circle_outline
+            )
             setOnClickListener {
                 interaction.offer(
                     if (game.added) SearchAdapterInteraction.Remove(game.id)

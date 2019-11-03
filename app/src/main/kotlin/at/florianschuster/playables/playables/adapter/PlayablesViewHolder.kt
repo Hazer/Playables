@@ -33,7 +33,12 @@ sealed class PlayablesViewHolder(
                 load(game.image) { crossfade(true) }
             }
             with(playedButton) {
-                setText(if (game.played) R.string.game_played else R.string.game_not_played)
+                isSelected = game.played
+
+                playedButton.setImageResource(
+                    if (game.played) R.drawable.ic_controller_filled else R.drawable.ic_controller
+                )
+
                 setOnClickListener {
                     interaction.offer(
                         PlayablesAdapterInteraction.PlayedClicked(game.id, !game.played)
