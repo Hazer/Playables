@@ -1,6 +1,5 @@
 package at.florianschuster.playables.core.provider
 
-import at.florianschuster.playables.core.provider.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 

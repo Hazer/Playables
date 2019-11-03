@@ -55,7 +55,6 @@ class PlayablesView : BaseFragment(layout = R.layout.fragment_playables), MainHe
 
             adapter.interaction
                 .filterIsInstance<PlayablesAdapterInteraction.Clicked>()
-                .sample(500)
                 .map { it.gameId to retrieveActivityBlurredScreenShot() }
                 .bind { (id, screenshot) ->
                     DetailView.start(requireContext(), id, screenshot)
@@ -73,9 +72,9 @@ class PlayablesView : BaseFragment(layout = R.layout.fragment_playables), MainHe
                 .bind(to = controller.action)
                 .launchIn(this)
 
-            controller.state.changesFrom { it.games }
+            controller.state.changesFrom { it.games } // todo buggy
                 .bind { games ->
-                    layoutPlayablesLoading.isVisible = games.loading // todo gets stuck
+                    layoutPlayablesLoading.isVisible = games.loading
                     playablesRecyclerView.isVisible = games.successful && !games().isNullOrEmpty()
                     layoutPlayablesEmpty.isVisible = games.successful && games().isNullOrEmpty()
                     layoutPlayablesError.isVisible = games.failed

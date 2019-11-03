@@ -6,14 +6,11 @@ import java.time.LocalDate
 
 class MockedGamesApi {
 
-    val api: RemoteGamesApi = mockk {
-        remoteGames.forEach { game ->
-            coEvery { game(game.id) } returns game
-        }
-        remoteSearches.forEach { page, search ->
-            coEvery { search(any(), page) } returns search
-        }
-    }
+    val remotePlatforms = listOf(
+        RemotePlatform(RemotePlatform.Item(4, "PC")),
+        RemotePlatform(RemotePlatform.Item(18, "Playstation")),
+        RemotePlatform(RemotePlatform.Item(1, "XboxOne"))
+    )
 
     val remoteGames = (0L..5L).map {
         RemoteGame(
@@ -44,9 +41,12 @@ class MockedGamesApi {
         2 to RemoteSearch(remoteSearchResults)
     )
 
-    val remotePlatforms = listOf(
-        RemotePlatform(RemotePlatform.Item(4, "PC")),
-        RemotePlatform(RemotePlatform.Item(18, "Playstation")),
-        RemotePlatform(RemotePlatform.Item(1, "XboxOne"))
-    )
+    val api: RemoteGamesApi = mockk {
+        remoteGames.forEach { game ->
+            coEvery { game(game.id) } returns game
+        }
+        remoteSearches.forEach { page, search ->
+            coEvery { search(any(), page) } returns search
+        }
+    }
 }

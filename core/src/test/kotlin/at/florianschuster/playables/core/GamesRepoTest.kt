@@ -1,6 +1,5 @@
 package at.florianschuster.playables.core
 
-import at.florianschuster.playables.core.local.LocalGameData
 import at.florianschuster.playables.core.local.MockedGamesDatabase
 import at.florianschuster.playables.core.model.Game
 import at.florianschuster.playables.core.provider.TestDispatcherProvider
@@ -28,6 +27,11 @@ class GamesRepoTest {
     )
 
     @Test
+    fun `observe game`() {
+//        sut.observe()
+    }
+
+    @Test
     fun `search successful`() = runBlockingTest {
         val query = "query"
         val page = 2
@@ -42,36 +46,22 @@ class GamesRepoTest {
     }
 
     @Test
-    fun `search times out`() = runBlockingTest {
-        val query = "query"
-        val page = 2
-        val games = sut.search(query, page)
-
-        coVerify(exactly = 1) { mockedGamesApi.api.search(query, page) }
-        coVerify(exactly = 0) { mockedGamesDatabase.db.get(any()) }
-        // todo
-    }
-
-    @Test
     fun `add game`() = runBlockingTest {
         val mockedGameId = 32L
-        val mockedGame = Game(mockedGameId, "some game", played = true)
+        val mockedGameName = "some game"
+        val mockedGame = Game(mockedGameId, mockedGameName, played = true)
 
         sut.add(mockedGame)
 
         coVerify(exactly = 1) { mockedGamesDatabase.db.insertOrUpdate(any()) }
-
-        assertEquals(
-            object : LocalGameData {
-                override val gameId: Long = mockedGameId
-                override val played: Boolean = true
-            },
-            mockedGamesDatabase.insertOrUpdateSlot.captured
-        )
+        with(mockedGamesDatabase.insertOrUpdateSlot.captured) {
+            assertEquals(mockedGameId, gameId)
+            assertEquals(mockedGameName, name)
+        }
     }
 
     @Test
-    fun `delete game`() = runBlockingTest {
+    fun `remove game`() = runBlockingTest {
         val gameId = 0L
         sut.remove(gameId)
 
@@ -81,7 +71,7 @@ class GamesRepoTest {
     }
 
     @Test
-    fun `ReloadMyGames triggers flow`() {
+    fun `reloadMyGames triggers observe Flow`() {
         val gamesTestFlow = sut.observeMyGames().testIn(testScopeRule)
 
         sut.reloadMyGames()
@@ -92,18 +82,13 @@ class GamesRepoTest {
 
     @Test
     fun `set played`() = runBlockingTest {
-        val gameId = 0L
+        val mockedGameId = 0L
         val played = false
 
-        sut.setPlayed(gameId, played)
+        sut.setPlayed(mockedGameId, played)
 
-        coVerify(exactly = 1) { mockedGamesDatabase.db.insertOrUpdate(any()) }
-        assertEquals(
-            object : LocalGameData {
-                override val gameId: Long = gameId
-                override val played: Boolean = played
-            },
-            mockedGamesDatabase.insertOrUpdateSlot.captured
-        )
+        coVerify(exactly = 1) { mockedGamesDatabase.db.update(mockedGameId, played) }
+        assertEquals(mockedGameId, mockedGamesDatabase.updateSlotId.captured)
+        assertEquals(played, mockedGamesDatabase.updateSlotPlayed.captured)
     }
 }

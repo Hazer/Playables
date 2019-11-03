@@ -1,10 +1,11 @@
 package at.florianschuster.playables.search
 
 import at.florianschuster.data.lce.Data
-import at.florianschuster.data.lce.dataFlowOf
+import at.florianschuster.data.lce.dataOf
 import at.florianschuster.playables.base.BaseController
 import at.florianschuster.playables.core.GamesRepo
 import at.florianschuster.playables.core.model.Game
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.emptyFlow
@@ -44,19 +45,19 @@ class SearchController(
     override fun mutate(action: Action): Flow<Mutation> = when (action) {
         is Action.Query -> flow {
             emit(Mutation.SetQuery(action.query))
-            val items = search(action.query, 1)
+            val items = searchFlow(action.query, 1)
             emitAll(items.map { Mutation.SetSearchItems(it) })
         }
         is Action.LoadNextPage -> when {
             !currentState.pageLoad.complete -> emptyFlow()
             else -> flow {
-                val items = search(currentState.query, currentState.page + 1)
+                val items = searchFlow(currentState.query, currentState.page + 1)
                 emitAll(items.map { Mutation.AppendSearchItems(it) })
             }
         }
         is Action.AddGame -> flow { gamesRepo.add(action.game) }
         is Action.ReloadCurrentQuery -> flow {
-            val items = search(currentState.query, 1)
+            val items = searchFlow(currentState.query, 1)
             emitAll(items.map { Mutation.SetSearchItems(it) })
         }
     }
@@ -86,7 +87,9 @@ class SearchController(
         }
     }
 
-    private fun search(query: String, page: Int) = dataFlowOf {
-        gamesRepo.search(query, page)
+    private fun searchFlow(query: String, page: Int) = flow<Data<List<Game>>> {
+        emit(Data.Loading)
+        delay(300) // ui sugar
+        dataOf { gamesRepo.search(query, page) }
     }
 }

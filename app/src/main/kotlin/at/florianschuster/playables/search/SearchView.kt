@@ -81,7 +81,6 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
 
             adapter.interaction
                 .filterIsInstance<SearchAdapterInteraction.Select>()
-                .sample(500)
                 .map { it.gameId to retrieveActivityBlurredScreenShot() }
                 .bind { (id, screenshot) ->
                     DetailView.start(requireContext(), id, screenshot)
@@ -116,7 +115,7 @@ class SearchView : BaseFragment(layout = R.layout.fragment_search), MainHeaderCh
                 .bind(to = adapter::submitList)
                 .launchIn(this)
 
-            controller.state.changesFrom { it.pageLoad to it.firstLoadComplete }
+            controller.state.changesFrom { it.pageLoad to it.firstLoadComplete } // todo buggy
                 .bind { (results, firstLoadComplete) ->
                     searchProgressBar.isVisible = results.loading
                     layoutSearchLoading.isVisible = results.loading && !firstLoadComplete

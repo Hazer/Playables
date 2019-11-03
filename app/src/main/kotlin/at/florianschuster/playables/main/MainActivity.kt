@@ -19,8 +19,10 @@ import kotlinx.android.synthetic.main.activity_main_header.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.sample
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import reactivecircus.flowbinding.android.view.clicks
 
 class MainActivity : BaseActivity(R.layout.activity_main), MainBackGroundRetriever {
 
@@ -46,17 +48,23 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainBackGroundRetriev
             fixOverScrollMode()
         }
 
-        playablesTitleTextView.setOnClickListener {
-            motionHeader.progress = 0f
-            mainViewPager.currentItem = 0
-        }
+        playablesTitleTextView.clicks()
+            .bind {
+                motionHeader.progress = 0f
+                mainViewPager.currentItem = 0
+            }
+            .launchIn(scope = lifecycleScope)
 
-        searchTitleTextView.setOnClickListener {
-            motionHeader.progress = 1f
-            mainViewPager.currentItem = 1
-        }
+        logoImageView.clicks()
+            .bind {
+                motionHeader.progress = 1f
+                mainViewPager.currentItem = 1
+            }
+            .launchIn(scope = lifecycleScope)
 
-        logoImageView.setOnClickListener { showInfoBottomSheet() }
+        logoImageView.clicks()
+            .bind { showInfoBottomSheet() }
+            .launchIn(scope = lifecycleScope)
 
         connectivityProvider.networkConnectivity
             .map { it.connected }
